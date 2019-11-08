@@ -90,7 +90,6 @@ public class PlayerController : MonoBehaviour
 
     private void AimRight(InputAction.CallbackContext obj)
     {
-            Debug.Log("turning");
         aimDir = obj.performed ? TurnDir.Right : TurnDir.IDLE;
     }
     private void Move()
