@@ -9,7 +9,8 @@ namespace UnitySocketIO {
         
         public SocketIOSettings settings;
 
-        BaseSocketIO socketIO;
+        [HideInInspector]
+        public BaseSocketIO socketIO;
 
         public string SocketID { get { return socketIO.SocketID; } }
 
