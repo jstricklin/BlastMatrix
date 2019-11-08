@@ -228,6 +228,38 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Turn Right
       m_Flags: 0
+  aimLeft:
+    m_Name: Aim Left
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 555e55db-f33c-486e-b48c-68dddae11025
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 9cfe4e85-1e18-4cd6-a8a7-8b94917354d4
+      m_Path: <Keyboard>/leftArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Aim Left
+      m_Flags: 0
+  aimRight:
+    m_Name: Aim Right
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b2140720-eeb6-4e7e-8874-2af3e99890d0
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 7ae24596-ae8a-4460-8220-91fffcf534ce
+      m_Path: <Keyboard>/rightArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Aim Right
+      m_Flags: 0
   fire:
     m_Name: Fire
     m_Type: 0

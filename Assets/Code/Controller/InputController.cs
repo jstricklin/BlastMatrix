@@ -12,10 +12,17 @@ namespace Project.Controllers {
         public InputAction moveBackwards;
         public InputAction turnLeft;
         public InputAction turnRight;
+        public InputAction aimLeft;
+        public InputAction aimRight;
         public InputAction fire;
         public override void OnEnable()
         {
             EnableInputs();            
+        }
+
+        void OnDisable()
+        {
+            DisableInputs();
         }
 
         private void EnableInputs()
@@ -24,21 +31,20 @@ namespace Project.Controllers {
             moveBackwards.Enable();
             turnLeft.Enable();
             turnRight.Enable();
+            aimRight.Enable();
+            aimLeft.Enable();
             fire.Enable();
-        }
-
-        void OnDisable()
-        {
-            DisableInputs();
         }
 
         private void DisableInputs()
         {
             moveForward.Disable();
-            moveBackwards.Enable();
-            turnLeft.Enable();
-            turnRight.Enable();
-            fire.Enable();
+            moveBackwards.Disable();
+            turnLeft.Disable();
+            turnRight.Disable();
+            aimRight.Disable();
+            aimLeft.Disable();
+            fire.Disable();
         }
     }
 
