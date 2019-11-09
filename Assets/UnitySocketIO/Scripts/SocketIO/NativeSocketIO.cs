@@ -296,7 +296,6 @@ namespace UnitySocketIO.SocketIO {
 
         void HandleOpen(SocketPacket packet) {
             SocketID = JsonUtility.FromJson<SocketOpenData>(packet.json).sid;
-
             EmitEvent("open");
         }
 
