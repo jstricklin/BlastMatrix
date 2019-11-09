@@ -4,6 +4,8 @@ using UnityEngine;
 using Project.Controllers;
 using UnityEngine.InputSystem;
 using System;
+using Project.Utility;
+using Project.Networking;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,9 +16,14 @@ public class PlayerController : MonoBehaviour
     private float shotForce = 15;
     private float maxBarrelUp = 0.2f;
     [SerializeField]
+    private float shotCooldown = 3;
+    [SerializeField]
     Transform cannon, barrel;
     [SerializeField]
     Transform projectile, projectileSpawnPoint;
+    [SerializeField]
+    NetworkIdentity networkIdentity;
+    ProjectileData projectileData;
 
     enum MoveDir {
         FORWARD,
@@ -45,10 +52,14 @@ public class PlayerController : MonoBehaviour
     AimDir aimDir = AimDir.IDLE;
     BarrelDir barrelDir = BarrelDir.IDLE;
 
+    Cooldown cannonCooldown;
+
     void Awake()
     {
         InputController inputController = FindObjectOfType<InputController>();
         myRb = GetComponent<Rigidbody>();
+        cannonCooldown = new Cooldown(2.5f);
+        projectileData = new ProjectileData();
 
         inputController.moveBackwards.performed += MoveBackwards;
         inputController.moveBackwards.canceled += MoveBackwards;
@@ -69,6 +80,10 @@ public class PlayerController : MonoBehaviour
         inputController.fire.performed += FireCannon;
     }
 
+    void Update()
+    {
+        cannonCooldown.CooldownUpdate();
+    }
     void FixedUpdate()
     {
         Move();
@@ -78,8 +93,14 @@ public class PlayerController : MonoBehaviour
 
     private void FireCannon(InputAction.CallbackContext obj)
     {
-        Transform fired = Instantiate(projectile, projectileSpawnPoint.position, barrel.rotation);
-        fired.GetComponent<Rigidbody>().AddForce(barrel.transform.forward * shotForce, ForceMode.Impulse);
+        if (cannonCooldown.IsOnCooldown()) return;
+        cannonCooldown.StartCooldown();
+        projectileData.activator = NetworkClient.ClientID;
+        projectileData.position = projectileSpawnPoint.position;
+        projectileData.direction = barrel.transform.forward;
+        networkIdentity.GetSocket().Emit("fireProjectile", JsonUtility.ToJson(projectileData));
+        // Transform fired = Instantiate(projectile, projectileSpawnPoint.position, barrel.rotation);
+        // fired.GetComponent<Rigidbody>().AddForce(barrel.transform.forward * shotForce, ForceMode.Impulse);
     }
     
     private void MoveForward(InputAction.CallbackContext obj)
@@ -164,7 +185,6 @@ public class PlayerController : MonoBehaviour
         {
             if (barrelDir == BarrelDir.UP && barrel.localRotation.x * -1 < maxBarrelUp)
             {
-                Debug.Log("local x on barrel " + barrel.localRotation.x);
                 Quaternion deltaRot = Quaternion.FromToRotation(barrel.forward, barrel.up) * barrel.rotation;
                 barrel.rotation = Quaternion.Slerp(barrel.rotation, deltaRot, aimSpeed * Time.deltaTime);
             } else if (barrelDir == BarrelDir.DOWN && barrel.localEulerAngles.x > 0){
