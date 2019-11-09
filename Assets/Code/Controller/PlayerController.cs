@@ -8,11 +8,13 @@ using System;
 public class PlayerController : MonoBehaviour
 {
     Rigidbody myRb;
-    private float speed = 10;
-    private float turnSpeed = 2.5f;
+    private float speed = 5;
+    private float turnSpeed = 1f;
+    private float aimSpeed = 0.75f;
     private float shotForce = 15;
+    private float maxBarrelUp = 0.2f;
     [SerializeField]
-    Transform gunBarrel;
+    Transform cannon, barrel;
     [SerializeField]
     Transform projectile, projectileSpawnPoint;
 
@@ -22,13 +24,26 @@ public class PlayerController : MonoBehaviour
         IDLE,
     }
     enum TurnDir {
-        Left,
-        Right,
+        LEFT,
+        RIGHT,
+        IDLE,
+    }
+    enum AimDir
+    {
+        LEFT,
+        RIGHT,
+        IDLE,
+    }
+    enum BarrelDir
+    {
+        UP,
+        DOWN,
         IDLE,
     }
     MoveDir moveDir = MoveDir.IDLE;
     TurnDir turnDir = TurnDir.IDLE;
-    TurnDir aimDir = TurnDir.IDLE;
+    AimDir aimDir = AimDir.IDLE;
+    BarrelDir barrelDir = BarrelDir.IDLE;
 
     void Awake()
     {
@@ -46,14 +61,12 @@ public class PlayerController : MonoBehaviour
         inputController.aimLeft.performed += AimLeft;
         inputController.aimLeft.canceled += AimLeft;
         inputController.aimRight.performed += AimRight;
+        inputController.aimUp.performed += AimUp;
+        inputController.aimUp.canceled += AimUp;
+        inputController.aimDown.performed += AimDown;
+        inputController.aimDown.canceled += AimDown;
         inputController.aimRight.canceled += AimRight;
         inputController.fire.performed += FireCannon;
-    }
-
-    private void FireCannon(InputAction.CallbackContext obj)
-    {
-        Transform fired = Instantiate(projectile, projectileSpawnPoint.position, gunBarrel.rotation);
-        fired.GetComponent<Rigidbody>().AddForce(gunBarrel.transform.forward * shotForce, ForceMode.Impulse);
     }
 
     void FixedUpdate()
@@ -61,6 +74,12 @@ public class PlayerController : MonoBehaviour
         Move();
         Turn();
         Aim();
+    }
+
+    private void FireCannon(InputAction.CallbackContext obj)
+    {
+        Transform fired = Instantiate(projectile, projectileSpawnPoint.position, barrel.rotation);
+        fired.GetComponent<Rigidbody>().AddForce(barrel.transform.forward * shotForce, ForceMode.Impulse);
     }
     
     private void MoveForward(InputAction.CallbackContext obj)
@@ -75,22 +94,32 @@ public class PlayerController : MonoBehaviour
 
     private void TurnRight(InputAction.CallbackContext obj)
     {
-        turnDir = obj.performed ? TurnDir.Right : TurnDir.IDLE;
+        turnDir = obj.performed ? TurnDir.RIGHT : TurnDir.IDLE;
     }
 
     private void TurnLeft(InputAction.CallbackContext obj)
     {
-        turnDir = obj.performed ? TurnDir.Left : TurnDir.IDLE;
+        turnDir = obj.performed ? TurnDir.LEFT : TurnDir.IDLE;
+    }
+
+    private void AimDown(InputAction.CallbackContext obj)
+    {
+        barrelDir = obj.performed ? BarrelDir.DOWN : BarrelDir.IDLE;
+    }
+
+    private void AimUp(InputAction.CallbackContext obj)
+    {
+        barrelDir = obj.performed ? BarrelDir.UP : BarrelDir.IDLE;
     }
 
     private void AimLeft(InputAction.CallbackContext obj)
     {
-        aimDir = obj.performed ? TurnDir.Left : TurnDir.IDLE;
+        aimDir = obj.performed ? AimDir.LEFT : AimDir.IDLE;
     }
 
     private void AimRight(InputAction.CallbackContext obj)
     {
-        aimDir = obj.performed ? TurnDir.Right : TurnDir.IDLE;
+        aimDir = obj.performed ? AimDir.RIGHT : AimDir.IDLE;
     }
     private void Move()
     {
@@ -109,7 +138,7 @@ public class PlayerController : MonoBehaviour
         if (turnDir != TurnDir.IDLE)
         {
             Quaternion rot;
-            if (turnDir == TurnDir.Right)
+            if (turnDir == TurnDir.RIGHT)
             {
                 rot = Quaternion.LookRotation(transform.right, transform.up);
             } else {
@@ -120,16 +149,28 @@ public class PlayerController : MonoBehaviour
     }
     private void Aim()
     {
-        if (aimDir != TurnDir.IDLE)
+        if (aimDir != AimDir.IDLE)
         {
             Quaternion rot;
-            if (aimDir == TurnDir.Right)
+            if (aimDir == AimDir.RIGHT)
             {
-                rot = Quaternion.LookRotation(gunBarrel.right, gunBarrel.up);
+                rot = Quaternion.LookRotation(cannon.right, cannon.up);
             } else {
-                rot = Quaternion.LookRotation(-gunBarrel.right, gunBarrel.up);
+                rot = Quaternion.LookRotation(-cannon.right, cannon.up);
             }
-            gunBarrel.rotation = Quaternion.Slerp(gunBarrel.rotation, rot, Time.deltaTime * turnSpeed);
+            cannon.rotation = Quaternion.Slerp(cannon.rotation, rot, Time.deltaTime * aimSpeed);
+        }
+        if (barrelDir != BarrelDir.IDLE) 
+        {
+            if (barrelDir == BarrelDir.UP && barrel.localRotation.x * -1 < maxBarrelUp)
+            {
+                Debug.Log("local x on barrel " + barrel.localRotation.x);
+                Quaternion deltaRot = Quaternion.FromToRotation(barrel.forward, barrel.up) * barrel.rotation;
+                barrel.rotation = Quaternion.Slerp(barrel.rotation, deltaRot, aimSpeed * Time.deltaTime);
+            } else if (barrelDir == BarrelDir.DOWN && barrel.localEulerAngles.x > 0){
+                Quaternion deltaRot = Quaternion.FromToRotation(barrel.forward, -barrel.up) * barrel.rotation;
+                barrel.rotation = Quaternion.Slerp(barrel.rotation, deltaRot, aimSpeed * Time.deltaTime);
+            }
         }
     }
 }

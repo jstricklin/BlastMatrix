@@ -14,6 +14,8 @@ namespace Project.Controllers {
         public InputAction turnRight;
         public InputAction aimLeft;
         public InputAction aimRight;
+        public InputAction aimUp;
+        public InputAction aimDown;
         public InputAction fire;
         public override void OnEnable()
         {
@@ -33,6 +35,8 @@ namespace Project.Controllers {
             turnRight.Enable();
             aimRight.Enable();
             aimLeft.Enable();
+            aimUp.Enable();
+            aimDown.Enable();
             fire.Enable();
         }
 
@@ -44,6 +48,8 @@ namespace Project.Controllers {
             turnRight.Disable();
             aimRight.Disable();
             aimLeft.Disable();
+            aimUp.Disable();
+            aimDown.Disable();
             fire.Disable();
         }
     }
