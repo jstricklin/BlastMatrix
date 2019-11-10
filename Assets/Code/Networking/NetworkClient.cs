@@ -10,6 +10,7 @@ using System;
 using Project.ScriptableObjects;
 using Project.Gameplay;
 using Project.Utility;
+using Project.Controllers;
 
 namespace Project.Networking 
 {
@@ -48,6 +49,30 @@ namespace Project.Networking
                 ClientID = id;
                 Debug.Log("socketID: " + SocketID);
                 Debug.Log($"Client Registered with Server - Client ID: {id}");
+            });
+            socketIO.On("updatePosition", (e) =>
+            {
+                JSONObject data = new JSONObject(e.data);
+                string id = data["id"].ToString().RemoveQuotes();
+                float x = data["position"]["x"].f;
+                float y = data["position"]["y"].f;
+                float z = data["position"]["z"].f;
+                NetworkIdentity ni = networkObjects[id];
+                Debug.Log("position updated... " + ni.name);
+                ni.transform.position = new Vector3(x, y, z);
+            });
+            socketIO.On("updateRotation", (e) =>
+            {
+                JSONObject data = new JSONObject(e.data);
+                string id = data["id"].ToString().RemoveQuotes();
+                Quaternion weaponRot = new Quaternion(data["weaponRotation"]["x"].f, data["weaponRotation"]["y"].f, data["weaponRotation"]["z"].f, data["weaponRotation"]["w"].f);
+                Quaternion barrelRot = new Quaternion(data["barrelRotation"]["x"].f, data["barrelRotation"]["y"].f, data["barrelRotation"]["z"].f, data["barrelRotation"]["w"].f);
+                Quaternion tankRot = new Quaternion(data["rotation"]["x"].f, data["rotation"]["y"].f, data["rotation"]["z"].f, data["rotation"]["w"].f);
+                Debug.Log("updating other rotations " + data["rotation"]);
+                // Quaternion barrelRot = data["barrelRotation"].f; 
+                // bool flipped = data["playerFlipped"].b;
+                NetworkIdentity ni = networkObjects[id];
+                ni.GetComponent<PlayerController>().SetTankRotations(tankRot, new WeaponRotation(weaponRot, barrelRot));
             });
             socketIO.On("spawn", (e) => {
 
@@ -117,10 +142,34 @@ namespace Project.Networking
                 Destroy(ni.gameObject);
             });
             socketIO.On("disconnected", (e) => {
-                var id = new JSONObject(e.data)["id"].str;
-                Debug.Log($"Player has disconnected: {id}");
+                string id = new JSONObject(e.data)["id"].str;
+                Debug.Log("player disconnected " + networkObjects[id].SocketID);
+                GameObject go = networkObjects[id].gameObject;
+                Destroy(go); // remove GO from game
+                networkObjects.Remove(id);
             });
         }
+    }
+    [Serializable]
+    public class Player
+    {
+        public string id;
+        public Position position;
+        public Rotation rotation;
+    }
+    [Serializable]
+    public class Position
+    {
+        public float x;
+        public float y;
+        public float z;
+    }
+    [Serializable]
+    public class Rotation
+    {
+        public Quaternion rotation;
+        public Quaternion weaponRotation;
+        public Quaternion barrelRotation;
     }
     [Serializable]
     public class ProjectileData
@@ -130,5 +179,10 @@ namespace Project.Networking
         public Vector3 position;
         public Quaternion rotation;
         public Vector3 direction;
+    }
+    [Serializable]
+    public class IDData
+    {
+        public string id;
     }
 }

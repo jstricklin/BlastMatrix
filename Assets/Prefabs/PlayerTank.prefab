@@ -75,8 +75,10 @@ GameObject:
   - component: {fileID: 1496857132}
   - component: {fileID: 52822421626033596}
   - component: {fileID: 8117322309030976809}
+  - component: {fileID: 8368128201423592736}
+  - component: {fileID: 6157578546979965962}
   m_Layer: 0
-  m_Name: Player
+  m_Name: PlayerTank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9facc9b251c1b463ca90cb43f8cfc669, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotCooldown: 3
+  shotCooldown: 2.5
   cannon: {fileID: 1783432717079801760}
   barrel: {fileID: 1219535222068628648}
   projectile: {fileID: 4610914980914332223, guid: a9da8a910ad7e4da4826fc3af33bdfe9,
@@ -165,6 +167,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 
   isControlling: 0
+--- !u!114 &8368128201423592736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783432715957992133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 807111cdc09c54624b0c210590eeca13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldRotation: {x: 0, y: 0, z: 0, w: 0}
+  playerController: {fileID: 1496857132}
+--- !u!114 &6157578546979965962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783432715957992133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08709a3e2bcf439cb52106a4300e0d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1783432716209626756
 GameObject:
   m_ObjectHideFlags: 0
