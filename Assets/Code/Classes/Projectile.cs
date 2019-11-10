@@ -45,6 +45,11 @@ namespace Project.Gameplay
             Vector2 pos = direction * speed * NetworkClient.SERVER_UPDATE_TIME * Time.deltaTime;
             transform.position += new Vector3(pos.x, pos.y, 0);
         }
+        public void FireProjectile(float speed, Vector3 direction)
+        {
+            // Transform fired = Instantiate(projectile, projectileSpawnPoint.position, barrel.rotation);
+            GetComponent<Rigidbody>().AddForce(transform.position + direction * speed, ForceMode.Impulse);
+        }
     }
 
 }
