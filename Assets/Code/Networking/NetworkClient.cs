@@ -94,35 +94,17 @@ namespace Project.Networking
                         float directionY = data["direction"]["y"].f;
                         float directionZ = data["direction"]["z"].f;
 
-                        // float rotationX = data["rotation"]["x"].f;
-                        // float rotationY = data["rotation"]["y"].f;
-                        // float rotationZ = data["rotation"]["z"].f;
-                        // float rotationW = data["rotation"]["w"].f;
-
-                        // Quaternion rotation = new Quaternion(rotationX, rotationY, rotationZ, rotationW);
-
                         Vector3 direction = new Vector3(directionX, directionY, directionZ);
                         string activator = data["activator"].ToString().RemoveQuotes();
                         float speed = data["speed"].f;
 
-                        // float rot = Mathf.Atan2(directionY, directionX) * Mathf.Rad2Deg;
-                        // Vector3 currentRotation = new Vector3(0, 0, rot + 180);
-                        // Quaternion rot = Quaternion.FromToRotation(spawnObject.transform.forward, spawnObject.transform.position - direction);
-                        // Vector3 currentRotation = new Vector3(0, 0, rot);
-                        Debug.Log("direction " + direction);
-                        // float rot = Mathf.Atan2(directionY, directionX) * Mathf.Rad2Deg;
-                        // float rot2 = Mathf.Atan2(directionX, directionZ) * Mathf.Rad2Deg;
-                        // Vector3 currentRotation = new Vector3(rot2 + 180, 0, rot + 180);
-                        // spawnObject.transform.rotation = Quaternion.Euler(currentRotation);
+                        Quaternion lookTo = Quaternion.LookRotation(direction, spawnObject.transform.up);
 
-                        spawnObject.transform.rotation = Quaternion.Euler(spawnObject.transform.position + direction);
-                        // spawnObject.transform.rotation = rotation;
+                        spawnObject.transform.rotation = Quaternion.Euler(lookTo.eulerAngles);
 
                         Projectile projectile = spawnObject.GetComponent<Projectile>();
                         projectile.SetActivator(activator);
                         projectile.FireProjectile(speed, direction);
-                        // projectile.Direction = new Vector3(directionX, directionY, directionZ);
-                        // projectile.Speed = speed;
                     }
                     networkObjects.Add(id, ni);
                 }
