@@ -12,7 +12,7 @@ namespace Project.ScriptableObjects {
 
         public GameObject GetObjectByName(string name) 
         {
-            Debug.Log(name);
+            // Debug.Log(name);
             return serverObjects[name];
         }
     }

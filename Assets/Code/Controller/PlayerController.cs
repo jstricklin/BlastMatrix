@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     private float speed = 5;
     private float turnSpeed = 1f;
     private float aimSpeed = 0.75f;
-    private float shotForce = 15;
+    // private float shotForce = 15;
     private float maxBarrelUp = 0.2f;
     [SerializeField]
     private float shotCooldown = 3;
@@ -97,7 +97,8 @@ public class PlayerController : MonoBehaviour
         cannonCooldown.StartCooldown();
         projectileData.activator = NetworkClient.ClientID;
         projectileData.position = projectileSpawnPoint.position;
-        projectileData.direction = barrel.transform.forward;
+        projectileData.rotation = barrel.rotation;
+        projectileData.direction = barrel.transform.TransformDirection(barrel.transform.forward);
         networkIdentity.GetSocket().Emit("fireProjectile", JsonUtility.ToJson(projectileData));
         // Transform fired = Instantiate(projectile, projectileSpawnPoint.position, barrel.rotation);
         // fired.GetComponent<Rigidbody>().AddForce(barrel.transform.forward * shotForce, ForceMode.Impulse);
