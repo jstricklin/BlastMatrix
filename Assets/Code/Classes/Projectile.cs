@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Project.Interfaces;
 using Project.Networking;
 using UnityEngine;
 
 namespace Project.Gameplay
 {
-    public class Projectile : MonoBehaviour, IProjectile
+    public class Projectile : MonoBehaviour, IActivate
     {
         Vector2 direction;
         float speed;
