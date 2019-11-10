@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using System;
 using Project.Utility;
 using Project.Networking;
+using Cinemachine;
 
 namespace Project.Controllers {
     public class PlayerController : MonoBehaviour
@@ -81,6 +82,11 @@ namespace Project.Controllers {
         void Start()
         {
             if (!networkIdentity.IsControlling()) DisableInputs();
+            else {
+                CinemachineStateDrivenCamera cam = Camera.main.transform.parent.GetComponent<CinemachineStateDrivenCamera>();
+                cam.Follow = cannon;
+                cam.LookAt = cannon;
+            }
         }
 
         void EnableInputs()
@@ -132,6 +138,7 @@ namespace Project.Controllers {
             if (cannonCooldown.IsOnCooldown()) return;
             cannonCooldown.StartCooldown();
             projectileData.activator = NetworkClient.ClientID;
+            Debug.Log("activator: " + projectileData.activator);
             projectileData.position = projectileSpawnPoint.position;
             projectileData.direction = barrel.transform.forward;
             // Debug.DrawRay(projectileSpawnPoint.position, barrel.transform.forward * 5, Color.blue, 2.5f);

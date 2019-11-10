@@ -58,7 +58,6 @@ namespace Project.Networking
                 float y = data["position"]["y"].f;
                 float z = data["position"]["z"].f;
                 NetworkIdentity ni = networkObjects[id];
-                Debug.Log("position updated... " + ni.name);
                 ni.transform.position = new Vector3(x, y, z);
             });
             socketIO.On("updateRotation", (e) =>
@@ -68,9 +67,6 @@ namespace Project.Networking
                 Quaternion weaponRot = new Quaternion(data["weaponRotation"]["x"].f, data["weaponRotation"]["y"].f, data["weaponRotation"]["z"].f, data["weaponRotation"]["w"].f);
                 Quaternion barrelRot = new Quaternion(data["barrelRotation"]["x"].f, data["barrelRotation"]["y"].f, data["barrelRotation"]["z"].f, data["barrelRotation"]["w"].f);
                 Quaternion tankRot = new Quaternion(data["rotation"]["x"].f, data["rotation"]["y"].f, data["rotation"]["z"].f, data["rotation"]["w"].f);
-                Debug.Log("updating other rotations " + data["rotation"]);
-                // Quaternion barrelRot = data["barrelRotation"].f; 
-                // bool flipped = data["playerFlipped"].b;
                 NetworkIdentity ni = networkObjects[id];
                 ni.GetComponent<PlayerController>().SetTankRotations(tankRot, new WeaponRotation(weaponRot, barrelRot));
             });
@@ -92,6 +88,22 @@ namespace Project.Networking
                 ni.SetControllerID(id);
                 ni.SetSocketReference(this.socketIO);
                 networkObjects.Add(id, ni);
+            });
+             socketIO.On("playerDied", (e) => {
+                string id = new JSONObject(e.data)["id"].str;
+                NetworkIdentity ni = networkObjects[id];
+                ni.gameObject.SetActive(false);
+            });
+            socketIO.On("playerRespawn", (e) => {
+                Debug.Log("respawning player");
+                JSONObject data = new JSONObject(e.data);
+                string id = data["id"].ToString().RemoveQuotes();
+                float x = data["position"]["x"].f;
+                float y = data["position"]["y"].f;
+                float z = data["position"]["z"].f;
+                NetworkIdentity ni = networkObjects[id];
+                ni.transform.position = new Vector3(x, y, z);
+                ni.gameObject.SetActive(true);
             });
             socketIO.On("serverSpawn", (e) =>
             {
