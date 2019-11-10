@@ -97,11 +97,13 @@ public class PlayerController : MonoBehaviour
         cannonCooldown.StartCooldown();
         projectileData.activator = NetworkClient.ClientID;
         projectileData.position = projectileSpawnPoint.position;
-        projectileData.rotation = barrel.rotation;
-        projectileData.direction = barrel.transform.TransformDirection(barrel.transform.forward);
+        // projectileData.rotation = barrel.rotation;
+        projectileData.direction = barrel.transform.forward;
+        Debug.DrawRay(projectileSpawnPoint.position, barrel.transform.forward * 5, Color.blue, 2.5f);
         networkIdentity.GetSocket().Emit("fireProjectile", JsonUtility.ToJson(projectileData));
         // Transform fired = Instantiate(projectile, projectileSpawnPoint.position, barrel.rotation);
-        // fired.GetComponent<Rigidbody>().AddForce(barrel.transform.forward * shotForce, ForceMode.Impulse);
+        // Debug.Log("forward: " + barrel.transform.forward);
+        // fired.GetComponent<Rigidbody>().AddForce(barrel.transform.forward * speed, ForceMode.Impulse);
     }
     
     private void MoveForward(InputAction.CallbackContext obj)

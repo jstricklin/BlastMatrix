@@ -48,7 +48,7 @@ namespace Project.Gameplay
         public void FireProjectile(float speed, Vector3 direction)
         {
             // Transform fired = Instantiate(projectile, projectileSpawnPoint.position, barrel.rotation);
-            GetComponent<Rigidbody>().AddForce(transform.position + direction * speed, ForceMode.Impulse);
+            GetComponent<Rigidbody>().AddForce(direction * speed, ForceMode.Impulse);
         }
     }
 
