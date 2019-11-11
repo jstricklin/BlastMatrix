@@ -33,7 +33,10 @@ namespace Project.Networking
             SetupEvents();
             socketIO.Connect();
         }
-
+        public string GetClientID()
+        {
+            return ClientID;
+        }
         void Initialize() 
         {
             networkObjects = new Dictionary<string, NetworkIdentity>();
@@ -54,11 +57,17 @@ namespace Project.Networking
             {
                 JSONObject data = new JSONObject(e.data);
                 string id = data["id"].ToString().RemoveQuotes();
+                // Debug.LogFormat("updating position: {0}", id);
                 float x = data["position"]["x"].f;
                 float y = data["position"]["y"].f;
                 float z = data["position"]["z"].f;
                 NetworkIdentity ni = networkObjects[id];
                 ni.transform.position = new Vector3(x, y, z);
+                // if (data["isProjectile"]?.b == true)
+                // {
+                //     Debug.LogFormat("updating projectile: {0} {1}, {2}, {3}", id, x, y, z);
+                //     // Debug.Break();
+                // }
             });
             socketIO.On("updateRotation", (e) =>
             {
@@ -95,7 +104,7 @@ namespace Project.Networking
                 ni.gameObject.SetActive(false);
             });
             socketIO.On("playerRespawn", (e) => {
-                Debug.Log("respawning player");
+                // Debug.Log("respawning player");
                 JSONObject data = new JSONObject(e.data);
                 string id = data["id"].ToString().RemoveQuotes();
                 float x = data["position"]["x"].f;
@@ -189,7 +198,6 @@ namespace Project.Networking
         public string id;
         public string activator;
         public Vector3 position;
-        public Quaternion rotation;
         public Vector3 direction;
     }
     [Serializable]

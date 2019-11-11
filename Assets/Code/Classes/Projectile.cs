@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using Project.Interfaces;
 using Project.Networking;
+using Project.Utility;
 using UnityEngine;
 
 namespace Project.Gameplay
 {
     public class Projectile : MonoBehaviour, IActivate
     {
-        Vector2 direction;
+        Vector3 direction;
         float speed;
+        ProjectileData projectile;
+        NetworkIdentity networkIdentity;
 
         public string activator { get; set; }
 
@@ -43,13 +46,37 @@ namespace Project.Gameplay
         // Update is called once per frame
         void Update()
         {
-            Vector2 pos = direction * speed * NetworkClient.SERVER_UPDATE_TIME * Time.deltaTime;
-            transform.position += new Vector3(pos.x, pos.y, 0);
+            // Vector2 pos = direction * speed * NetworkClient.SERVER_UPDATE_TIME * Time.deltaTime;
+            // transform.position += new Vector3(pos.x, pos.y, 0);
         }
-        public void FireProjectile(float speed, Vector3 direction)
+
+        void FixedUpdate()
+        {
+            UpdateProjectile();   
+        }
+
+        public void UpdateProjectile()
+        {
+            if (NetworkClient.ClientID != activator)
+            {
+                return;
+            }
+            projectile.position.x = transform.position.x.TwoDecimals();
+            projectile.position.y = transform.position.y.TwoDecimals();
+            projectile.position.z = transform.position.z.TwoDecimals();
+
+            // serialized player class makes it easy to convert to JSON
+            networkIdentity.GetSocket().Emit("updateProjectile", JsonUtility.ToJson(projectile));
+        }
+        public void FireProjectile(float Speed, Vector3 Direction)
         {
             // Transform fired = Instantiate(projectile, projectileSpawnPoint.position, barrel.rotation);
-            GetComponent<Rigidbody>().AddForce(direction * speed, ForceMode.Impulse);
+            direction = Direction;
+            speed = Speed;
+            projectile = new ProjectileData();
+            networkIdentity = GetComponent<NetworkIdentity>();
+            projectile.id = networkIdentity.GetID();
+            GetComponent<Rigidbody>().AddForce(Direction * Speed, ForceMode.Impulse);
         }
     }
 

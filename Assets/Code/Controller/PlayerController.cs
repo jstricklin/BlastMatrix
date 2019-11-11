@@ -62,7 +62,7 @@ namespace Project.Controllers {
         void Awake()
         {
             myRb = GetComponent<Rigidbody>();
-            cannonCooldown = new Cooldown(2.5f);
+            cannonCooldown = new Cooldown(1.5f);
             projectileData = new ProjectileData();
             weaponRotation = new WeaponRotation();
             EnableInputs();
@@ -138,8 +138,10 @@ namespace Project.Controllers {
             if (cannonCooldown.IsOnCooldown()) return;
             cannonCooldown.StartCooldown();
             projectileData.activator = NetworkClient.ClientID;
-            Debug.Log("activator: " + projectileData.activator);
-            projectileData.position = projectileSpawnPoint.position;
+            // Debug.Log("activator: " + projectileData.activator);
+            projectileData.position.x = projectileSpawnPoint.position.x.TwoDecimals();
+            projectileData.position.y = projectileSpawnPoint.position.y.TwoDecimals();
+            projectileData.position.z = projectileSpawnPoint.position.z.TwoDecimals();
             projectileData.direction = barrel.transform.forward;
             // Debug.DrawRay(projectileSpawnPoint.position, barrel.transform.forward * 5, Color.blue, 2.5f);
             networkIdentity.GetSocket().Emit("fireProjectile", JsonUtility.ToJson(projectileData));
