@@ -11,9 +11,11 @@ namespace Project.Gameplay {
         IActivate activator => GetComponent<IActivate>();
         void OnCollisionEnter(Collision coll)
         {
+            // GetComponent<Projectile>()?.UpdateProjectile();
             NetworkIdentity ni = coll.transform.GetComponent<NetworkIdentity>();
             if (ni == null || ni.GetID() != activator?.GetActivator())
             {
+                Debug.Log("projectile network identity" + networkIdentity.GetID() + " and " + GetComponent<NetworkTransform>().player.id);
                 networkIdentity.GetSocket().Emit("collisionDestroy", JsonUtility.ToJson(new IDData()
                 {
                     id = networkIdentity.GetID(),

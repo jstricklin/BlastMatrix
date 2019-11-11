@@ -14,7 +14,7 @@ namespace Project.Networking
         // [GreyOut]
         private Vector3 oldPosition;
         private NetworkIdentity networkIdentity;
-        private Player player;
+        public Player player;
 
         private float stillCounter = 0;
 
@@ -57,7 +57,7 @@ namespace Project.Networking
 
         }
 
-        private void SendData()
+        public void SendData()
         {
             // update player information
             player.position.x = transform.position.x.TwoDecimals();
