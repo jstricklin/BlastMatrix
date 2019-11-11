@@ -121,6 +121,7 @@ PlayerSettings:
   bundleVersion: 0.1
   preloadedAssets:
   - {fileID: 0}
+  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -581,6 +582,7 @@ PlayerSettings:
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
     1: ODIN_INSPECTOR
+    13: ODIN_INSPECTOR
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}

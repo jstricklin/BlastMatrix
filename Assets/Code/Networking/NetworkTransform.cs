@@ -34,7 +34,7 @@ namespace Project.Networking
             }
         }
 
-        public void Update()
+        public void FixedUpdate()
         {
             if (networkIdentity.IsControlling())
             {
