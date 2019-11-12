@@ -4,7 +4,7 @@ using UnityEngine;
 using Project.Controllers;
 using UnityEngine.InputSystem;
 using System;
-using Project.Utility;
+using Project.Utilities;
 using Project.Networking;
 using Cinemachine;
 

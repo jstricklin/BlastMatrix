@@ -29,14 +29,5 @@ namespace Project.Controllers {
                 Physics.Simulate(Time.fixedDeltaTime);
             }
         }
-
-        void MoveForward()
-        {
-            
-        }
-        void MoveBackwards()
-        {
-
-        }
     }
 }
