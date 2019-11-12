@@ -9,7 +9,7 @@ using Sirenix.Serialization;
 using System;
 using Project.ScriptableObjects;
 using Project.Gameplay;
-using Project.Utility;
+using Project.Utilities;
 using Project.Controllers;
 
 namespace Project.Networking 

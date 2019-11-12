@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Project.Interfaces;
 using Project.Networking;
-using Project.Utility;
+using Project.Utilities;
 using UnityEngine;
 
 namespace Project.Gameplay

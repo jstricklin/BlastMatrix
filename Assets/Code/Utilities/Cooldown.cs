@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Project.Utility
+namespace Project.Utilities
 {
     public class Cooldown : MonoBehaviour
     {
