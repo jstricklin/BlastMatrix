@@ -33,7 +33,7 @@ namespace Project.Managers
                 queueButton.interactable = true;
             });
         }
-        public void OnQueue()
+        public void Enqueue()
         {
             // lazy loading
             SocketReference.Emit("joinGame");

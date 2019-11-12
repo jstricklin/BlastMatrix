@@ -80,7 +80,6 @@ namespace Project.Networking
                 ni.GetComponent<PlayerController>().SetTankRotations(tankRot, new WeaponRotation(weaponRot, barrelRot));
             });
             socketIO.On("spawn", (e) => {
-
                 JSONObject data = new JSONObject(e.data);
                 string id = data["id"].str;
                 string name = data["username"].str;
@@ -162,6 +161,14 @@ namespace Project.Networking
                 networkObjects.Remove(id);
                 Destroy(ni.gameObject);
             });
+            socketIO.On("loadGame", (e) =>
+            {
+                Debug.Log("switching to game");
+                SceneManagementManager.Instance.LoadLevel(levelName: SceneList.LEVEL, onLevelLoaded: (levelName) =>
+                {
+                    SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
+                });
+            });
             socketIO.On("disconnected", (e) => {
                 string id = new JSONObject(e.data)["id"].str;
                 Debug.Log("player disconnected " + networkObjects[id].SocketID);
@@ -170,6 +177,11 @@ namespace Project.Networking
                 networkObjects.Remove(id);
             });
         }
+        // public void AttemptToJoinLobby()
+        // {
+        //     Debug.Log("attempting join lobby");
+        //     socketIO.Emit("joinGame");
+        // }
     }
     [Serializable]
     public class Player
