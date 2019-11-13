@@ -147,6 +147,10 @@ namespace Project.Controllers {
             projectileData.direction = barrel.transform.forward;
             // Debug.DrawRay(projectileSpawnPoint.position, barrel.transform.forward * 5, Color.blue, 2.5f);
             networkIdentity.GetSocket().Emit("fireProjectile", JsonUtility.ToJson(projectileData));
+        }
+
+        public void MuzzleFlash()
+        {
             muzzleFlash.Play();
         }
         
