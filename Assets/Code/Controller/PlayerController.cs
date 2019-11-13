@@ -24,6 +24,8 @@ namespace Project.Controllers {
         [SerializeField]
         Transform projectile, projectileSpawnPoint;
         [SerializeField]
+        ParticleSystem muzzleFlash;
+        [SerializeField]
         NetworkIdentity networkIdentity;
         ProjectileData projectileData;
         private Quaternion lastRotation;
@@ -145,6 +147,7 @@ namespace Project.Controllers {
             projectileData.direction = barrel.transform.forward;
             // Debug.DrawRay(projectileSpawnPoint.position, barrel.transform.forward * 5, Color.blue, 2.5f);
             networkIdentity.GetSocket().Emit("fireProjectile", JsonUtility.ToJson(projectileData));
+            muzzleFlash.Play();
         }
         
         private void MoveForward(InputAction.CallbackContext obj)
