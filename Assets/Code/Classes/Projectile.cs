@@ -12,7 +12,10 @@ namespace Project.Gameplay
         Vector3 direction;
         float speed;
         ProjectileData projectile;
+        [SerializeField]
+        GameObject explosionFX;
         NetworkIdentity networkIdentity;
+        Rigidbody myRb;
 
         public string activator { get; set; }
 
@@ -43,7 +46,10 @@ namespace Project.Gameplay
             activator = ID;
         }
 
-        // Update is called once per frame
+        void Awake()
+        {
+            myRb = GetComponent<Rigidbody>();
+        }
         void Update()
         {
             // Vector2 pos = direction * speed * NetworkClient.SERVER_UPDATE_TIME * Time.deltaTime;
@@ -77,6 +83,23 @@ namespace Project.Gameplay
             networkIdentity = GetComponent<NetworkIdentity>();
             projectile.id = networkIdentity.GetID();
             GetComponent<Rigidbody>().AddForce(Direction * Speed, ForceMode.Impulse);
+        }
+        public void SpawnExplosion(Vector3 dir)
+        {
+            explosionFX = Instantiate(explosionFX);
+            explosionFX.transform.position = transform.position;
+            explosionFX.GetComponentInChildren<ParticleSystem>().Play();
+            Quaternion rot = Quaternion.FromToRotation(Vector3.up, dir);
+            // Debug.LogFormat("hit rotation: {0}", rot);
+            explosionFX.transform.rotation = rot;
+        }
+        void OnCollisionEnter(Collision coll)
+        {
+            NetworkIdentity ni = coll.transform.GetComponent<NetworkIdentity>();
+            if (ni == null || ni.GetID() != activator)
+            {
+                SpawnExplosion(coll.GetContact(0).normal);
+            }
         }
     }
 
