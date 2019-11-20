@@ -502,16 +502,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    url: blastmatrix.herokuapp.com
-    port: 80
-    sslEnabled: 1
+    url: localhost
+    port: 5280
+    sslEnabled: 0
     reconnectTime: 15
     timeToDropAck: 50
     pingTimeout: 400
     pingInterval: 450
   socketIO: {fileID: 0}
   networkContainer: {fileID: 0}
-  playerGO: {fileID: 1783432715957992133, guid: 94a455d8aec3a486ebf34715cfbc424f,
+  playerGO: {fileID: 2499701187767158139, guid: 1d9751fccdf6f4fe4adde51b0e24eb41,
     type: 3}
   serverObjects: {fileID: 11400000, guid: d218e5e5bc6ca45ea8ebae84e7ff372e, type: 2}
 --- !u!4 &1031557046
@@ -626,7 +626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d14d2142a6a547fbb73c92edf200f91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1783432715957992133, guid: 94a455d8aec3a486ebf34715cfbc424f, type: 3}
+  player: {fileID: 2499701187767158139, guid: 1d9751fccdf6f4fe4adde51b0e24eb41, type: 3}
 --- !u!4 &1721829827
 Transform:
   m_ObjectHideFlags: 0

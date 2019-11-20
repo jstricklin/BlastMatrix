@@ -96,6 +96,7 @@ namespace Project.Gameplay
         void OnCollisionEnter(Collision coll)
         {
             NetworkIdentity ni = coll.transform.GetComponent<NetworkIdentity>();
+            Debug.Log("network id check: " + ni?.GetID() + " and activator is " + activator);
             if (ni == null || ni.GetID() != activator)
             {
                 SpawnExplosion(coll.GetContact(0).normal);

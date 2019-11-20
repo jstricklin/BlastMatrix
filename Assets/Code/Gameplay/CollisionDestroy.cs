@@ -15,8 +15,8 @@ namespace Project.Gameplay {
             NetworkIdentity ni = coll.transform.GetComponent<NetworkIdentity>();
             if (ni == null || ni.GetID() != activator?.GetActivator())
             {
-                Debug.Log("projectile network identity" + networkIdentity.GetID() + " and " + GetComponent<NetworkTransform>().player.id);
-                gameObject.SetActive(false);
+                // Debug.Log("projectile network identity" + networkIdentity.GetID() + " and " + GetComponent<NetworkTransform>().player.id);
+                // gameObject.SetActive(false);
                 networkIdentity.GetSocket().Emit("collisionDestroy", JsonUtility.ToJson(new IDData()
                 {
                     id = networkIdentity.GetID(),
