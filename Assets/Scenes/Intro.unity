@@ -502,9 +502,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    url: localhost
-    port: 5280
-    sslEnabled: 0
+    url: blastmatrix.herokuapp.com
+    port: 80
+    sslEnabled: 1
     reconnectTime: 15
     timeToDropAck: 50
     pingTimeout: 400
