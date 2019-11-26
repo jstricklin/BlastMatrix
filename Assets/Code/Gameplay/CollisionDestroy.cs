@@ -16,11 +16,11 @@ namespace Project.Gameplay {
             if (ni == null || ni.GetID() != activator?.GetActivator())
             {
                 // Debug.Log("projectile network identity" + networkIdentity.GetID() + " and " + GetComponent<NetworkTransform>().player.id);
-                // gameObject.SetActive(false);
                 networkIdentity.GetSocket().Emit("collisionDestroy", JsonUtility.ToJson(new IDData()
                 {
                     id = networkIdentity.GetID(),
                 }));
+                gameObject.SetActive(false);
             }
         }
     }
