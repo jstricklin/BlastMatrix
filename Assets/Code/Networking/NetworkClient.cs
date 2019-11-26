@@ -25,6 +25,23 @@ namespace Project.Networking
         [SerializeField]
         ServerObjects serverObjects;
         Dictionary<string, NetworkIdentity> networkObjects;
+        [SerializeField]
+        bool useLocalHost = false;
+
+        public override void Awake()
+        {
+            #if UNITY_EDITOR
+            if (useLocalHost) {
+                Debug.Log("Connecting to local host server");
+                settings.url = "localhost";
+                settings.port = 5280;
+                settings.sslEnabled = false;
+            } else {
+                Debug.Log("Connecting to online server");
+            }
+            #endif
+            base.Awake();
+        }
 
         // Start is called before the first frame update
         void Start()
