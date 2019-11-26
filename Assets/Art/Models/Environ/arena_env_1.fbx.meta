@@ -4,15 +4,21 @@ ModelImporter:
   serializedVersion: 28
   internalIDToNameTable: []
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> start bloom effect
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Material.001
     second: {fileID: 2100000, guid: 2ed4c76e1739e474cb4a7ca64b37970d, type: 2}
+<<<<<<< HEAD
 =======
   externalObjects: {}
 >>>>>>> add basic environment textures
+=======
+>>>>>>> start bloom effect
   materials:
     materialImportMode: 1
     materialName: 0

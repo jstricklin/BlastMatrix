@@ -692,6 +692,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: tank_barrel_01
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: 4a3dac4a469ad4ac08b29bb011fc0c79,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0e15845b10b649f387649a958688462, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a3dac4a469ad4ac08b29bb011fc0c79, type: 3}
 --- !u!1 &3518103418772027618 stripped
@@ -773,6 +778,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: tank_cannon_01
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: c350fd7e3995f430bbe017a99c5e8b8e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0e15845b10b649f387649a958688462, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c350fd7e3995f430bbe017a99c5e8b8e, type: 3}
 --- !u!1 &1655101381037716477 stripped
@@ -854,6 +864,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: tank_body_01
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: 533db4b10cd5f4d51af06ce891bba08d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0e15845b10b649f387649a958688462, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 533db4b10cd5f4d51af06ce891bba08d, type: 3}
 --- !u!1 &1565919960040299137 stripped
