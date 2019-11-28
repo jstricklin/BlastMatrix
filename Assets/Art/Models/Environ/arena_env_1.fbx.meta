@@ -5,8 +5,11 @@ ModelImporter:
   internalIDToNameTable: []
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> start bloom effect
+=======
+>>>>>>> 1491e612b67920c25576718361af57aa4ce2e17f
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -14,11 +17,14 @@ ModelImporter:
       name: Material.001
     second: {fileID: 2100000, guid: 2ed4c76e1739e474cb4a7ca64b37970d, type: 2}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   externalObjects: {}
 >>>>>>> add basic environment textures
 =======
 >>>>>>> start bloom effect
+=======
+>>>>>>> 1491e612b67920c25576718361af57aa4ce2e17f
   materials:
     materialImportMode: 1
     materialName: 0

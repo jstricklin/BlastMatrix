@@ -571,7 +571,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1061593267}
   - component: {fileID: 1061593266}
+<<<<<<< HEAD
   - component: {fileID: 1061593268}
+=======
+>>>>>>> 1491e612b67920c25576718361af57aa4ce2e17f
   m_Layer: 8
   m_Name: TankCam
   m_TagString: Untagged
@@ -629,6 +632,7 @@ Transform:
   m_Father: {fileID: 223136483}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!114 &1061593268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -646,6 +650,8 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 45c69ba7dfce14f14b7c8170b9da861f, type: 2}
+=======
+>>>>>>> 1491e612b67920c25576718361af57aa4ce2e17f
 --- !u!1 &1721829825
 GameObject:
   m_ObjectHideFlags: 0

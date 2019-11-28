@@ -21,9 +21,15 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ShellMat
+<<<<<<< HEAD
   m_Shader: {fileID: 4800000, guid: 0406db5a14f94604a8c57ccfbc9f3b46, type: 3}
   m_ShaderKeywords: _EMISSION _RECEIVE_SHADOWS_OFF
   m_LightmapFlags: 2
+=======
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: _SPECULAR_SETUP
+  m_LightmapFlags: 4
+>>>>>>> 1491e612b67920c25576718361af57aa4ce2e17f
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2050
@@ -80,6 +86,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _Blend: 0
+<<<<<<< HEAD
     - _BlendOp: 0
     - _BumpScale: 1
     - _CameraFadingEnabled: 0
@@ -99,6 +106,17 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+=======
+    - _BumpScale: 1
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+>>>>>>> 1491e612b67920c25576718361af57aa4ce2e17f
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -107,9 +125,12 @@ Material:
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
+<<<<<<< HEAD
     - _SoftParticlesEnabled: 0
     - _SoftParticlesFarFadeDistance: 1
     - _SoftParticlesNearFadeDistance: 0
+=======
+>>>>>>> 1491e612b67920c25576718361af57aa4ce2e17f
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
@@ -117,10 +138,16 @@ Material:
     - _WorkflowMode: 0
     - _ZWrite: 1
     m_Colors:
+<<<<<<< HEAD
     - _BaseColor: {r: 1, g: 0.52619606, b: 0, a: 1}
     - _BaseColorAddSubDiff: {r: -1, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 2.2767973, g: 0.6635219, b: 0.10728358, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
+=======
+    - _BaseColor: {r: 1, g: 0.6969732, b: 0.3726415, a: 1}
+    - _Color: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+>>>>>>> 1491e612b67920c25576718361af57aa4ce2e17f
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
