@@ -43,19 +43,11 @@ MonoBehaviour:
     min: 0
   intensity:
     m_OverrideState: 1
-<<<<<<< HEAD
     m_Value: 0.55
     min: 0
   scatter:
     m_OverrideState: 1
     m_Value: 0.8
-=======
-    m_Value: 3
-    min: 0
-  scatter:
-    m_OverrideState: 0
-    m_Value: 0.7
->>>>>>> working bloom
     min: 0
     max: 1
   clamp:
@@ -103,20 +95,12 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-<<<<<<< HEAD
-    m_Value: 0.1
-=======
     m_Value: 0.147
->>>>>>> working bloom
     min: 0
     max: 1
   smoothness:
     m_OverrideState: 1
-<<<<<<< HEAD
-    m_Value: 1
-=======
     m_Value: 0.336
->>>>>>> working bloom
     min: 0.01
     max: 1
   rounded:
