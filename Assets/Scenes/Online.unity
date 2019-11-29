@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -154,12 +154,12 @@ MonoBehaviour:
     url: blastmatrix.herokuapp.com
     port: 80
     sslEnabled: 0
-    reconnectTime: 15
+    reconnectTime: 150
     timeToDropAck: 50
     pingTimeout: 400
     pingInterval: 450
   socketIO: {fileID: 0}
-  networkContainer: {fileID: 0}
+  networkContainer: {fileID: 1271268061}
   playerGO: {fileID: 2499701187767158139, guid: 1d9751fccdf6f4fe4adde51b0e24eb41,
     type: 3}
   serverObjects: {fileID: 11400000, guid: d218e5e5bc6ca45ea8ebae84e7ff372e, type: 2}

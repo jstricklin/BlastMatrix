@@ -12,6 +12,7 @@ using Project.Gameplay;
 using Project.Utilities;
 using Project.Controllers;
 using Project.UI;
+using Project.Managers;
 
 namespace Project.Networking 
 {
@@ -53,14 +54,28 @@ namespace Project.Networking
         {
             Initialize();
             SetupEvents();
-            socketIO.Connect();
+            // socketIO.Connect();
         }
-        public void RegisterUsername(string name)
+        public void LoginUser(string name)
         {
-            Debug.Log("username: " + name);
-            socketIO.Emit("registerUsername", JsonUtility.ToJson(new IDData {
-                username = name,
-            }));
+            socketIO.Connect();
+            socketIO.On("open", (e) => {
+                Debug.Log("Connection to server established");
+            });
+            socketIO.On("register", (e) => {
+                var id = new JSONObject(e.data)["id"].str;
+                ClientID = id;
+                Debug.Log("socketID: " + SocketID);
+                socketIO.Emit("registerUsername", JsonUtility.ToJson(new IDData {
+                    username = name,
+                }));
+                Debug.Log($"Client Registered with Server - Client ID: {id}");
+            });
+            socketIO.On("usernameRegistered", (e) => {
+                var username = new JSONObject(e.data)["username"].str;
+                FindObjectOfType<MenuManager>().loggedInText.text = $"Logged in as: {username}"; 
+                Debug.Log("registered username: " + username);
+            });
         }
         public string GetClientID()
         {
@@ -73,15 +88,6 @@ namespace Project.Networking
 
         private void SetupEvents()
         {
-            socketIO.On("open", (e) => {
-                Debug.Log("Connection to server established");
-            });
-            socketIO.On("register", (e) => {
-                var id = new JSONObject(e.data)["id"].str;
-                ClientID = id;
-                Debug.Log("socketID: " + SocketID);
-                Debug.Log($"Client Registered with Server - Client ID: {id}");
-            });
             socketIO.On("updatePosition", (e) =>
             {
                 JSONObject data = new JSONObject(e.data);
@@ -131,6 +137,7 @@ namespace Project.Networking
                     canvasController.playerLabel.enabled = false;
                     // UIManager.Instance.playerLabel.text = name;
                 } else {
+                    Debug.Log("name " + name);
                     canvasController.playerLabel.text = name;
                 }
                 networkObjects.Add(id, ni);

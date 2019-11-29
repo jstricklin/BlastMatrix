@@ -31,6 +31,8 @@ namespace Project.Managers
         TMP_InputField usernameField;
         [SerializeField]
         TMP_Text invalidUsername;
+        [SerializeField]
+        public TMP_Text loggedInText;
 
         private BaseSocketIO socketReference;
         private BaseSocketIO SocketReference
@@ -46,12 +48,8 @@ namespace Project.Managers
         {
 
 
-            queueButton.interactable = false;
+            // enterUsernameButton.interactable = false;
             
-            SceneManagementManager.Instance.LoadLevel(levelName: SceneList.ONLINE, onLevelLoaded: (levelName) =>
-            {
-                queueButton.interactable = true;
-            });
         }
         public void Enqueue()
         {
@@ -61,6 +59,10 @@ namespace Project.Managers
 
         public void DisplayLoginScreen()
         {
+            SceneManagementManager.Instance.LoadLevel(levelName: SceneList.ONLINE, onLevelLoaded: (levelName) =>
+            {
+                // StartCoroutine(ValidateConnection());
+            });
             startMenu.SetActive(false);
             loginMenu.SetActive(true);
             usernameField.ActivateInputField();
@@ -72,16 +74,29 @@ namespace Project.Managers
         }
         public void EnterUsername()
         {
-
+            if (!enterUsernameButton.interactable) return;
             if (usernameField.text.ValidUsername()) 
             {
-                FindObjectOfType<NetworkClient>().RegisterUsername(usernameField.text);
+                FindObjectOfType<NetworkClient>().LoginUser(usernameField.text);
                 // Enqueue();
-                DisplayMainMenu();
+                enterUsernameButton.interactable = false;
+                StartCoroutine(ValidateConnection());
             } else {
                 Color col = invalidUsername.color;
                 col.a = 255;
                 invalidUsername.color = col;
+            }
+        }
+        IEnumerator ValidateConnection()
+        {
+            while(true) 
+            {
+                enterUsernameButton.interactable = NetworkClient.ClientID != null;
+                if (enterUsernameButton.interactable) {
+                    DisplayMainMenu();
+                    yield break;
+                }
+                yield return new WaitForSeconds(0.2f);
             }
         }
     }

@@ -13,8 +13,8 @@ namespace Project.Controllers {
     {
         Rigidbody myRb;
         private float speed = 5;
-        private float turnSpeed = 1f;
-        private float aimSpeed = 0.75f;
+        private float turnSpeed = 0.75f;
+        private float aimSpeed = 0.5f;
         // private float shotForce = 15;
         private float maxBarrelUp = 0.2f;
         [SerializeField]
