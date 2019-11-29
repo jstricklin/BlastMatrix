@@ -23,11 +23,15 @@ namespace Project.Networking
         Transform networkContainer;
         [SerializeField]
         GameObject playerGO;
+        string playerName;
         [SerializeField]
         ServerObjects serverObjects;
         Dictionary<string, NetworkIdentity> networkObjects;
         [SerializeField]
         bool useLocalHost = false;
+
+        public delegate void UserLogin(string username);
+        public static event UserLogin UserLoginHandler;
 
         public override void Awake()
         {
@@ -50,6 +54,13 @@ namespace Project.Networking
             Initialize();
             SetupEvents();
             socketIO.Connect();
+        }
+        public void RegisterUsername(string name)
+        {
+            Debug.Log("username: " + name);
+            socketIO.Emit("registerUsername", JsonUtility.ToJson(new IDData {
+                username = name,
+            }));
         }
         public string GetClientID()
         {
@@ -116,6 +127,7 @@ namespace Project.Networking
                 ni.SetSocketReference(this.socketIO);
                 if (ni.IsControlling())
                 {
+                    playerName = name;
                     canvasController.playerLabel.enabled = false;
                     // UIManager.Instance.playerLabel.text = name;
                 } else {
@@ -209,6 +221,9 @@ namespace Project.Networking
             socketIO.On("loadGame", (e) =>
             {
                 Debug.Log("switching to game");
+                SceneManagementManager.Instance.LoadLevel(levelName: SceneList.UI, onLevelLoaded: (levelName) => {
+                    UIManager.Instance.playerLabel.text = playerName;
+                });
                 SceneManagementManager.Instance.LoadLevel(levelName: SceneList.LEVEL, onLevelLoaded: (levelName) =>
                 {
                     SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
@@ -261,5 +276,6 @@ namespace Project.Networking
     public class IDData
     {
         public string id;
+        public string username;
     }
 }
