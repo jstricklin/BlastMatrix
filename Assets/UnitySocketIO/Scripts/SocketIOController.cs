@@ -17,8 +17,10 @@ namespace UnitySocketIO {
         public virtual void Awake() {
             if(Application.platform == RuntimePlatform.WebGLPlayer) {
                 socketIO = gameObject.AddComponent<WebGLSocketIO>();
+                Debug.Log("launching webGL socket");
             }
             else {
+                Debug.Log("launching native socket");
                 socketIO = gameObject.AddComponent<NativeSocketIO>();
             }
             

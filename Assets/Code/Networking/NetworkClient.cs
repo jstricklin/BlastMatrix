@@ -11,6 +11,7 @@ using Project.ScriptableObjects;
 using Project.Gameplay;
 using Project.Utilities;
 using Project.Controllers;
+using Project.UI;
 
 namespace Project.Networking 
 {
@@ -30,7 +31,7 @@ namespace Project.Networking
 
         public override void Awake()
         {
-            #if UNITY_EDITOR
+            // #if UNITY_EDITOR
             if (useLocalHost) {
                 Debug.Log("Connecting to local host server");
                 settings.url = "localhost";
@@ -39,7 +40,7 @@ namespace Project.Networking
             } else {
                 Debug.Log("Connecting to online server");
             }
-            #endif
+            // #endif
             base.Awake();
         }
 
@@ -110,13 +111,35 @@ namespace Project.Networking
 
                 go.transform.position = new Vector3(x, y, z);
                 NetworkIdentity ni = go.GetComponent<NetworkIdentity>();
+                TankCanvasController canvasController = ni.GetComponentInChildren<TankCanvasController>();
                 ni.SetControllerID(id);
                 ni.SetSocketReference(this.socketIO);
+                if (ni.IsControlling())
+                {
+                    canvasController.playerLabel.enabled = false;
+                    // UIManager.Instance.playerLabel.text = name;
+                } else {
+                    canvasController.playerLabel.text = name;
+                }
                 networkObjects.Add(id, ni);
+            });
+             socketIO.On("playerHit", (e) => {
+                 JSONObject data = new JSONObject(e.data);
+                string id = data["id"].str;
+                NetworkIdentity ni = networkObjects[id];
+                if (ni.IsControlling())
+                {
+                    float currentHealth = data["currentHealth"].f;
+                    UIManager.Instance.SetHealth(currentHealth);
+                }
             });
              socketIO.On("playerDied", (e) => {
                 string id = new JSONObject(e.data)["id"].str;
                 NetworkIdentity ni = networkObjects[id];
+                if (ni.IsControlling())
+                {
+                    UIManager.Instance.SetHealth(0);
+                }
                 ni.gameObject.SetActive(false);
             });
             socketIO.On("playerRespawn", (e) => {
@@ -128,6 +151,10 @@ namespace Project.Networking
                 float z = data["position"]["z"].f;
                 NetworkIdentity ni = networkObjects[id];
                 ni.transform.position = new Vector3(x, y, z);
+                if (ni.IsControlling())
+                {
+                    UIManager.Instance.SetHealth(100);
+                }
                 ni.gameObject.SetActive(true);
             });
             socketIO.On("serverSpawn", (e) =>

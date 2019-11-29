@@ -18,6 +18,8 @@ namespace Project.Controllers {
         // private float shotForce = 15;
         private float maxBarrelUp = 0.2f;
         [SerializeField]
+        Canvas tankUI;
+        [SerializeField]
         private float shotCooldown = 3;
         [SerializeField]
         Transform cannon, barrel;

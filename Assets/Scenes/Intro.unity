@@ -536,7 +536,7 @@ MonoBehaviour:
   settings:
     url: blastmatrix.herokuapp.com
     port: 80
-    sslEnabled: 1
+    sslEnabled: 0
     reconnectTime: 15
     timeToDropAck: 50
     pingTimeout: 400
@@ -546,7 +546,7 @@ MonoBehaviour:
   playerGO: {fileID: 2499701187767158139, guid: 1d9751fccdf6f4fe4adde51b0e24eb41,
     type: 3}
   serverObjects: {fileID: 11400000, guid: d218e5e5bc6ca45ea8ebae84e7ff372e, type: 2}
-  useLocalHost: 0
+  useLocalHost: 1
 --- !u!4 &1031557046
 Transform:
   m_ObjectHideFlags: 0
@@ -660,6 +660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 2499701187767158139, guid: 1d9751fccdf6f4fe4adde51b0e24eb41, type: 3}
+  UICanvas: {fileID: 0}
 --- !u!4 &1721829827
 Transform:
   m_ObjectHideFlags: 0

@@ -1,16 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Project.Utilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Project.Controllers {
-    public class GameController : MonoBehaviour
+    public class GameController : Singleton<GameController>
     {
         public GameObject player;
+        public GameObject UICanvas;
         private float timer;
-        void OnEnable()
-        {
-        }
 
         // Start is called before the first frame update
         void Start()
