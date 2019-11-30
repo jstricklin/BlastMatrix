@@ -56,7 +56,7 @@ namespace Project.Networking
             SetupEvents();
             // socketIO.Connect();
         }
-        public void LoginUser(string name)
+        public void LoginUser(MenuManager menuManager, string name)
         {
             socketIO.Connect();
             socketIO.On("open", (e) => {
@@ -66,6 +66,7 @@ namespace Project.Networking
                 var id = new JSONObject(e.data)["id"].str;
                 ClientID = id;
                 Debug.Log("socketID: " + SocketID);
+
                 socketIO.Emit("registerUsername", JsonUtility.ToJson(new IDData {
                     username = name,
                 }));
@@ -73,7 +74,7 @@ namespace Project.Networking
             });
             socketIO.On("usernameRegistered", (e) => {
                 var username = new JSONObject(e.data)["username"].str;
-                FindObjectOfType<MenuManager>().loggedInText.text = $"Logged in as: {username}"; 
+                menuManager.loggedInText.text = $"Logged in as: {username}"; 
                 Debug.Log("registered username: " + username);
             });
         }
@@ -228,12 +229,12 @@ namespace Project.Networking
             socketIO.On("loadGame", (e) =>
             {
                 Debug.Log("switching to game");
-                SceneManagementManager.Instance.LoadLevel(levelName: SceneList.UI, onLevelLoaded: (levelName) => {
-                    UIManager.Instance.playerLabel.text = playerName;
-                });
                 SceneManagementManager.Instance.LoadLevel(levelName: SceneList.LEVEL, onLevelLoaded: (levelName) =>
                 {
                     SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
+                });
+                SceneManagementManager.Instance.LoadLevel(levelName: SceneList.UI, onLevelLoaded: (levelName) => {
+                    UIManager.Instance.playerLabel.text = playerName;
                 });
             });
             socketIO.On("disconnected", (e) => {

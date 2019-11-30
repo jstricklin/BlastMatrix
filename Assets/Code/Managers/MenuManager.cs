@@ -46,10 +46,7 @@ namespace Project.Managers
         // Start is called before the first frame update
         void Start()
         {
-
-
-            // enterUsernameButton.interactable = false;
-            
+            LoginButtonEnabled(false);
         }
         public void Enqueue()
         {
@@ -65,6 +62,7 @@ namespace Project.Managers
             });
             startMenu.SetActive(false);
             loginMenu.SetActive(true);
+            Invoke("LoginButtonEnabled", 1.5f);
             usernameField.ActivateInputField();
         }
         public void DisplayMainMenu()
@@ -77,9 +75,9 @@ namespace Project.Managers
             if (!enterUsernameButton.interactable) return;
             if (usernameField.text.ValidUsername()) 
             {
-                FindObjectOfType<NetworkClient>().LoginUser(usernameField.text);
+                FindObjectOfType<NetworkClient>().LoginUser(this, usernameField.text);
                 // Enqueue();
-                enterUsernameButton.interactable = false;
+                LoginButtonEnabled(false);
                 StartCoroutine(ValidateConnection());
             } else {
                 Color col = invalidUsername.color;
@@ -91,13 +89,22 @@ namespace Project.Managers
         {
             while(true) 
             {
-                enterUsernameButton.interactable = NetworkClient.ClientID != null;
-                if (enterUsernameButton.interactable) {
+                yield return new WaitForSeconds(0.2f);
+                LoginButtonEnabled(NetworkClient.ClientID != null);
+                if (NetworkClient.ClientID != null) {
                     DisplayMainMenu();
                     yield break;
                 }
                 yield return new WaitForSeconds(0.2f);
             }
+        }
+        void LoginButtonEnabled()
+        {
+            enterUsernameButton.interactable = true;
+        }
+        void LoginButtonEnabled(bool enabled)
+        {
+            enterUsernameButton.interactable = enabled;
         }
     }
 }
