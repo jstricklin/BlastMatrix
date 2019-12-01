@@ -62,7 +62,7 @@ namespace Project.Managers
             });
             startMenu.SetActive(false);
             loginMenu.SetActive(true);
-            Invoke("LoginButtonEnabled", 1.5f);
+            Invoke("LoginButtonEnabled", 2.5f);
             usernameField.ActivateInputField();
         }
         public void DisplayMainMenu()

@@ -144,8 +144,15 @@ namespace Project.Networking
                 networkObjects.Add(id, ni);
             });
              socketIO.On("playerHit", (e) => {
-                 JSONObject data = new JSONObject(e.data);
+                JSONObject data = new JSONObject(e.data);
                 string id = data["id"].str;
+                string attackerId = data["attackerId"].str;
+                if (this.GetClientID() == attackerId)
+                {
+                    int score = (int)data["hitScore"].f;
+                    UIManager.Instance.DisplayHitMarker(score);
+                    Debug.Log("attacker!");
+                }
                 NetworkIdentity ni = networkObjects[id];
                 if (ni.IsControlling())
                 {
@@ -154,8 +161,18 @@ namespace Project.Networking
                 }
             });
              socketIO.On("playerDied", (e) => {
-                string id = new JSONObject(e.data)["id"].str;
+                JSONObject data = new JSONObject(e.data);
+                string id = data["id"].str;
+                string attackerId = data["attackerId"].str;
                 NetworkIdentity ni = networkObjects[id];
+
+                if (this.GetClientID() == attackerId)
+                {
+                    int score = (int)data["hitScore"].f;
+                    UIManager.Instance.DisplayHitMarker(score);
+                    Debug.Log("attacker!");
+                }
+
                 if (ni.IsControlling())
                 {
                     UIManager.Instance.SetHealth(0);

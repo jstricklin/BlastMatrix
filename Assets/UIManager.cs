@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using TMPro;
+using System;
 
 namespace Project.UI {
     public class UIManager : Singleton<UIManager>
@@ -19,7 +20,16 @@ namespace Project.UI {
          [SerializeField]
          Color fullHealthColor, lowHealthColor;
 
+         [SerializeField]
+         RawImage hitMarker;
+         Animator myAnim;
+
         public TextMeshProUGUI playerLabel;
+
+        void Start()
+        {
+            myAnim = GetComponent<Animator>();
+        }
         public void SetHealth(float currentHealth) {
             Color newColor;
             Debug.Log("current health: " + currentHealth);
@@ -37,6 +47,16 @@ namespace Project.UI {
                 healthBar.fillRect.GetComponent<Image>().color = newColor;
                 healthBarCenter.color = newColor;
             }
+        }
+
+        public void DisplayHitMarker(int score)
+        {
+            Debug.Log("hit score: " + score);
+            myAnim.SetTrigger("hit");
+        }
+        public void SetScore(int playerScore)
+        {
+
         }
     }
 }

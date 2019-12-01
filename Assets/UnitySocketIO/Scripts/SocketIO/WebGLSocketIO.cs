@@ -45,7 +45,6 @@ namespace UnitySocketIO.SocketIO {
                 var socketIOScript = document.createElement('script');
                 socketIOScript.setAttribute('src', 'http" + (settings.sslEnabled ? "s" : "") + @"://" + settings.url + (!settings.sslEnabled && settings.port != 0 ? ":" + settings.port.ToString() : "") +  @"/socket.io/socket.io.js');
                 document.head.appendChild(socketIOScript);
-                console.log('socket.IO script ' + socketIOScript)
             ");
         }
 
