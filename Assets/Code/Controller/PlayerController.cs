@@ -31,7 +31,6 @@ namespace Project.Controllers {
         NetworkIdentity networkIdentity;
         ProjectileData projectileData;
         private Quaternion lastRotation;
-
         WeaponRotation weaponRotation;
 
         enum MoveDir {
@@ -63,9 +62,12 @@ namespace Project.Controllers {
 
         Cooldown cannonCooldown;
 
+        Animator myAnim;
+
         void Awake()
         {
             myRb = GetComponent<Rigidbody>();
+            myAnim = GetComponent<Animator>();
             cannonCooldown = new Cooldown(1.5f);
             projectileData = new ProjectileData();
             weaponRotation = new WeaponRotation();
@@ -154,6 +156,11 @@ namespace Project.Controllers {
         public void MuzzleFlash()
         {
             muzzleFlash.Play();
+        }
+
+        public void TankHit()
+        {
+            myAnim.SetTrigger("isHit");
         }
         
         private void MoveForward(InputAction.CallbackContext obj)

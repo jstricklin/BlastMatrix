@@ -151,9 +151,9 @@ namespace Project.Networking
                 {
                     int score = (int)data["hitScore"].f;
                     UIManager.Instance.DisplayHitMarker(score);
-                    Debug.Log("attacker!");
                 }
                 NetworkIdentity ni = networkObjects[id];
+                ni.GetComponent<PlayerController>().TankHit();
                 if (ni.IsControlling())
                 {
                     float currentHealth = data["currentHealth"].f;
@@ -170,7 +170,6 @@ namespace Project.Networking
                 {
                     int score = (int)data["hitScore"].f;
                     UIManager.Instance.DisplayHitMarker(score);
-                    Debug.Log("attacker!");
                 }
 
                 if (ni.IsControlling())
