@@ -11,7 +11,7 @@ namespace Project.Utilities
     {
 
         private List<LevelLoadingData> levelsLoading;
-        private List<string> currentlyLoadedScenes;
+        public List<string> currentlyLoadedScenes;
 
         public override void OnEnable()
         {
@@ -95,5 +95,6 @@ namespace Project.Utilities
         public const string UI = "MainUI";
         public const string LEVEL = "Map";
         public const string ONLINE = "Online";
+        public const string ENDGAME = "EndGame";
     }
 }

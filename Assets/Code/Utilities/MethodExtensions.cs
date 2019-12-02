@@ -12,6 +12,10 @@ namespace Project.Utilities
             Regex test = new Regex(@"\W");
             return test.Matches(Value).Count == 0;
         }
+        public static string FixLineBreaks(this string Value)
+        {
+            return Value.Replace("\\n", "\n");
+        }
         public static string RemoveQuotes(this string Value)
         {
             return Value.Replace("\"", "");

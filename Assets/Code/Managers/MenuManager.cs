@@ -7,6 +7,9 @@ using UnitySocketIO.SocketIO;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+
+// should be in controllers
+
 namespace Project.Managers
 {
     public class MenuManager : MonoBehaviour

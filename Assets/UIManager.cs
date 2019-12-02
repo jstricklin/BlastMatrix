@@ -14,15 +14,22 @@ namespace Project.UI {
         [SerializeField]
         Canvas MainUI;
         [SerializeField]
-         Slider[] healthBars;
-         [SerializeField]
-         Image healthBarCenter;
-         [SerializeField]
-         Color fullHealthColor, lowHealthColor;
+        Slider[] healthBars;
+        [SerializeField]
+        Image healthBarCenter;
+        [SerializeField]
+        Color fullHealthColor, lowHealthColor;
 
-         [SerializeField]
-         RawImage hitMarker;
-         Animator myAnim;
+        [SerializeField]
+        TMP_Text gameClock;
+        [SerializeField]
+        TMP_Text playerScore;
+        [SerializeField]
+        TMP_Text winPosition;
+        
+        [SerializeField]
+        RawImage hitMarker;
+        Animator myAnim;
 
         public TextMeshProUGUI playerLabel;
 
@@ -32,13 +39,12 @@ namespace Project.UI {
         }
         public void SetHealth(float currentHealth) {
             Color newColor;
-            Debug.Log("current health: " + currentHealth);
             foreach (var healthBar in healthBars)
             {
                 float lerpVal;
                 healthBar.value = Mathf.Ceil(currentHealth / healthBar.maxValue);
-                if (currentHealth == 0) {
-                    lerpVal = 0;
+                if (currentHealth <= 0 || currentHealth == 100) {
+                    lerpVal = currentHealth == 0 ? 0 : 1;
                 } else {
                     lerpVal = healthBar.value / healthBar.maxValue;
                     Debug.Log("lerp val " + lerpVal);
@@ -54,9 +60,13 @@ namespace Project.UI {
             Debug.Log("hit score: " + score);
             myAnim.SetTrigger("hit");
         }
-        public void SetScore(int playerScore)
+        public void SetScore(int score)
         {
-
+            playerScore.text = score.ToString();
+        }
+        public void UpdateGameClock(float gameTime)
+        {
+            gameClock.text = gameTime.ToString();
         }
     }
 }
