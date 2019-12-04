@@ -12,6 +12,7 @@ namespace Project.Controllers {
         [SerializeField]
         TMP_Text playerScoreText;
         string matchResults;
+        [SerializeField]
         TMP_Text matchCountdown;
         float startTime;
 
@@ -21,17 +22,17 @@ namespace Project.Controllers {
             playerScoreText.text = matchResults;
             StartCoroutine(NextMatchCountdown(countDown));
         }
-        public void ExitToMainMenu()
-        {
-            FindObjectOfType<NetworkClient>().ExitToMainMenu();
-        }
         IEnumerator NextMatchCountdown(int time)
         {
-            if (time == 0)
-                yield break;
-            matchCountdown.text = "Next match in... " + time;
-            time--;
-            yield return new WaitForSecondsRealtime(1);
+            while(true) 
+            {
+                if (time == 0)
+                    yield break;
+                Debug.Log("next match in... " + time);
+                matchCountdown.text = "Next match in... " + time;
+                time--;
+                yield return new WaitForSecondsRealtime(1);
+            }
         }
     }
 }

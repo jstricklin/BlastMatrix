@@ -7,6 +7,7 @@ using System;
 using Project.Utilities;
 using Project.Networking;
 using Cinemachine;
+using Project.UI;
 
 namespace Project.Controllers {
     public class PlayerController : MonoBehaviour

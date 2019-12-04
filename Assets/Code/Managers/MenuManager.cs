@@ -49,6 +49,12 @@ namespace Project.Managers
         // Start is called before the first frame update
         void Start()
         {
+            if (FindObjectOfType<NetworkClient>()) {
+
+                startMenu.SetActive(false);
+                DisplayMainMenu();
+                return;
+            }
             LoginButtonEnabled(false);
         }
         public void Enqueue()
@@ -59,11 +65,11 @@ namespace Project.Managers
 
         public void DisplayLoginScreen()
         {
+            startMenu.SetActive(false);
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.ONLINE, onLevelLoaded: (levelName) =>
             {
                 // StartCoroutine(ValidateConnection());
             });
-            startMenu.SetActive(false);
             loginMenu.SetActive(true);
             Invoke("LoginButtonEnabled", 2.5f);
             usernameField.ActivateInputField();

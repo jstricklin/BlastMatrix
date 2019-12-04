@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using TMPro;
 using System;
+using Project.Controllers;
+using UnityEngine.InputSystem;
 
 namespace Project.UI {
     public class UIManager : Singleton<UIManager>
@@ -25,14 +27,28 @@ namespace Project.UI {
         [SerializeField]
         TMP_Text playerScore;
         [SerializeField]
+        TMP_Text matchScores;
+        [SerializeField]
         TMP_Text winPosition;
         
         [SerializeField]
         RawImage hitMarker;
+        [SerializeField]
+        GameObject pauseMenu;
         Animator myAnim;
-
         public TextMeshProUGUI playerLabel;
 
+        public override void OnEnable()
+        {
+            InputController inputController = FindObjectOfType<InputController>();
+            inputController.pause.performed += TogglePauseMenu;
+            base.OnEnable();
+        }
+        void OnDisable()
+        {
+            InputController inputController = FindObjectOfType<InputController>();
+            inputController.pause.performed -= TogglePauseMenu;
+        }
         void Start()
         {
             myAnim = GetComponent<Animator>();
@@ -60,13 +76,22 @@ namespace Project.UI {
             Debug.Log("hit score: " + score);
             myAnim.SetTrigger("hit");
         }
-        public void SetScore(int score)
+        public void UpdateScore(int score)
         {
             playerScore.text = score.ToString();
+        }
+        public void UpdateMatchScores(string scores)
+        {
+            matchScores.text = scores.FixLineBreaks();
         }
         public void UpdateGameClock(float gameTime)
         {
             gameClock.text = gameTime.ToString();
+        }
+
+        public void TogglePauseMenu(InputAction.CallbackContext obj)
+        {
+            pauseMenu?.SetActive(!pauseMenu.activeSelf);
         }
     }
 }

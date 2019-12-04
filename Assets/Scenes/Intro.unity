@@ -294,6 +294,30 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Fire
       m_Flags: 0
+  pause:
+    m_Name: Pause
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 2d523870-ce42-4390-945c-55e33e3bdeca
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 72467009-11d0-4ecf-b7b5-723874da310b
+      m_Path: <Keyboard>/escape
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Pause
+      m_Flags: 0
+    - m_Name: 
+      m_Id: cdaede2a-3ffe-4d25-9ebc-34857cd248a2
+      m_Path: <Keyboard>/p
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Pause
+      m_Flags: 0
 --- !u!4 &65691000
 Transform:
   m_ObjectHideFlags: 0
@@ -603,7 +627,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 2499701187767158139, guid: 1d9751fccdf6f4fe4adde51b0e24eb41, type: 3}
-  UICanvas: {fileID: 0}
 --- !u!4 &1721829827
 Transform:
   m_ObjectHideFlags: 0
@@ -642,6 +665,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f95f47f5926b4b72bc7818c6b5f7172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentlyLoadedScenes: []
 --- !u!1 &1908175120
 GameObject:
   m_ObjectHideFlags: 0

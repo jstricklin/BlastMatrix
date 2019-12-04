@@ -25,6 +25,7 @@ namespace Project.Networking
         [SerializeField]
         GameObject playerGO;
         string playerName;
+        public string username;
         [SerializeField]
         ServerObjects serverObjects;
         Dictionary<string, NetworkIdentity> networkObjects;
@@ -77,14 +78,10 @@ namespace Project.Networking
                 Debug.Log($"Client Registered with Server - Client ID: {id}");
             });
             socketIO.On("usernameRegistered", (e) => {
-                var username = new JSONObject(e.data)["username"].str;
+                username = new JSONObject(e.data)["username"].str;
                 menuManager.loggedInText.text = $"Logged in as: {username}"; 
                 Debug.Log("registered username: " + username);
             });
-        }
-        public void ExitToMainMenu()
-        {
-            socketIO.Emit("exitGame");
         }
         void Initialize() 
         {
@@ -121,8 +118,8 @@ namespace Project.Networking
             });
             socketIO.On("spawn", (e) => {
                 JSONObject data = new JSONObject(e.data);
-                string id = data["id"].str;
-                string name = data["username"].str;
+                string id = data["id"].ToString().RemoveQuotes();
+                string name = data["username"].ToString().RemoveQuotes();
 
                 GameObject go = Instantiate(playerGO, networkContainer);
                 go.name = string.Format("Player ({0})", name);
@@ -156,7 +153,7 @@ namespace Project.Networking
                     int score = (int)data["hitScore"].f;
                     int playerScore = (int)data["playerScore"].f;
                     UIManager.Instance.DisplayHitMarker(score);
-                    UIManager.Instance.SetScore(playerScore);
+                    UIManager.Instance.UpdateScore(playerScore);
                 }
                 NetworkIdentity ni = networkObjects[id];
                 ni.GetComponent<PlayerController>().TankHit();
@@ -177,7 +174,7 @@ namespace Project.Networking
                     int score = (int)data["hitScore"].f;
                     int playerScore = (int)data["playerScore"].f;
                     UIManager.Instance.DisplayHitMarker(score);
-                    UIManager.Instance.SetScore(playerScore);
+                    UIManager.Instance.UpdateScore(playerScore);
                 }
 
                 if (ni.IsControlling())
@@ -256,6 +253,17 @@ namespace Project.Networking
                 LoadGame();
             });
 
+            socketIO.On("exitGame", (e) =>
+            {
+                Debug.Log("switching to Main Menu");
+                ExitGame();
+            });
+
+            socketIO.On("updateMatchScores", (e) => {
+                JSONObject data = new JSONObject(e.data);
+                UIManager.Instance?.UpdateMatchScores(data["matchScores"].str);
+            });
+
             socketIO.On("updateGameClock", (e) => {
                 JSONObject data = new JSONObject(e.data);
                 UIManager.Instance?.UpdateGameClock(data["timeRemaining"].f);
@@ -267,8 +275,7 @@ namespace Project.Networking
 
                 SceneManagementManager.Instance.LoadLevel(levelName: SceneList.ENDGAME, onLevelLoaded: (levelName) =>
                 {
-                    // SceneManagementManager.Instance.UnLoadLevel(SceneList.UI);
-                    UIManager.Instance.enabled = false;
+                    SceneManagementManager.Instance.UnLoadLevel(SceneList.UI);
                     SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
                     EndGameUIController.Instance.SetMatchResults(data["matchResults"].str, (int)data["countdownTime"].f);
                 });
@@ -282,21 +289,36 @@ namespace Project.Networking
                 networkObjects.Remove(id);
             });
         }
+
+        private void ExitGame()
+        {
+            SceneManagementManager.Instance.LoadLevel(levelName: SceneList.MAIN_MENU, onLevelLoaded: (levelName) =>
+            {
+                if (IsSceneLoaded(SceneList.LEVEL)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
+                if (IsSceneLoaded(SceneList.UI)) SceneManagementManager.Instance.UnLoadLevel(SceneList.UI);
+                if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
+                FindObjectOfType<MenuManager>().loggedInText.text = $"Logged in as: {username}";
+            });
+        }
+
         void LoadGame()
         {
-            bool firstMatch = SceneManagementManager.Instance.currentlyLoadedScenes.Contains(SceneList.MAIN_MENU);
-            // if (!firstMatch) 
-            //     SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
-
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.LEVEL, onLevelLoaded: (levelName) =>
             {
-                if (!firstMatch)
-                    SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
-                else SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
+                if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
+                if (IsSceneLoaded(SceneList.MAIN_MENU)) SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
             });
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.UI, onLevelLoaded: (levelName) => {
                 UIManager.Instance.playerLabel.text = playerName;
             });
+        }
+        bool IsSceneLoaded(string scene)
+        {
+            return SceneManagementManager.Instance.IsSceneLoaded(scene);
+        }
+        public void ExitToMainMenu()
+        {
+            socketIO.Emit("exitGame");
         }
     }
     [Serializable]

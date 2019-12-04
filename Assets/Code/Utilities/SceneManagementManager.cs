@@ -79,6 +79,10 @@ namespace Project.Utilities
 
             Debug.LogErrorFormat("Failed to unload level ({0}), most likely was never loaded to begin with or was already unloaded.", levelName);
         }
+        public bool IsSceneLoaded(String scene) 
+        {
+            return currentlyLoadedScenes.Contains(scene);
+        }
     }
 
     [Serializable]

@@ -17,6 +17,7 @@ namespace Project.Controllers {
         public InputAction aimUp;
         public InputAction aimDown;
         public InputAction fire;
+        public InputAction pause;
         public override void OnEnable()
         {
             EnableInputs();            
@@ -38,6 +39,7 @@ namespace Project.Controllers {
             aimUp.Enable();
             aimDown.Enable();
             fire.Enable();
+            pause.Enable();
         }
 
         private void DisableInputs()
@@ -51,6 +53,7 @@ namespace Project.Controllers {
             aimUp.Disable();
             aimDown.Disable();
             fire.Disable();
+            pause.Disable();
         }
     }
 
