@@ -13,6 +13,7 @@ using Project.Utilities;
 using Project.Controllers;
 using Project.UI;
 using Project.Managers;
+using Sirenix.OdinInspector;
 
 namespace Project.Networking 
 {
@@ -28,6 +29,7 @@ namespace Project.Networking
         public string username;
         [SerializeField]
         ServerObjects serverObjects;
+        [OdinSerialize]
         Dictionary<string, NetworkIdentity> networkObjects;
         [SerializeField]
         bool useLocalHost = false;
@@ -142,7 +144,9 @@ namespace Project.Networking
                     Debug.Log("name " + name);
                     canvasController.playerLabel.text = name;
                 }
+                Debug.Log("about to crash...");
                 networkObjects.Add(id, ni);
+                Debug.Log("... wait. Didn't crash.");
             });
              socketIO.On("playerHit", (e) => {
                 JSONObject data = new JSONObject(e.data);
@@ -318,6 +322,11 @@ namespace Project.Networking
         }
         public void ExitToMainMenu()
         {
+            for (int i = 0; i < networkContainer.childCount; i++)
+            {
+                DestroyImmediate(networkContainer.GetChild(i).gameObject);
+            }
+            networkObjects.Clear();
             socketIO.Emit("exitGame");
         }
     }

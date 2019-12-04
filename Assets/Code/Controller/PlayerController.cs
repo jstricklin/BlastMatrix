@@ -96,6 +96,10 @@ namespace Project.Controllers {
             }
         }
 
+        void OnDisable()
+        {
+            DisableInputs();
+        }
         void EnableInputs()
         {
             InputController inputController = FindObjectOfType<InputController>();
