@@ -28,7 +28,6 @@ namespace Project.Controllers {
             {
                 if (time == 0)
                     yield break;
-                Debug.Log("next match in... " + time);
                 matchCountdown.text = "Next match in... " + time;
                 time--;
                 yield return new WaitForSecondsRealtime(1);

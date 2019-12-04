@@ -144,9 +144,7 @@ namespace Project.Networking
                     Debug.Log("name " + name);
                     canvasController.playerLabel.text = name;
                 }
-                Debug.Log("about to crash...");
                 networkObjects.Add(id, ni);
-                Debug.Log("... wait. Didn't crash.");
             });
              socketIO.On("playerHit", (e) => {
                 JSONObject data = new JSONObject(e.data);
