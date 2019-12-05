@@ -7,6 +7,7 @@ using UnitySocketIO.SocketIO;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Project.Controllers;
 
 // should be in controllers
 
@@ -93,6 +94,20 @@ namespace Project.Managers
                 col.a = 255;
                 invalidUsername.color = col;
             }
+        }
+        public void BrowseLobbies()
+        {
+            SceneManagementManager.Instance.LoadLevel(levelName: SceneList.LOBBY_BROWSER, onLevelLoaded: (levelName) => {
+                FindObjectOfType<LobbyBrowserController>().SetBrowserMode(LobbyBrowserController.BrowserMode.BROWSE);
+                SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
+            });
+        }
+        public void CreateLobby()
+        {
+            SceneManagementManager.Instance.LoadLevel(levelName: SceneList.LOBBY_BROWSER, onLevelLoaded: (levelName) => {
+                FindObjectOfType<LobbyBrowserController>().SetBrowserMode(LobbyBrowserController.BrowserMode.CREATE);
+                SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
+            });
         }
         IEnumerator ValidateConnection()
         {

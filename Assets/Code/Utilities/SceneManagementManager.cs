@@ -96,6 +96,7 @@ namespace Project.Utilities
     public static class SceneList
     {
         public const string MAIN_MENU = "MainMenu";
+        public const string LOBBY_BROWSER = "LobbyBrowser";
         public const string UI = "MainUI";
         public const string LEVEL = "Map";
         public const string ONLINE = "Online";

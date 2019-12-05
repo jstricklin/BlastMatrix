@@ -198,13 +198,13 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 27779108}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 720438519}
-        m_MethodName: Enqueue
+        m_MethodName: BrowseLobbies
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -836,13 +836,13 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 200864451}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 720438519}
-        m_MethodName: Enqueue
+        m_MethodName: CreateLobby
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1434,6 +1434,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerTank
+      objectReference: {fileID: 0}
+    - target: {fileID: 2499701187767158139, guid: 1d9751fccdf6f4fe4adde51b0e24eb41,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2499701187767158116, guid: 1d9751fccdf6f4fe4adde51b0e24eb41,
         type: 3}
@@ -3783,6 +3788,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerTank (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2499701187767158139, guid: 1d9751fccdf6f4fe4adde51b0e24eb41,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2499701187767158116, guid: 1d9751fccdf6f4fe4adde51b0e24eb41,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4109,11 +4119,11 @@ RectTransform:
   m_Father: {fileID: 483015369}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -400, y: 225}
-  m_SizeDelta: {x: 500, y: 50}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -375, y: 225}
+  m_SizeDelta: {x: 150, y: 50}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1527855036
 MonoBehaviour:
   m_ObjectHideFlags: 0

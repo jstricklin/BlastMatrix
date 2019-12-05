@@ -13,7 +13,7 @@ using Project.Utilities;
 using Project.Controllers;
 using Project.UI;
 using Project.Managers;
-using Sirenix.OdinInspector;
+using UnityEngine.Networking;
 
 namespace Project.Networking 
 {
@@ -59,9 +59,14 @@ namespace Project.Networking
         // Start is called before the first frame update
         void Start()
         {
+            // StartCoroutine(CheckServerStatus(Time.time));
             Initialize();
             SetupEvents();
             // socketIO.Connect();
+        }
+        IEnumerator CheckServerStatus(float startTime)
+        {
+            yield break;
         }
         public void LoginUser(MenuManager menuManager, string name)
         {
@@ -83,6 +88,7 @@ namespace Project.Networking
                 username = new JSONObject(e.data)["username"].str;
                 menuManager.loggedInText.text = $"Logged in as: {username}"; 
                 Debug.Log("registered username: " + username);
+                InitServerCommunication();
             });
         }
         void Initialize() 
@@ -258,7 +264,7 @@ namespace Project.Networking
             socketIO.On("exitGame", (e) =>
             {
                 Debug.Log("switching to Main Menu");
-                ExitGame();
+                ReturnToMainMenu();
             });
 
             socketIO.On("updateMatchScores", (e) => {
@@ -292,11 +298,34 @@ namespace Project.Networking
             });
         }
 
-        private void ExitGame()
+        private void InitServerCommunication()
+        {
+            socketIO.On("lobbyQuery", (e) => {
+                JSONObject data = new JSONObject(e.data);
+                LobbyBrowserController.Instance.SetLobbyResponse(data);
+                // Debug.Log(data);
+            });
+        }
+
+        public void QueryLobbies()
+        {
+            socketIO.Emit("queryLobbies");
+        }
+        public void JoinLobby()
+        {
+            Debug.Log("I don't work yet!");
+            // socketIO.Emit("joinGame");
+        }
+        public void CreateLobby()
+        {
+            Debug.Log("I don't work yet!");
+        }
+        public void ReturnToMainMenu()
         {
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.MAIN_MENU, onLevelLoaded: (levelName) =>
             {
                 if (IsSceneLoaded(SceneList.LEVEL)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
+                if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.UI)) SceneManagementManager.Instance.UnLoadLevel(SceneList.UI);
                 if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
                 FindObjectOfType<MenuManager>().loggedInText.text = $"Logged in as: {username}";
