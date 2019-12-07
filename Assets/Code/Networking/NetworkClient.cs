@@ -311,22 +311,22 @@ namespace Project.Networking
         {
             socketIO.Emit("queryLobbies");
         }
-        public void JoinLobby()
+        public void JoinLobby(LobbyInfo lobbyId)
         {
-            Debug.Log("I don't work yet!");
-            // socketIO.Emit("joinGame");
+            socketIO.Emit("joinGame", JsonUtility.ToJson(lobbyId));
         }
-        public void CreateLobby()
+        public void CreateLobby(LobbySettings settings)
         {
-            Debug.Log("I don't work yet!");
+            Debug.Log("creating lobby!");
+            socketIO.Emit("createLobby", JsonUtility.ToJson(settings));
         }
         public void ReturnToMainMenu()
         {
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.MAIN_MENU, onLevelLoaded: (levelName) =>
             {
                 if (IsSceneLoaded(SceneList.LEVEL)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
-                if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.UI)) SceneManagementManager.Instance.UnLoadLevel(SceneList.UI);
+                if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
                 FindObjectOfType<MenuManager>().loggedInText.text = $"Logged in as: {username}";
             });
@@ -337,6 +337,7 @@ namespace Project.Networking
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.LEVEL, onLevelLoaded: (levelName) =>
             {
                 if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
+                if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.MAIN_MENU)) SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
             });
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.UI, onLevelLoaded: (levelName) => {
@@ -349,14 +350,24 @@ namespace Project.Networking
         }
         public void ExitToMainMenu()
         {
+            socketIO.Emit("exitGame");
             for (int i = 0; i < networkContainer.childCount; i++)
             {
-                DestroyImmediate(networkContainer.GetChild(i).gameObject);
+                Destroy(networkContainer.GetChild(i).gameObject);
             }
             networkObjects.Clear();
-            socketIO.Emit("exitGame");
         }
     }
+
+    [Serializable]
+    public class LobbySettings 
+    {
+       public string name;
+       public int maxPlayers;
+       public string gameType;
+       public bool locked;
+    }
+
     [Serializable]
     public class Player
     {

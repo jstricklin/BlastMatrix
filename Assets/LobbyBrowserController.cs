@@ -24,9 +24,14 @@ namespace Project.Controllers {
         JSONObject lobbyData;
         [SerializeField]
         List<LobbyInfo> lobbyCollection = new List<LobbyInfo>();
+        [SerializeField]
+        TMP_InputField lobbyName;
+        LobbySettings lobbySettings;
+
         void Start() 
         {
             networkClient = FindObjectOfType<NetworkClient>();
+            lobbyName.ActivateInputField();
             StartCoroutine(QueryLobbies());
         }  
         public void JoinLobby()
@@ -36,11 +41,21 @@ namespace Project.Controllers {
         } 
         public void GenerateLobby()
         {
-            networkClient.CreateLobby();
+            // add server side lobby name validation
+            Debug.Log("name: " + lobbyName.text + " and length is " + lobbyName.text.Length);
+            if (lobbyName.text.Length < 1) 
+            {
+                Debug.Log("please enter a server name");
+                return;
+            }
+            lobbySettings = new LobbySettings();
+            lobbySettings.name = lobbyName.text;
+            networkClient.CreateLobby(lobbySettings);
         }
         public void CreateLobbies()
         {
             SetBrowserMode(BrowserMode.CREATE);
+            lobbyName.ActivateInputField();
         } 
 
         public void BrowseLobbies()
@@ -57,28 +72,28 @@ namespace Project.Controllers {
             while(true)
             {
                 networkClient.QueryLobbies();
-                yield break;
-                // yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(1f);
             }
         }
         public void SetLobbyResponse(JSONObject lobbyData)
         {
-            lobbyCollection.ForEach(lobby => {
-                Destroy(lobby.lobbyDataGO);
+            lobbyCollection.ForEach(lob => {
+                Destroy(lob.lobbyDataGO);
             });
             lobbyCollection.Clear();
             Vector3 pos = lobbyDataDisplay.transform.position;
+            // pos.y -= 50;
             lobbyData.keys.ForEach((k) => {
-                Debug.Log("lobby response " + lobbyData[k]);
+                // Debug.Log("lobby response " + lobbyData[k]);
                 JSONObject data = lobbyData[k];
                 string gameMode = data["settings"]["gameMode"].str;
                 string name = data["settings"]["name"].str;
                 int playerCount = (int)data["playerCount"].n;
                 int maxPlayers = (int)data["settings"]["maxPlayers"].n;
                 string parsedString = gameMode + " " + name + "     [" + playerCount + " / " + maxPlayers + "]";
-                LobbyInfo lobby = new LobbyInfo(Instantiate(lobbyDataDisplay, pos, Quaternion.identity, lobbyWindow), k, parsedString);
-                Debug.Log("pos : " + pos);
-                // lobby.lobbyDataGO.transform.position = pos;
+                LobbyInfo lobby = Instantiate(lobbyDataDisplay).GetComponent<LobbyDataController>().SetLobbyData(k, parsedString);
+                lobby.lobbyDataGO.transform.position = pos;
+                lobby.lobbyDataGO.transform.SetParent(lobbyWindow, false);
                 lobbyCollection.Add(lobby);
                 pos.y -= 55;
             });
@@ -89,21 +104,7 @@ namespace Project.Controllers {
             browserMode = mode;
             browseCanvas.SetActive(browserMode == BrowserMode.BROWSE);
             createCanvas.SetActive(browserMode == BrowserMode.CREATE);
+            lobbyName.ActivateInputField();
         }
-    }
-}
-
-class LobbyInfo {
-    public GameObject lobbyDataGO;
-    TMP_Text lobbyText;
-    string lobbyId;
-
-    public LobbyInfo(GameObject LobbyDataGO, string id, string text) 
-    {
-        this.lobbyId = id;
-        this.lobbyDataGO = LobbyDataGO;
-        this.lobbyDataGO.SetActive(true);
-        this.lobbyText = LobbyDataGO.GetComponentInChildren<TMP_Text>();
-        this.lobbyText.text = text;
     }
 }

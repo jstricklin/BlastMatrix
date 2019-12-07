@@ -61,7 +61,7 @@ namespace Project.Managers
         public void Enqueue()
         {
             // lazy loading
-            SocketReference.Emit("joinGame");
+            SocketReference.Emit("quickPlay");
         }
 
         public void DisplayLoginScreen()
