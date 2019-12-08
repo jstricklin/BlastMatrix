@@ -100,6 +100,7 @@ namespace Project.Utilities
         public const string UI = "MainUI";
         public const string LEVEL = "Map";
         public const string ONLINE = "Online";
+        public const string CHAT = "Chat";
         public const string ENDGAME = "EndGame";
     }
 }

@@ -318,6 +318,22 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Pause
       m_Flags: 0
+  chat:
+    m_Name: Chat
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b86dd4c6-c8e2-4f80-ac2e-84bd4e40d37f
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: b41a53c9-4e7f-4985-afd4-90f6a88a8f53
+      m_Path: <Keyboard>/enter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Chat
+      m_Flags: 0
 --- !u!4 &65691000
 Transform:
   m_ObjectHideFlags: 0

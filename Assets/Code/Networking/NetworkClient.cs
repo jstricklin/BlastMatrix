@@ -14,6 +14,7 @@ using Project.Controllers;
 using Project.UI;
 using Project.Managers;
 using UnityEngine.Networking;
+using TMPro;
 
 namespace Project.Networking 
 {
@@ -26,6 +27,11 @@ namespace Project.Networking
         [SerializeField]
         GameObject playerGO;
         string playerName;
+        [SerializeField]
+        TMP_Text serverMessage;
+        Chat chat;
+        float serverMessageDisplayTime = 10f;
+        float lastMessageTime;
         public string username;
         [SerializeField]
         ServerObjects serverObjects;
@@ -35,6 +41,7 @@ namespace Project.Networking
         bool useLocalHost = false;
 
         public delegate void UserLogin(string username);
+
         public static event UserLogin UserLoginHandler;
 
         public string GetClientID()
@@ -62,6 +69,8 @@ namespace Project.Networking
             // StartCoroutine(CheckServerStatus(Time.time));
             Initialize();
             SetupEvents();
+            chat = new Chat(serverMessage, serverMessageDisplayTime);
+            StartCoroutine(chat.ChatSystem());
             // socketIO.Connect();
         }
         IEnumerator CheckServerStatus(float startTime)
@@ -113,6 +122,23 @@ namespace Project.Networking
                 //     Debug.LogFormat("updating projectile: {0} {1}, {2}, {3}", id, x, y, z);
                 //     // Debug.Break();
                 // }
+            });
+            socketIO.On("messageReceived", (e) => {
+                JSONObject data = new JSONObject(e.data);
+                Debug.Log("message received: " + data);
+                string messageString = data["message"].str;
+                string username = data["player"]["username"].str;
+                string msgDate = data["date"].str;
+                if (data["serverMessage"].b)
+                {
+                    chat.UpdateChat(messageString);
+                } else {
+                    Message message = new Message();
+                    message.username = username;
+                    message.message = messageString;
+                    message.date = msgDate;
+                    ChatController.Instance.OnMessageReceived(message);
+                }
             });
             socketIO.On("updateRotation", (e) =>
             {
@@ -263,7 +289,7 @@ namespace Project.Networking
 
             socketIO.On("exitGame", (e) =>
             {
-                Debug.Log("switching to Main Menu");
+                Debug.Log("exiting to Main Menu");
                 ReturnToMainMenu();
             });
 
@@ -322,14 +348,24 @@ namespace Project.Networking
         }
         public void ReturnToMainMenu()
         {
+            for (int i = 0; i < networkContainer.childCount; i++)
+            {
+                Destroy(networkContainer.GetChild(i).gameObject);
+            }
+            networkObjects.Clear();
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.MAIN_MENU, onLevelLoaded: (levelName) =>
             {
                 if (IsSceneLoaded(SceneList.LEVEL)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
                 if (IsSceneLoaded(SceneList.UI)) SceneManagementManager.Instance.UnLoadLevel(SceneList.UI);
+                if (IsSceneLoaded(SceneList.CHAT)) SceneManagementManager.Instance.UnLoadLevel(SceneList.CHAT);
                 if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
                 FindObjectOfType<MenuManager>().loggedInText.text = $"Logged in as: {username}";
             });
+        }
+        public void SendChatMessage(string text)
+        {
+            socketIO.Emit("sendMessage", JsonUtility.ToJson(new Message { message = text }));
         }
 
         void LoadGame()
@@ -339,6 +375,9 @@ namespace Project.Networking
                 if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
                 if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.MAIN_MENU)) SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
+            });
+            SceneManagementManager.Instance.LoadLevel(levelName: SceneList.CHAT, onLevelLoaded: (levelName) => {
+                // UIManager.Instance.playerLabel.text = playerName;
             });
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.UI, onLevelLoaded: (levelName) => {
                 UIManager.Instance.playerLabel.text = playerName;
@@ -351,12 +390,27 @@ namespace Project.Networking
         public void ExitToMainMenu()
         {
             socketIO.Emit("exitGame");
-            for (int i = 0; i < networkContainer.childCount; i++)
-            {
-                Destroy(networkContainer.GetChild(i).gameObject);
-            }
-            networkObjects.Clear();
+            ReturnToMainMenu();
         }
+        // IEnumerator ChatSystem()
+        // {
+        //     Color col = serverMessage.color;
+        //     Color colClear = col;
+        //     colClear.a = 0;
+        //     while (true) 
+        //     {
+        //         Debug.Log(Time.time - lastMessageTime + " is chat time");
+        //         if (Time.time - lastMessageTime > maxDisplayTime && !chatActive) 
+        //         {
+        //             // chatText.enabled = false;
+        //             chatText.color = Color.Lerp(chatText.color, colClear, Time.deltaTime * 2);
+        //         } else {
+        //             // chatText.enabled = true;
+        //             chatText.color = col;
+        //         }
+        //         yield return new WaitForEndOfFrame();
+        //     }
+        // }
     }
 
     [Serializable]
@@ -396,6 +450,13 @@ namespace Project.Networking
         public string activator;
         public Vector3 position;
         public Vector3 direction;
+    }
+    [Serializable]
+    public class Message 
+    {
+        public string username;
+        public string date;
+        public string message;
     }
     [Serializable]
     public class IDData

@@ -37,16 +37,16 @@ namespace Project.UI {
         GameObject pauseMenu;
         Animator myAnim;
         public TextMeshProUGUI playerLabel;
+        InputController inputController;
 
         public override void OnEnable()
         {
-            InputController inputController = FindObjectOfType<InputController>();
+            inputController = FindObjectOfType<InputController>();
             inputController.pause.performed += TogglePauseMenu;
             base.OnEnable();
         }
         void OnDisable()
         {
-            InputController inputController = FindObjectOfType<InputController>();
             inputController.pause.performed -= TogglePauseMenu;
         }
         void Start()
