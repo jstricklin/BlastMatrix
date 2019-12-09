@@ -43,6 +43,7 @@ namespace Project.Networking
         public delegate void UserLogin(string username);
 
         public static event UserLogin UserLoginHandler;
+        public static long responseCode;
 
         public string GetClientID()
         {
@@ -60,22 +61,19 @@ namespace Project.Networking
                 Debug.Log("Connecting to online server");
             }
             // #endif
-            base.Awake();
+            StartCoroutine(CheckServer("http" + (settings.sslEnabled ? "s" : "") + @"://" + settings.url + (!settings.sslEnabled && settings.port != 0 ? ":" + settings.port.ToString() : "")));
+            // base.Awake();
         }
 
         // Start is called before the first frame update
         void Start()
         {
             // StartCoroutine(CheckServerStatus(Time.time));
-            Initialize();
-            SetupEvents();
-            chat = new Chat(serverMessage, serverMessageDisplayTime);
-            StartCoroutine(chat.ChatSystem());
+            // Initialize();
+            // SetupEvents();
+            // chat = new Chat(serverMessage, serverMessageDisplayTime);
+            // StartCoroutine(chat.ChatSystem());
             // socketIO.Connect();
-        }
-        IEnumerator CheckServerStatus(float startTime)
-        {
-            yield break;
         }
         public void LoginUser(MenuManager menuManager, string name)
         {
@@ -348,11 +346,6 @@ namespace Project.Networking
         }
         public void ReturnToMainMenu()
         {
-            for (int i = 0; i < networkContainer.childCount; i++)
-            {
-                Destroy(networkContainer.GetChild(i).gameObject);
-            }
-            networkObjects.Clear();
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.MAIN_MENU, onLevelLoaded: (levelName) =>
             {
                 if (IsSceneLoaded(SceneList.LEVEL)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
@@ -361,6 +354,11 @@ namespace Project.Networking
                 if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
                 FindObjectOfType<MenuManager>().loggedInText.text = $"Logged in as: {username}";
+                for (int i = 0; i < networkContainer.childCount; i++)
+                {
+                    Destroy(networkContainer.GetChild(i).gameObject);
+                }
+                networkObjects.Clear();
             });
         }
         public void SendChatMessage(string text)
@@ -392,25 +390,37 @@ namespace Project.Networking
             socketIO.Emit("exitGame");
             ReturnToMainMenu();
         }
-        // IEnumerator ChatSystem()
-        // {
-        //     Color col = serverMessage.color;
-        //     Color colClear = col;
-        //     colClear.a = 0;
-        //     while (true) 
-        //     {
-        //         Debug.Log(Time.time - lastMessageTime + " is chat time");
-        //         if (Time.time - lastMessageTime > maxDisplayTime && !chatActive) 
-        //         {
-        //             // chatText.enabled = false;
-        //             chatText.color = Color.Lerp(chatText.color, colClear, Time.deltaTime * 2);
-        //         } else {
-        //             // chatText.enabled = true;
-        //             chatText.color = col;
-        //         }
-        //         yield return new WaitForEndOfFrame();
-        //     }
-        // }
+
+        public IEnumerator CheckServer(string uri) 
+        {
+            using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
+            {
+                // Request and wait for the desired page.
+                yield return webRequest.SendWebRequest();
+
+                // string[] pages = uri.Split('/');
+                // int page = pages.Length - 1;
+
+                if (webRequest.isNetworkError)
+                {
+                    Debug.Log("web req: " + webRequest.error);
+                    responseCode = webRequest.responseCode;
+                    // Debug.Log(pages[page] + ": Error: " + webRequest.error);
+                }
+                else
+                {
+                    Debug.Log("web req: " + webRequest.responseCode);
+                    responseCode = webRequest.responseCode;
+                    base.Awake();
+                    Initialize();
+                    SetupEvents();
+                    chat = new Chat(serverMessage, serverMessageDisplayTime);
+                    StartCoroutine(chat.ChatSystem());
+                    // Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                }
+            }
+            yield break;
+        }       
     }
 
     [Serializable]

@@ -69,10 +69,10 @@ namespace Project.Managers
             startMenu.SetActive(false);
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.ONLINE, onLevelLoaded: (levelName) =>
             {
-                // StartCoroutine(ValidateConnection());
+                StartCoroutine(ValidateConnection());
             });
             loginMenu.SetActive(true);
-            Invoke("LoginButtonEnabled", 2.5f);
+            // Invoke("LoginButtonEnabled", 2.5f);
             usernameField.ActivateInputField();
         }
         public void DisplayMainMenu()
@@ -111,24 +111,20 @@ namespace Project.Managers
         }
         IEnumerator ValidateConnection()
         {
+            yield return new WaitForSeconds(0.5f);
             while(true) 
             {
-                yield return new WaitForSeconds(0.2f);
-                LoginButtonEnabled(NetworkClient.ClientID != null);
-                if (NetworkClient.ClientID != null) {
-                    DisplayMainMenu();
+                if (LoginButtonEnabled(NetworkClient.responseCode == 200)) {
+                    // DisplayMainMenu();
                     yield break;
                 }
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.25f);
             }
         }
-        void LoginButtonEnabled()
-        {
-            enterUsernameButton.interactable = true;
-        }
-        void LoginButtonEnabled(bool enabled)
+        bool LoginButtonEnabled(bool enabled)
         {
             enterUsernameButton.interactable = enabled;
+            return enabled;
         }
     }
 }
