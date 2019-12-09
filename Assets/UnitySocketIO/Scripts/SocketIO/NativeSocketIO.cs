@@ -37,6 +37,8 @@ using UnitySocketIO.IO;
 using UnitySocketIO.Packet;
 using UnitySocketIO.Events;
 using UnitySocketIO.Data;
+using Project.Networking;
+using Project.Managers;
 
 namespace UnitySocketIO.SocketIO {
     public class NativeSocketIO : BaseSocketIO {
@@ -244,6 +246,8 @@ namespace UnitySocketIO.SocketIO {
 
         void OnSocketError(object sender, ErrorEventArgs e) {
             Debug.Log(e.Message);
+            NetworkClient networkClient = FindObjectOfType<NetworkClient>();
+            networkClient.ReturnToMainMenu("Server is down.");
         }
 
         void OnSocketClose(object sender, CloseEventArgs e) {

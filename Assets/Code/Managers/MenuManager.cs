@@ -72,7 +72,6 @@ namespace Project.Managers
                 StartCoroutine(ValidateConnection());
             });
             loginMenu.SetActive(true);
-            // Invoke("LoginButtonEnabled", 2.5f);
             usernameField.ActivateInputField();
         }
         public void DisplayMainMenu()
@@ -86,9 +85,8 @@ namespace Project.Managers
             if (usernameField.text.ValidUsername()) 
             {
                 FindObjectOfType<NetworkClient>().LoginUser(this, usernameField.text);
-                // Enqueue();
                 LoginButtonEnabled(false);
-                StartCoroutine(ValidateConnection());
+                StartCoroutine(ValidateUsername());
             } else {
                 Color col = invalidUsername.color;
                 col.a = 255;
@@ -115,7 +113,18 @@ namespace Project.Managers
             while(true) 
             {
                 if (LoginButtonEnabled(NetworkClient.responseCode == 200)) {
-                    // DisplayMainMenu();
+                    yield break;
+                }
+                yield return new WaitForSeconds(0.25f);
+            }
+        }
+        IEnumerator ValidateUsername()
+        {
+            yield return new WaitForSeconds(0.5f);
+            while(true) 
+            {
+                if (LoginButtonEnabled(NetworkClient.username != "")) {
+                    DisplayMainMenu();
                     yield break;
                 }
                 yield return new WaitForSeconds(0.25f);

@@ -188,14 +188,13 @@ MonoBehaviour:
     sslEnabled: 1
     reconnectTime: 150
     timeToDropAck: 50
-    pingTimeout: 400
-    pingInterval: 450
+    pingTimeout: 120
+    pingInterval: 25
   socketIO: {fileID: 0}
   networkContainer: {fileID: 1271268061}
   playerGO: {fileID: 2499701187767158139, guid: 1d9751fccdf6f4fe4adde51b0e24eb41,
     type: 3}
   serverMessage: {fileID: 1913809081}
-  username: 
   serverObjects: {fileID: 11400000, guid: d218e5e5bc6ca45ea8ebae84e7ff372e, type: 2}
   useLocalHost: 1
 --- !u!4 &1031557046
