@@ -44,7 +44,7 @@ namespace Project.Networking
 
         public static event UserLogin UserLoginHandler;
         public static long responseCode;
-        public static bool isHost;
+        public static bool isHost = false;
 
         public string GetClientID()
         {
@@ -120,6 +120,7 @@ namespace Project.Networking
                 float x = data["position"]["x"].f;
                 float y = data["position"]["y"].f;
                 float z = data["position"]["z"].f;
+                if (!networkObjects.ContainsKey(id)) return;
                 NetworkIdentity ni = networkObjects[id];
                 ni.transform.position = new Vector3(x, y, z);
                 // if (data["isProjectile"]?.b == true)
@@ -149,6 +150,7 @@ namespace Project.Networking
             {
                 JSONObject data = new JSONObject(e.data);
                 string id = data["id"].ToString().RemoveQuotes();
+                if (!networkObjects.ContainsKey(id)) return;
                 Quaternion weaponRot = new Quaternion(data["weaponRotation"]["x"].f, data["weaponRotation"]["y"].f, data["weaponRotation"]["z"].f, data["weaponRotation"]["w"].f);
                 Quaternion barrelRot = new Quaternion(data["barrelRotation"]["x"].f, data["barrelRotation"]["y"].f, data["barrelRotation"]["z"].f, data["barrelRotation"]["w"].f);
                 Quaternion tankRot = new Quaternion(data["rotation"]["x"].f, data["rotation"]["y"].f, data["rotation"]["z"].f, data["rotation"]["w"].f);
@@ -281,6 +283,7 @@ namespace Project.Networking
             });
             socketIO.On("serverDespawn", (e) =>
             {
+                Debug.Log("server despawn... ");
                 string id = new JSONObject(e.data)["id"].str;
                 NetworkIdentity ni = networkObjects[id];
                 networkObjects.Remove(id);
@@ -360,11 +363,11 @@ namespace Project.Networking
                 if (IsSceneLoaded(SceneList.CHAT)) SceneManagementManager.Instance.UnLoadLevel(SceneList.CHAT);
                 if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
+                networkObjects.Clear();
                 for (int i = 0; i < networkContainer.childCount; i++)
                 {
                     Destroy(networkContainer.GetChild(i).gameObject);
                 }
-                networkObjects.Clear();
                 FindObjectOfType<MenuManager>().loggedInText.text = $"Logged in as: {username}";
             });
         }
@@ -381,11 +384,11 @@ namespace Project.Networking
                     if (IsSceneLoaded(SceneList.CHAT)) SceneManagementManager.Instance.UnLoadLevel(SceneList.CHAT);
                     if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                     if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
+                    networkObjects.Clear();
                     for (int i = 0; i < networkContainer.childCount; i++)
                     {
                         Destroy(networkContainer.GetChild(i).gameObject);
                     }
-                    networkObjects.Clear();
                     FindObjectOfType<MenuManager>().loggedInText.text = $"{message}";
                 });
             }
@@ -407,10 +410,13 @@ namespace Project.Networking
                     Debug.Log("is host!");
                     SpawnPoint[] points = FindObjectsOfType<SpawnPoint>();
                     SpawnPoints spawnPoints = new SpawnPoints();
+                    // spawnPoints.spawnPoints = points;
                     spawnPoints.spawnPoints = new Position[points.Length];
+                    spawnPoints.spawnRotations = new Rotation[points.Length];
                     for (int i = 0; i < points.Length; i++)
                     {
                         spawnPoints.spawnPoints[i] = points[i].position;
+                        spawnPoints.spawnRotations[i] = points[i].rotation;
                     }
                     socketIO.Emit("updateSpawnPoints", JsonUtility.ToJson(spawnPoints)); 
                 }
@@ -517,5 +523,6 @@ namespace Project.Networking
     public class SpawnPoints
     {
         public Position[] spawnPoints;
+        public Rotation[] spawnRotations;
     }
 }
