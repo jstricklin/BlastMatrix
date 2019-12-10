@@ -44,6 +44,7 @@ namespace Project.Networking
 
         public static event UserLogin UserLoginHandler;
         public static long responseCode;
+        public static bool isHost;
 
         public string GetClientID()
         {
@@ -98,6 +99,10 @@ namespace Project.Networking
                 Debug.Log("registered username: " + username);
                 FindObjectOfType<MenuManager>().loggedInText.text = $"Logged in as: {username}";
                 InitServerCommunication();
+            });
+            socketIO.On("setHost", (e) => {
+                Debug.Log("host event...");
+                isHost = true;
             });
         }
         void Initialize() 
@@ -397,6 +402,19 @@ namespace Project.Networking
                 if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
                 if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.MAIN_MENU)) SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
+                if (isHost)
+                {
+                    Debug.Log("is host!");
+                    SpawnPoint[] points = FindObjectsOfType<SpawnPoint>();
+                    SpawnPoints spawnPoints = new SpawnPoints();
+                    spawnPoints.spawnPoints = new Position[points.Length];
+                    for (int i = 0; i < points.Length; i++)
+                    {
+                        spawnPoints.spawnPoints[i] = points[i].position;
+                    }
+                    socketIO.Emit("updateSpawnPoints", JsonUtility.ToJson(spawnPoints)); 
+                }
+                socketIO.Emit("levelLoaded");
             });
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.CHAT, onLevelLoaded: (levelName) => {
                 // UIManager.Instance.playerLabel.text = playerName;
@@ -494,5 +512,10 @@ namespace Project.Networking
     {
         public string id;
         public string username;
+    }
+    [Serializable]
+    public class SpawnPoints
+    {
+        public Position[] spawnPoints;
     }
 }
