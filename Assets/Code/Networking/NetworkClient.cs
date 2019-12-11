@@ -314,7 +314,6 @@ namespace Project.Networking
             socketIO.On("endGame", (e) => {
                 JSONObject data = new JSONObject(e.data);
                 Debug.Log("end game");
-
                 SceneManagementManager.Instance.LoadLevel(levelName: SceneList.ENDGAME, onLevelLoaded: (levelName) =>
                 {
                     SceneManagementManager.Instance.UnLoadLevel(SceneList.UI);
@@ -324,6 +323,7 @@ namespace Project.Networking
             });
 
             socketIO.On("disconnected", (e) => {
+                isHost = false;
                 string id = new JSONObject(e.data)["id"].str;
                 Debug.Log("player disconnected " + networkObjects[id].SocketID);
                 GameObject go = networkObjects[id].gameObject;
@@ -356,6 +356,7 @@ namespace Project.Networking
         }
         public void ReturnToMainMenu()
         {
+            isHost = false;
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.MAIN_MENU, onLevelLoaded: (levelName) =>
             {
                 if (IsSceneLoaded(SceneList.LEVEL)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
@@ -363,16 +364,21 @@ namespace Project.Networking
                 if (IsSceneLoaded(SceneList.CHAT)) SceneManagementManager.Instance.UnLoadLevel(SceneList.CHAT);
                 if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
-                networkObjects.Clear();
-                for (int i = 0; i < networkContainer.childCount; i++)
-                {
-                    Destroy(networkContainer.GetChild(i).gameObject);
-                }
                 FindObjectOfType<MenuManager>().loggedInText.text = $"Logged in as: {username}";
+                ClearNetworkObjects();
             });
+        }
+        public void ClearNetworkObjects()
+        {
+            networkObjects.Clear();
+            for (int i = 0; i < networkContainer.childCount; i++)
+            {
+                Destroy(networkContainer.GetChild(i).gameObject);
+            }
         }
         public void ReturnToMainMenu(string message)
         {
+            isHost = false;
             if (SceneManagementManager.Instance.IsSceneLoaded(SceneList.MAIN_MENU))
             {
                 FindObjectOfType<MenuManager>().loggedInText.text = $"{message}";
@@ -387,6 +393,7 @@ namespace Project.Networking
                     networkObjects.Clear();
                     for (int i = 0; i < networkContainer.childCount; i++)
                     {
+                        Debug.Log("destroying network objects...");
                         Destroy(networkContainer.GetChild(i).gameObject);
                     }
                     FindObjectOfType<MenuManager>().loggedInText.text = $"{message}";
@@ -435,6 +442,7 @@ namespace Project.Networking
         }
         public void ExitToMainMenu()
         {
+            isHost = false;
             socketIO.Emit("exitGame");
             ReturnToMainMenu();
         }
