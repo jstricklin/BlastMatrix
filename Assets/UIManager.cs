@@ -41,9 +41,9 @@ namespace Project.UI {
 
         public override void OnEnable()
         {
+            base.OnEnable();
             inputController = FindObjectOfType<InputController>();
             inputController.pause.performed += TogglePauseMenu;
-            base.OnEnable();
         }
         void OnDisable()
         {

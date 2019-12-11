@@ -196,7 +196,7 @@ MonoBehaviour:
     type: 3}
   serverMessage: {fileID: 1913809081}
   serverObjects: {fileID: 11400000, guid: d218e5e5bc6ca45ea8ebae84e7ff372e, type: 2}
-  useLocalHost: 1
+  useLocalHost: 0
 --- !u!4 &1031557046
 Transform:
   m_ObjectHideFlags: 0

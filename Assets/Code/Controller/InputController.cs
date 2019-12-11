@@ -21,6 +21,7 @@ namespace Project.Controllers {
         public InputAction chat;
         public override void OnEnable()
         {
+            base.OnEnable();
             EnableInputs();            
         }
 

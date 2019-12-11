@@ -31,7 +31,7 @@ namespace Project.Controllers {
         void Start() 
         {
             networkClient = FindObjectOfType<NetworkClient>();
-            lobbyName.ActivateInputField();
+            // lobbyName.ActivateInputField();
             StartCoroutine(QueryLobbies());
         }  
         public void JoinLobby()
@@ -104,7 +104,7 @@ namespace Project.Controllers {
             browserMode = mode;
             browseCanvas.SetActive(browserMode == BrowserMode.BROWSE);
             createCanvas.SetActive(browserMode == BrowserMode.CREATE);
-            lobbyName.ActivateInputField();
+            if (mode == BrowserMode.CREATE) lobbyName.ActivateInputField();
         }
     }
 }

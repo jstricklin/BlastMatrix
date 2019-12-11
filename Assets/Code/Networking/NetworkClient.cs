@@ -292,6 +292,7 @@ namespace Project.Networking
             socketIO.On("loadGame", (e) =>
             {
                 Debug.Log("switching to game");
+                ClearNetworkObjects();
                 LoadGame();
             });
 
@@ -314,10 +315,12 @@ namespace Project.Networking
             socketIO.On("endGame", (e) => {
                 JSONObject data = new JSONObject(e.data);
                 Debug.Log("end game");
+                // ClearNetworkObjects();
                 SceneManagementManager.Instance.LoadLevel(levelName: SceneList.ENDGAME, onLevelLoaded: (levelName) =>
                 {
                     SceneManagementManager.Instance.UnLoadLevel(SceneList.UI);
-                    SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
+                    // SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
+                    InputController.Instance.DisablePlayerControls();
                     EndGameUIController.Instance.SetMatchResults(data["matchResults"].str, (int)data["countdownTime"].f);
                 });
             });
@@ -370,11 +373,11 @@ namespace Project.Networking
         }
         public void ClearNetworkObjects()
         {
-            networkObjects.Clear();
-            for (int i = 0; i < networkContainer.childCount; i++)
+            foreach(string id in networkObjects.Keys)
             {
-                Destroy(networkContainer.GetChild(i).gameObject);
+                DestroyImmediate(networkObjects[id].gameObject);
             }
+            networkObjects.Clear();
         }
         public void ReturnToMainMenu(string message)
         {
@@ -407,6 +410,7 @@ namespace Project.Networking
 
         void LoadGame()
         {
+            if (IsSceneLoaded(SceneList.LEVEL)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.LEVEL, onLevelLoaded: (levelName) =>
             {
                 if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
