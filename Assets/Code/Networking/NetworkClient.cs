@@ -432,6 +432,7 @@ namespace Project.Networking
                     socketIO.Emit("updateSpawnPoints", JsonUtility.ToJson(spawnPoints)); 
                 }
                 socketIO.Emit("levelLoaded");
+                InputController.Instance.EnablePlayerControls();
             });
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.CHAT, onLevelLoaded: (levelName) => {
                 // UIManager.Instance.playerLabel.text = playerName;

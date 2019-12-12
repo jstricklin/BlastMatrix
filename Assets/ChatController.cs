@@ -7,6 +7,7 @@ using Project.Utilities;
 using System;
 using Project.Networking;
 using UnityEngine.UI;
+using Project.Controllers;
 
 namespace Project.Controllers {
     public class ChatController : Singleton<ChatController>
@@ -32,28 +33,19 @@ namespace Project.Controllers {
             // chatBGColor = chatBG.color;
             networkClient = FindObjectOfType<NetworkClient>();
             inputController = FindObjectOfType<InputController>();
-            inputController.chat.performed += DisplayChatOrSendMessage;
+            inputController.chat.performed += ToggleChat;
             chat = new Chat(chatText, maxDisplayTime, chatInput, chatView: scrollView);
             StartCoroutine(chat.ChatSystem());
         }
 
         void OnDisable()
         {
-            inputController.chat.performed -= DisplayChatOrSendMessage;
+            inputController.chat.performed -= ToggleChat;
         }
 
-        private void DisplayChatOrSendMessage(InputAction.CallbackContext input)
+        private void ToggleChat(InputAction.CallbackContext input)
         {
-            chat.chatActive = !chat.chatActive;
-            if (chat.chatInput.isActiveAndEnabled && chat.chatInput.text.Length > 1)
-            {
-                networkClient.SendChatMessage(chat.chatInput.text);
-                chat.chatInput.text = "";
-            }
-            inputController.TogglePlayerControls(!chat.chatActive);
-            // chatText.enabled = chatActive;
-            chat.chatInput.gameObject.SetActive(chat.chatActive);
-            chat.chatInput.ActivateInputField();
+            chat.DisplayChatOrSendMessage();
         }
 
         public void OnMessageReceived(Message message) 
@@ -79,6 +71,7 @@ public class Chat : MonoBehaviour {
     public bool chatActive = false;
     public TMP_InputField chatInput;
     public TMP_Text chatText;
+    NetworkClient networkClient;
     // public string chat = "";
     ScrollRect chatView;
     Image chatBG;
@@ -87,6 +80,7 @@ public class Chat : MonoBehaviour {
     float maxDisplayTime;
 
     public Chat(TMP_Text textObj, float displayTime, TMP_InputField input = null, ScrollRect chatView = null) {
+        networkClient = FindObjectOfType<NetworkClient>();
         this.chatText = textObj;
         this.maxDisplayTime = displayTime;
         this.chatInput = input;
@@ -102,8 +96,25 @@ public class Chat : MonoBehaviour {
     {
         chatText.text = message;
         lastMessageTime = Time.time;
+        if (chatView != null)
+        {
+            // chatView.verticalNormalizedPosition = 0.1f;
+        }
     }
-    public IEnumerator ChatSystem()
+    public void DisplayChatOrSendMessage()
+    {
+        chatActive = !chatActive;
+        if (chatInput.isActiveAndEnabled && chatInput.text.Length > 1)
+        {
+            networkClient.SendChatMessage(chatInput.text);
+            chatInput.text = "";
+        }
+        InputController.Instance.TogglePlayerControls(!chatActive);
+        // chatText.enabled = chatActive;
+        chatInput.gameObject.SetActive(chatActive);
+        chatInput.ActivateInputField();
+    }
+   public IEnumerator ChatSystem()
     {
         Debug.Log(chatText + " chat text");
         Color col = chatText.color;
