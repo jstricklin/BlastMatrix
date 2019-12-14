@@ -13,7 +13,7 @@ namespace Project.Controllers {
     public class PlayerController : MonoBehaviour
     {
         Rigidbody myRb;
-        private float speed = 5;
+        private float speed = 6.5f;
         private float turnSpeed = 0.75f;
         private float aimSpeed = 0.5f;
         // private float shotForce = 15;
