@@ -30,5 +30,14 @@ namespace Project.Utilities
                 mainCam.transform.rotation * Vector3.up);
 
         }
+        public static void PlayNewClip(this AudioSource source, AudioClip clip)
+        {
+            float startVol = source.volume;
+            source.volume = 0;
+            source.Stop();
+            source.clip = clip;
+            source.Play();
+            source.volume = startVol;
+        }
     }
 }

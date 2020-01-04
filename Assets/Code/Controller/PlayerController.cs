@@ -8,11 +8,12 @@ using Project.Utilities;
 using Project.Networking;
 using Cinemachine;
 using Project.UI;
+using SA;
 
 namespace Project.Controllers {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : StateManager
     {
-        Rigidbody myRb;
+        // override Rigidbody myRb;
         private float speed = 6.5f;
         private float turnSpeed = 0.75f;
         private float aimSpeed = 0.5f;
@@ -34,61 +35,71 @@ namespace Project.Controllers {
         private Quaternion lastRotation;
         WeaponRotation weaponRotation;
 
-        enum MoveDir {
+        [SerializeField]
+        PlayerAudioController audioController;
+
+        public enum MoveDir {
             FORWARD,
             BACKWARD,
             IDLE,
         }
-        enum TurnDir {
+        public enum TurnDir {
             LEFT,
             RIGHT,
             IDLE,
         }
-        enum AimDir
+        public enum AimDir
         {
             LEFT,
             RIGHT,
             IDLE,
         }
-        enum BarrelDir
+        public enum BarrelDir
         {
             UP,
             DOWN,
             IDLE,
         }
-        MoveDir moveDir = MoveDir.IDLE;
-        TurnDir turnDir = TurnDir.IDLE;
-        AimDir aimDir = AimDir.IDLE;
-        BarrelDir barrelDir = BarrelDir.IDLE;
+        public MoveDir moveDir = MoveDir.IDLE;
+        public TurnDir turnDir = TurnDir.IDLE;
+        public AimDir aimDir = AimDir.IDLE;
+        public BarrelDir barrelDir = BarrelDir.IDLE;
 
         Cooldown cannonCooldown;
 
         Animator myAnim;
 
-        void Awake()
+        public virtual void Awake()
         {
             myRb = GetComponent<Rigidbody>();
             myAnim = GetComponent<Animator>();
             cannonCooldown = new Cooldown(1.5f);
             projectileData = new ProjectileData();
             weaponRotation = new WeaponRotation();
+            if (isBot) return;
             EnableInputs();
         }
 
-        void Update()
+        public new virtual void Update()
         {
+            if (isBot) 
+                base.Update();
             cannonCooldown.CooldownUpdate();
         }
-        void FixedUpdate()
+        public new virtual void FixedUpdate()
         {
+            if (isBot) 
+                base.FixedUpdate();
             Move();
             Turn();
             Aim();
         }
 
-        void Start()
+        public new virtual void Start()
         {
-            if (!networkIdentity.IsControlling()) DisableInputs();
+            if (isBot) 
+                base.Start();
+            else if (!networkIdentity.IsControlling()) DisableInputs();
             else {
                 CinemachineStateDrivenCamera cam = Camera.main.transform.parent.GetComponent<CinemachineStateDrivenCamera>();
                 cam.Follow = cannon;
@@ -98,7 +109,8 @@ namespace Project.Controllers {
 
         void OnDisable()
         {
-            DisableInputs();
+            if (!isBot)
+                DisableInputs();
         }
         void EnableInputs()
         {
@@ -170,50 +182,42 @@ namespace Project.Controllers {
         
         private void MoveForward(InputAction.CallbackContext obj)
         {
-            moveDir = obj.performed ? MoveDir.FORWARD : MoveDir.IDLE;
+            MoveForward(obj.performed);
         }
 
         private void MoveBackwards(InputAction.CallbackContext obj)
         {
-            moveDir = obj.performed ? MoveDir.BACKWARD : MoveDir.IDLE;
+            MoveBack(obj.performed);
         }
 
         private void TurnRight(InputAction.CallbackContext obj)
         {
-            turnDir = obj.performed ? TurnDir.RIGHT 
-                : turnDir != TurnDir.LEFT ? TurnDir.IDLE
-                : TurnDir.LEFT;
+            TurnRight(obj.performed);
         }
 
         private void TurnLeft(InputAction.CallbackContext obj)
         {
-            turnDir = obj.performed ? TurnDir.LEFT 
-                : turnDir != TurnDir.RIGHT ? TurnDir.IDLE
-                : TurnDir.RIGHT;
+            TurnLeft(obj.performed);
         }
 
         private void AimDown(InputAction.CallbackContext obj)
         {
-            barrelDir = obj.performed ? BarrelDir.DOWN : BarrelDir.IDLE;
+            AimDown(obj.performed);
         }
 
         private void AimUp(InputAction.CallbackContext obj)
         {
-            barrelDir = obj.performed ? BarrelDir.UP : BarrelDir.IDLE;
+            AimUp(obj.performed);
         }
 
         private void AimLeft(InputAction.CallbackContext obj)
         {
-            aimDir = obj.performed ? AimDir.LEFT 
-                : aimDir != AimDir.RIGHT ? AimDir.IDLE
-                : aimDir;
+            AimLeft(obj.performed);
         }
 
         private void AimRight(InputAction.CallbackContext obj)
         {
-            aimDir = obj.performed ? AimDir.RIGHT
-                : aimDir != AimDir.LEFT ? AimDir.IDLE
-                : aimDir;
+            AimRight(obj.performed);
         }
         private void Move()
         {
@@ -266,6 +270,56 @@ namespace Project.Controllers {
                 }
             }
         }
+
+        #region Actions
+
+        [SerializeField]
+        StateManager stateManager;
+        [HideInInspector]
+        public bool isBot = false;
+        public void MoveForward(bool move)
+        {
+            moveDir = move ? MoveDir.FORWARD : MoveDir.IDLE;
+        }
+        public void MoveBack(bool move)
+        {
+            moveDir = move ? MoveDir.BACKWARD : MoveDir.IDLE;
+        }
+        public void TurnRight(bool turn)
+        {
+            turnDir = turn ? TurnDir.RIGHT 
+                : turnDir != TurnDir.LEFT ? TurnDir.IDLE
+                : TurnDir.LEFT;
+        }
+        public void TurnLeft(bool turn)
+        {
+            turnDir = turn ? TurnDir.LEFT 
+                : turnDir != TurnDir.RIGHT ? TurnDir.IDLE
+                : TurnDir.RIGHT;
+
+        }
+        public void AimLeft(bool aim)
+        {
+            aimDir = aim ? AimDir.LEFT 
+                : aimDir != AimDir.RIGHT ? AimDir.IDLE
+                : aimDir;
+        }
+        public void AimRight(bool aim)
+        {
+            aimDir = aim ? AimDir.RIGHT 
+                : aimDir != AimDir.LEFT ? AimDir.IDLE
+                : aimDir;
+        }
+        public void AimUp(bool aim)
+        {
+            barrelDir = aim ? BarrelDir.UP : BarrelDir.IDLE;
+        }
+        public void AimDown(bool aim)
+        {
+
+            barrelDir = aim ? BarrelDir.DOWN : BarrelDir.IDLE;
+        }
+        #endregion
         #region Networking
         public Quaternion GetLastRotation()
         {

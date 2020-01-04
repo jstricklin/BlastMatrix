@@ -360,6 +360,7 @@ namespace Project.Networking
         public void ReturnToMainMenu()
         {
             isHost = false;
+            AudioController.Instance.StartBGM(SceneList.MAIN_MENU);
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.MAIN_MENU, onLevelLoaded: (levelName) =>
             {
                 if (IsSceneLoaded(SceneList.LEVEL)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
@@ -433,6 +434,7 @@ namespace Project.Networking
                 }
                 socketIO.Emit("levelLoaded");
                 InputController.Instance.EnablePlayerControls();
+                AudioController.Instance.StartBGM(SceneList.LEVEL);
             });
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.CHAT, onLevelLoaded: (levelName) => {
                 // UIManager.Instance.playerLabel.text = playerName;
