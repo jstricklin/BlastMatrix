@@ -11,8 +11,8 @@ namespace Project.Controllers {
         PlayerController tank;
         [TabGroup("Tank Audio Sources")]
         [SerializeField]
-        AudioSource engine, cannon, weaponBase;
-        float startPitch, pitchDiff = 1.5f;
+        AudioSource engine, cannon, weaponBase, barrelBase;
+        float startPitch, pitch, turnPitch = 1.15f, movePitch = 1.5f;
         
         bool isMoving = false;
 
@@ -38,9 +38,28 @@ namespace Project.Controllers {
             if ((tank.moveDir != PlayerController.MoveDir.IDLE || tank.turnDir != PlayerController.TurnDir.IDLE) && !isMoving)
             {
                 isMoving = true;
-                // StopAllCoroutines();
             } else if (tank.moveDir == PlayerController.MoveDir.IDLE && tank.turnDir == PlayerController.TurnDir.IDLE && isMoving) {
                 isMoving = false;
+            }
+        }
+
+        public void CannonTurn(bool play)
+        {
+            if (play)
+            {
+                weaponBase.Play();
+            } else {
+                weaponBase.Stop();
+            }
+        }
+
+        public void CannonAim(bool play)
+        {
+            if (play)
+            {
+                barrelBase.Play();
+            } else {
+                barrelBase.Stop();
             }
         }
 
@@ -48,11 +67,17 @@ namespace Project.Controllers {
         {
             while(true)
             {
-                if (engine.pitch < startPitch * pitchDiff && isMoving)
+                if (tank.moveDir == PlayerController.MoveDir.IDLE) 
                 {
-                    engine.pitch = Mathf.Lerp(engine.pitch, startPitch + pitchDiff, ((startPitch * pitchDiff) / engine.pitch) * Time.deltaTime * 3);
+                    pitch = startPitch + turnPitch;
+                } else {
+                    pitch = startPitch + movePitch;
+                }
+                if (engine.pitch < pitch && isMoving)
+                {
+                    engine.pitch = Mathf.Lerp(engine.pitch, pitch, (pitch / engine.pitch) * Time.deltaTime * 3);
                 } else if (!isMoving && engine.pitch > startPitch) {
-                    engine.pitch = Mathf.Lerp(engine.pitch, startPitch,  ((startPitch) / engine.pitch) * Time.deltaTime * 3);
+                    engine.pitch = Mathf.Lerp(engine.pitch, startPitch,  (startPitch / engine.pitch) * Time.deltaTime * 3);
                 }
                 yield return new WaitForEndOfFrame();
             }

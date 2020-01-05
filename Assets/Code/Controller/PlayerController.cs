@@ -204,21 +204,25 @@ namespace Project.Controllers {
         private void AimDown(InputAction.CallbackContext obj)
         {
             AimDown(obj.performed);
+            audioController.CannonAim(obj.performed);
         }
 
         private void AimUp(InputAction.CallbackContext obj)
         {
             AimUp(obj.performed);
+            audioController.CannonAim(obj.performed);
         }
 
         private void AimLeft(InputAction.CallbackContext obj)
         {
             AimLeft(obj.performed);
+            audioController.CannonTurn(obj.performed);
         }
 
         private void AimRight(InputAction.CallbackContext obj)
         {
             AimRight(obj.performed);
+            audioController.CannonTurn(obj.performed);
         }
         private void Move()
         {
