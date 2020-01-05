@@ -275,7 +275,7 @@ namespace Project.Networking
 
                         Projectile projectile = spawnObject.GetComponent<Projectile>();
                         projectile.SetActivator(activator);
-                        networkObjects[activator].GetComponent<PlayerController>().MuzzleFlash();
+                        networkObjects[activator].GetComponent<PlayerController>().FireWeapon();
                         projectile.FireProjectile(speed, direction);
                     }
                     networkObjects.Add(id, ni);

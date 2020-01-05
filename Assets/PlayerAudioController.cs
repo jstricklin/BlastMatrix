@@ -8,12 +8,10 @@ using UnityEngine.Audio;
 namespace Project.Controllers {
     public class PlayerAudioController : MonoBehaviour
     {
-        [BoxGroup]
-        [SerializeField]
-        AudioClip revUp, revDown, idle, moving, fire, aim, spawn;
         PlayerController tank;
+        [TabGroup("Tank Audio Sources")]
         [SerializeField]
-        AudioSource engine;
+        AudioSource engine, cannon, weaponBase;
         float startPitch, pitchDiff = 1.5f;
         
         bool isMoving = false;
@@ -28,6 +26,11 @@ namespace Project.Controllers {
         void Update()
         {
             CheckTankEngine();
+        }
+
+        public void FireCannon()
+        {
+            cannon.Play();
         }
 
         void CheckTankEngine()

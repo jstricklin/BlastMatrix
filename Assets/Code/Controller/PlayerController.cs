@@ -170,9 +170,10 @@ namespace Project.Controllers {
             networkIdentity.GetSocket().Emit("fireProjectile", JsonUtility.ToJson(projectileData));
         }
 
-        public void MuzzleFlash()
+        public void FireWeapon()
         {
             muzzleFlash.Play();
+            audioController.FireCannon();
         }
 
         public void TankHit()

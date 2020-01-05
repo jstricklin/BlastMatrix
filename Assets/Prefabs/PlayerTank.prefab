@@ -281,7 +281,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 691b5c246423e4249bbe481627da9b8a, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.65
+  m_Volume: 0.1
   m_Pitch: 1.5
   Loop: 1
   Mute: 0
@@ -325,7 +325,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -639,9 +639,10 @@ AudioSource:
   m_GameObject: {fileID: 4443084617819197396}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: c0ab8062c19c747e79ce620c12205d05,
+    type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -885,14 +886,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca62ca5d40156413da9bb4aaf4069e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  revUp: {fileID: 8300000, guid: 57cf6a300e46c4fb2b1ec3067f7dca98, type: 3}
-  revDown: {fileID: 8300000, guid: 84e0405b11f1d4bcd84213039b9bb737, type: 3}
-  idle: {fileID: 8300000, guid: 691b5c246423e4249bbe481627da9b8a, type: 3}
-  moving: {fileID: 8300000, guid: 2454ccf30b61c4917847f10db054bf78, type: 3}
-  fire: {fileID: 0}
-  aim: {fileID: 0}
-  spawn: {fileID: 0}
   engine: {fileID: 6939177790632414308}
+  cannon: {fileID: 4753613965593525363}
+  weaponBase: {fileID: 4566594854165976771}
 --- !u!1 &6052205696627936271
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,9 +929,10 @@ AudioSource:
   m_GameObject: {fileID: 6052205696627936271}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  OutputAudioMixerGroup: {fileID: 24300002, guid: c0ab8062c19c747e79ce620c12205d05,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 760e6981365cc4e909bbf7b1c7687927, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -980,7 +977,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
