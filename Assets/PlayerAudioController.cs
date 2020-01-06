@@ -73,7 +73,7 @@ namespace Project.Controllers {
                 } else {
                     pitch = startPitch + movePitch;
                 }
-                if (engine.pitch < pitch && isMoving)
+                if (engine.pitch != pitch && isMoving)
                 {
                     engine.pitch = Mathf.Lerp(engine.pitch, pitch, (pitch / engine.pitch) * Time.deltaTime * 3);
                 } else if (!isMoving && engine.pitch > startPitch) {
