@@ -80,7 +80,9 @@ namespace SA
          {
             mTransform = this.transform;
             // resourceGatherer = mTransform.GetComponentInChildren<ResourceGatherer>();
-            baseBot = mTransform.GetComponentInChildren<BaseBot>();
+            baseBot = mTransform.GetComponent<BaseBot>();
+            if (baseBot == null) 
+                baseBot = mTransform.GetComponentInChildren<BaseBot>();
             myRb = GetComponent<Rigidbody>();
          }
         public virtual void Update()

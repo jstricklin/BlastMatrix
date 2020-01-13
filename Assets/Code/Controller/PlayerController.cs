@@ -15,8 +15,8 @@ namespace Project.Controllers {
     {
         // override Rigidbody myRb;
         private float speed = 6.5f;
-        private float turnSpeed = 0.75f;
-        private float aimSpeed = 0.5f;
+        public float turnSpeed = 0.75f;
+        public float aimSpeed = 0.5f;
         // private float shotForce = 15;
         private float maxBarrelUp = 0.2f;
         [SerializeField]
@@ -37,6 +37,7 @@ namespace Project.Controllers {
 
         [SerializeField]
         PlayerAudioController audioController;
+        public TargetingController targetingController;
 
         public enum MoveDir {
             FORWARD,
@@ -278,8 +279,8 @@ namespace Project.Controllers {
 
         #region Actions
 
-        [SerializeField]
-        StateManager stateManager;
+        // [SerializeField]
+        // StateManager stateManager;
         [HideInInspector]
         public bool isBot = false;
         public void MoveForward(bool move)

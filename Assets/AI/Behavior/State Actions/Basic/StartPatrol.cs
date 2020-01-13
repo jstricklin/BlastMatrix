@@ -10,7 +10,7 @@ namespace SA
 
         public override void Execute(StateManager states)
         {
-            // states.baseBot.StartPatrolling();
+            states.baseBot.StartPatrolling();
         }
     }
 }
