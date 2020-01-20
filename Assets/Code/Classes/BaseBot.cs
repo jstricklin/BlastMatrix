@@ -4,11 +4,16 @@ using Project.Controllers;
 using UnityEngine;
 using SA;
 using Project.Networking;
+using Project.Gameplay;
 
 public class BaseBot : PlayerController
 {
     NetworkClient networkClient;
-    // BaseBot baseBot;
+    public bool attackReady;
+
+    public GameObject testProjectile;
+
+    // public float maxDist = 100;
 
     // Start is called before the first frame update
     public override void Awake()
@@ -49,7 +54,7 @@ public class BaseBot : PlayerController
         lookTarget = currentTarget;
     }
 
-    public void UpdateTarget(Transform target)
+    public override void UpdateTarget(Transform target)
     {
         currentTarget = target;
         lookTarget = currentTarget;
@@ -57,7 +62,85 @@ public class BaseBot : PlayerController
 
     public void FaceTarget()
     {
-        dot = Vector3.Dot((transform.position - lookTarget.transform.position).normalized, -transform.right.normalized);
+        dot = Vector3.Dot((transform.position - lookTarget.transform.position).normalized, -transform.forward.normalized);
+
+        if (dot < 0.9f)
+        {
+            TurnRight(true);
+            // Quaternion deltaRot = Quaternion.FromToRotation(transform.forward, transform.right) * transform.rotation;
+            // transform.rotation = Quaternion.Slerp(transform.rotation, deltaRot, turnSpeed * Time.deltaTime);
+        }
+        else if (dot > -0.9f)
+        {
+            TurnLeft(true);
+            // Quaternion deltaRot = Quaternion.FromToRotation(transform.forward, -transform.right) * transform.rotation;
+            // transform.rotation = Quaternion.Slerp(transform.rotation, deltaRot, turnSpeed * Time.deltaTime);
+        }
+    }
+
+    public void AimAtTarget()
+    {
+        aimDot = Vector3.Dot((cannon.position - currentTarget.transform.position).normalized, -cannon.right.normalized);
+        if (aimDot > 0.01f)
+        {
+            AimRight(true);
+            // Quaternion deltaRot = Quaternion.FromToRotation(transform.forward, transform.right) * transform.rotation;
+            // transform.rotation = Quaternion.Slerp(transform.rotation, deltaRot, turnSpeed * Time.deltaTime);
+        }
+        else if (aimDot < -0.01f)
+        {
+            AimLeft(true);
+            // Quaternion deltaRot = Quaternion.FromToRotation(transform.forward, -transform.right) * transform.rotation;
+            // transform.rotation = Quaternion.Slerp(transform.rotation, deltaRot, turnSpeed * Time.deltaTime);
+        } else {
+            attackReady = true;
+            return;
+        }
+        attackReady = false;
+    }
+
+    public void StartAttacking()
+    {
+        StartCoroutine(MainAttackRoutine());
+    }
+
+    public void StopAttacking()
+    {
+        StopCoroutine(MainAttackRoutine());
+    }
+    public IEnumerator MainAttackRoutine()
+    {
+        MoveForward(false);
+        MoveBack(false);
+        TurnLeft(false);
+        TurnRight(false);
+        float moveTime = 5f;
+        float lastMove = Time.time;
+        while (true)
+        {
+            if (attackReady && !cannonCooldown.IsOnCooldown())
+            {
+                cannonCooldown.StartCooldown();
+                FireWeapon();
+            }
+            if (Time.time > lastMove + moveTime && Random.Range(0, 10) > 9)
+            {
+                Debug.Log("moving...");
+                AttackManeuvers();
+                lastMove = Time.time;
+            } else {
+                MoveForward(false);
+                TurnLeft(false);
+                TurnRight(false);
+            }
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    void AttackManeuvers()
+    {
+        // float dot;
+        dot = Vector3.Dot((transform.position - lookTarget.transform.position).normalized, transform.forward.normalized);
 
         if (dot > 0.01f)
         {
@@ -71,6 +154,20 @@ public class BaseBot : PlayerController
             // Quaternion deltaRot = Quaternion.FromToRotation(transform.forward, -transform.right) * transform.rotation;
             // transform.rotation = Quaternion.Slerp(transform.rotation, deltaRot, turnSpeed * Time.deltaTime);
         }
+        MoveForward(true);
+    }
+
+    void TestFireProjectile()
+    {
+        var spawnObject = Instantiate(testProjectile);
+        Quaternion lookTo = Quaternion.LookRotation(barrel.transform.forward, spawnObject.transform.up);
+
+        spawnObject.transform.rotation = Quaternion.Euler(lookTo.eulerAngles);
+
+        Projectile projectile = spawnObject.GetComponent<Projectile>();
+        // projectile.SetActivator(activator);
+        // networkObjects[activator].GetComponent<PlayerController>().FireWeapon();
+        projectile.FireProjectile(10, barrel.transform.forward);
     }
 
     #endregion

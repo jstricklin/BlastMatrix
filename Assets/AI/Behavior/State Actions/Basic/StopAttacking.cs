@@ -9,7 +9,7 @@ namespace SA
     {
         public override void Execute(StateManager states)
         {
-            // states.baseBot.StopAttacking();
+            states.baseBot.StopAttacking();
         }
     }
 }

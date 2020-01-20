@@ -17,8 +17,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: dfff1413192ff417eb721f0c20da6b7f, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 119.79991
-      y: 80.199814
+      x: 42.599854
+      y: 423.60098
       width: 200
       height: 435
     windowTitle: State Node
@@ -39,13 +39,13 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: 894fec9f5a8a8424387ce237e64e675d, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 436.79996
-      y: 134.19958
+      x: 324.59985
+      y: 358.60016
       width: 200
       height: 100
     windowTitle: Condition
     enterNode: 0
-    targetNode: 0
+    targetNode: 6
     isDuplicate: 0
     comment: 
     isAssigned: 1
@@ -58,15 +58,15 @@ MonoBehaviour:
       previousCondition: {fileID: 11400000, guid: 9ce04faf1408e4ba4ab6fa07b60f6070,
         type: 2}
       transitionId: 0
-  - id: 2
-    drawNode: {fileID: 11400000, guid: 894fec9f5a8a8424387ce237e64e675d, type: 2}
+  - id: 6
+    drawNode: {fileID: 11400000, guid: dfff1413192ff417eb721f0c20da6b7f, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 429.5999
-      y: 262.39975
+      x: 602.40076
+      y: 42.799862
       width: 200
-      height: 100
-    windowTitle: Condition
+      height: 455
+    windowTitle: State Node
     enterNode: 0
     targetNode: 0
     isDuplicate: 0
@@ -75,23 +75,22 @@ MonoBehaviour:
     collapse: 0
     previousCollapse: 0
     stateRef:
-      currentState: {fileID: 0}
-      previousState: {fileID: 0}
+      currentState: {fileID: 11400000, guid: edd26067ed76d4b85bf7f651bef541dd, type: 2}
+      previousState: {fileID: 11400000, guid: edd26067ed76d4b85bf7f651bef541dd, type: 2}
     transRef:
-      previousCondition: {fileID: 11400000, guid: 5d28d0b18dd0a48b2bea12c0e1656469,
-        type: 2}
-      transitionId: 1
-  - id: 3
+      previousCondition: {fileID: 0}
+      transitionId: 0
+  - id: 8
     drawNode: {fileID: 11400000, guid: 894fec9f5a8a8424387ce237e64e675d, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 438.7999
-      y: 403.6001
+      x: 871.00055
+      y: 220.39986
       width: 200
       height: 100
     windowTitle: Condition
-    enterNode: 0
-    targetNode: 0
+    enterNode: 6
+    targetNode: 10
     isDuplicate: 0
     comment: 
     isAssigned: 1
@@ -103,18 +102,40 @@ MonoBehaviour:
     transRef:
       previousCondition: {fileID: 11400000, guid: 2f551584e7c28401cb61cdc5c8c3910c,
         type: 2}
-      transitionId: 2
-  - id: 4
+      transitionId: 1
+  - id: 10
+    drawNode: {fileID: 11400000, guid: dfff1413192ff417eb721f0c20da6b7f, type: 2}
+    windowRect:
+      serializedVersion: 2
+      x: 1169.4004
+      y: 52.39977
+      width: 200
+      height: 435
+    windowTitle: State Node
+    enterNode: 0
+    targetNode: 0
+    isDuplicate: 0
+    comment: 
+    isAssigned: 1
+    collapse: 0
+    previousCollapse: 0
+    stateRef:
+      currentState: {fileID: 11400000, guid: 4647205c38a624f00bea20015186221d, type: 2}
+      previousState: {fileID: 11400000, guid: 4647205c38a624f00bea20015186221d, type: 2}
+    transRef:
+      previousCondition: {fileID: 0}
+      transitionId: 0
+  - id: 22
     drawNode: {fileID: 11400000, guid: 894fec9f5a8a8424387ce237e64e675d, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 438.59988
-      y: 527.5999
+      x: 1450.4004
+      y: 146.79985
       width: 200
       height: 100
     windowTitle: Condition
-    enterNode: 0
-    targetNode: 0
+    enterNode: 10
+    targetNode: 23
     isDuplicate: 0
     comment: 
     isAssigned: 1
@@ -126,27 +147,27 @@ MonoBehaviour:
     transRef:
       previousCondition: {fileID: 11400000, guid: e5e568f67f36f4b8b881d159d9db6df8,
         type: 2}
-      transitionId: 3
-  - id: 5
-    drawNode: {fileID: 11400000, guid: 894fec9f5a8a8424387ce237e64e675d, type: 2}
+      transitionId: 0
+  - id: 23
+    drawNode: {fileID: 11400000, guid: f0b651e6b32244ffc900d923d01d8637, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 410.80005
-      y: 651.2001
-      width: 200
-      height: 100
-    windowTitle: Condition
+      x: 1735.7996
+      y: 172.39967
+      width: 100
+      height: 50
+    windowTitle: Portal Node
     enterNode: 0
     targetNode: 0
     isDuplicate: 0
     comment: 
-    isAssigned: 0
+    isAssigned: 1
     collapse: 0
     previousCollapse: 0
     stateRef:
-      currentState: {fileID: 0}
-      previousState: {fileID: 0}
+      currentState: {fileID: 11400000, guid: edd26067ed76d4b85bf7f651bef541dd, type: 2}
+      previousState: {fileID: 11400000, guid: edd26067ed76d4b85bf7f651bef541dd, type: 2}
     transRef:
       previousCondition: {fileID: 0}
-      transitionId: 4
-  idCount: 6
+      transitionId: 0
+  idCount: 27

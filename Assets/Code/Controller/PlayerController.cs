@@ -11,7 +11,7 @@ using Project.UI;
 using SA;
 
 namespace Project.Controllers {
-    public class PlayerController : StateManager
+    public class PlayerController : StateManager, ITargetable
     {
         // override Rigidbody myRb;
         private float speed = 6.5f;
@@ -23,8 +23,7 @@ namespace Project.Controllers {
         Canvas tankUI;
         [SerializeField]
         private float shotCooldown = 3;
-        [SerializeField]
-        Transform cannon, barrel;
+        public Transform cannon, barrel;
         [SerializeField]
         Transform projectile, projectileSpawnPoint;
         [SerializeField]
@@ -66,7 +65,7 @@ namespace Project.Controllers {
         public AimDir aimDir = AimDir.IDLE;
         public BarrelDir barrelDir = BarrelDir.IDLE;
 
-        Cooldown cannonCooldown;
+        public Cooldown cannonCooldown;
 
         Animator myAnim;
 
@@ -348,6 +347,12 @@ namespace Project.Controllers {
         }
 
         #endregion
+
+        public virtual void UpdateTarget(Transform target)
+        {
+            currentTarget = target;
+            // lookTarget = currentTarget;
+        }
     }
     public struct WeaponRotation 
     {

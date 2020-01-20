@@ -15,7 +15,7 @@ namespace SA
         {
             // if (state.baseBot.currentCommand?.command == Command.CommandType.ArmyFollow || state.baseBot.currentCommand?.command == Command.CommandType.UnitsFollow)
             // return false;
-            return state.currentTarget != null && state.currentDist <= state.maxDist && state.lookTarget != state.avoidTarget;
+            return state.currentTarget != null && state.baseBot.targetingController.currentDist <= state.baseBot.targetingController.maxDist && state.lookTarget != state.avoidTarget;
         }
     }
 }

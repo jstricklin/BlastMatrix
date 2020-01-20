@@ -23,11 +23,11 @@ MonoBehaviour:
   transitions:
   - id: 0
     condition: {fileID: 11400000, guid: 9ce04faf1408e4ba4ab6fa07b60f6070, type: 2}
-    targetState: {fileID: 11400000}
+    targetState: {fileID: 11400000, guid: edd26067ed76d4b85bf7f651bef541dd, type: 2}
     disable: 0
   - id: 1
     condition: {fileID: 11400000, guid: 5d28d0b18dd0a48b2bea12c0e1656469, type: 2}
-    targetState: {fileID: 11400000}
+    targetState: {fileID: 0}
     disable: 0
   - id: 2
     condition: {fileID: 11400000, guid: 2f551584e7c28401cb61cdc5c8c3910c, type: 2}

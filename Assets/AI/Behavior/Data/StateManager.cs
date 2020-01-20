@@ -12,7 +12,7 @@ namespace SA
         public State currentState;
         public Transform currentTarget;
         public GameObject avoidTarget;
-        public GameObject fleeTarget;
+        public GameObject moveTarget;
         public GameObject deathFX;
         public GameObject _deathFX;
         // public UnitType unitType;
@@ -67,6 +67,7 @@ namespace SA
         // public float delta;
         public Rigidbody myRb;
         public float dot;
+        public float aimDot;
         public bool canMove { get; set; }
         public bool grounded { get; set; }
         [HideInInspector]

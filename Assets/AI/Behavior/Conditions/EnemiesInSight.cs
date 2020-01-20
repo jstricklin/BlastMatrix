@@ -19,7 +19,7 @@ namespace SA
             // {
             //     return state.enemyTargets.Count > 0;
             // } else return false;
-            return false;
+            return state.baseBot.targetingController.targetsInSight.Count > 0;
         }
     }
 }

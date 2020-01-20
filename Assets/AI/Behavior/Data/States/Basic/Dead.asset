@@ -16,9 +16,13 @@ MonoBehaviour:
   onExit: []
   onFixed: []
   onUpdate: []
-  idCount: 1
+  idCount: 2
   transitions:
   - id: 0
+    condition: {fileID: 0}
+    targetState: {fileID: 0}
+    disable: 0
+  - id: 1
     condition: {fileID: 0}
     targetState: {fileID: 0}
     disable: 0

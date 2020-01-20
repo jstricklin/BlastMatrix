@@ -12,7 +12,7 @@ namespace SA
             // states.currentTarget = states.baseBot.EnemyTarget();
             // states.lookTarget = states.currentTarget;
             // states.battleMode = StateManager.BattleMode.Chasing;
-            // states.baseBot.StartChasing();
+            states.baseBot.targetingController.TargetEnemy();
         }
     }
 }
