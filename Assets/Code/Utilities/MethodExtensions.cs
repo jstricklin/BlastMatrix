@@ -36,8 +36,8 @@ namespace Project.Utilities
             RaycastHit hit;
             if (Physics.Raycast(src.position, target.position - src.position, out hit, Mathf.Infinity, targetableLayer))
             {
-                Debug.Log("hit: " + hit.transform.name);
-                Debug.DrawLine(src.position, target.position, Color.red, 0.1f);
+                // Debug.Log("hit: " + hit.transform.name);
+                // Debug.DrawLine(src.position, target.position, Color.red, 0.1f);
                 // return hit.transform.GetComponent<ITargetable>() != null;
                 return hit.transform == target;
             } else return false;

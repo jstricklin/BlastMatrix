@@ -114,7 +114,8 @@ public class BaseBot : PlayerController
         MoveBack(false);
         TurnLeft(false);
         TurnRight(false);
-        float moveTime = 5f;
+        bool moving = false;
+        float moveTime = 100000f;
         float lastMove = Time.time;
         while (true)
         {
@@ -122,22 +123,20 @@ public class BaseBot : PlayerController
             {
                 cannonCooldown.StartCooldown();
                 FireWeapon();
+                TestFireProjectile();
             }
-            if (Time.time > lastMove + moveTime && Random.Range(0, 10) > 9)
+            // TODO work on routine below
+            if (Time.time > lastMove + moveTime + (Random.Range(0, 100000)) && Random.Range(0, 100) > 99)
             {
                 Debug.Log("moving...");
-                AttackManeuvers();
+                StartCoroutine(AttackManeuvers());
                 lastMove = Time.time;
-            } else {
-                MoveForward(false);
-                TurnLeft(false);
-                TurnRight(false);
-            }
+            }  
             yield return new WaitForEndOfFrame();
         }
     }
 
-    void AttackManeuvers()
+    IEnumerator AttackManeuvers()
     {
         // float dot;
         dot = Vector3.Dot((transform.position - lookTarget.transform.position).normalized, transform.forward.normalized);
@@ -153,21 +152,52 @@ public class BaseBot : PlayerController
             TurnLeft(true);
             // Quaternion deltaRot = Quaternion.FromToRotation(transform.forward, -transform.right) * transform.rotation;
             // transform.rotation = Quaternion.Slerp(transform.rotation, deltaRot, turnSpeed * Time.deltaTime);
+        } else {
+            switch (targetingController.aimState)
+            {
+                case TargetingController.AimState.IN_SIGHT : 
+                    AimUp(false);
+                    AimDown(false);
+                    break;
+                case TargetingController.AimState.TOO_FAR : 
+                    AimUp(false);
+                    AimDown(true);
+                    break;
+                case TargetingController.AimState.TOO_CLOSE :
+                    AimUp(true);
+                    AimDown(false);
+                    break;
+            }
         }
-        MoveForward(true);
+        if (Random.Range(0, 10) > 9)
+        {
+            if (Random.Range(0, 10) > 4) MoveForward(true);
+            else MoveBack(true);
+        } else {
+            MoveBack(false);
+            MoveForward(false);
+        }
+
+        yield return new WaitForSeconds(Random.Range(2, 5));
+
+        TurnRight(false);
+        TurnLeft(false);
+        MoveForward(false);
+        MoveBack(false);
+        yield break;
     }
 
     void TestFireProjectile()
     {
         var spawnObject = Instantiate(testProjectile);
         Quaternion lookTo = Quaternion.LookRotation(barrel.transform.forward, spawnObject.transform.up);
-
         spawnObject.transform.rotation = Quaternion.Euler(lookTo.eulerAngles);
+        spawnObject.transform.position = projectileSpawnPoint.position;
 
         Projectile projectile = spawnObject.GetComponent<Projectile>();
         // projectile.SetActivator(activator);
         // networkObjects[activator].GetComponent<PlayerController>().FireWeapon();
-        projectile.FireProjectile(10, barrel.transform.forward);
+        projectile.FireProjectile(25, barrel.transform.forward);
     }
 
     #endregion

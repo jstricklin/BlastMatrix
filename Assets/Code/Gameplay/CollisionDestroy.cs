@@ -11,6 +11,11 @@ namespace Project.Gameplay {
         IActivate activator => GetComponent<IActivate>();
         void OnCollisionEnter(Collision coll)
         {
+            if (NetworkClient.ClientID == null) {
+                Debug.Log("offline hit...");
+                Destroy(gameObject);
+                return;
+            }
             // GetComponent<Projectile>()?.UpdateProjectile();
             NetworkIdentity ni = coll.transform.GetComponent<NetworkIdentity>();
             if (ni == null || ni.GetID() != activator?.GetActivator())

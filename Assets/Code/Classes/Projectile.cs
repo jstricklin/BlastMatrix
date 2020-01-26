@@ -10,7 +10,7 @@ namespace Project.Gameplay
     public class Projectile : MonoBehaviour, IActivate
     {
         Vector3 direction;
-        float speed;
+        public float speed;
         ProjectileData projectile;
         [SerializeField]
         GameObject explosionFX;
@@ -27,13 +27,13 @@ namespace Project.Gameplay
             }
         }
 
-        public float Speed
-        {
-            set
-            {
-                speed = value;
-            }
-        }
+        // public float Speed
+        // {
+        //     set
+        //     {
+        //         speed = value;
+        //     }
+        // }
 
 
         public string GetActivator()
@@ -63,7 +63,7 @@ namespace Project.Gameplay
 
         public void UpdateProjectile()
         {
-            if (NetworkClient.ClientID != activator)
+            if (NetworkClient.ClientID != activator || NetworkClient.ClientID == null)
             {
                 return;
             }

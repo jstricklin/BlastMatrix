@@ -24,8 +24,7 @@ namespace Project.Controllers {
         [SerializeField]
         private float shotCooldown = 3;
         public Transform cannon, barrel;
-        [SerializeField]
-        Transform projectile, projectileSpawnPoint;
+        public Transform projectile, projectileSpawnPoint;
         [SerializeField]
         ParticleSystem muzzleFlash;
         [SerializeField]
@@ -65,6 +64,7 @@ namespace Project.Controllers {
         public AimDir aimDir = AimDir.IDLE;
         public BarrelDir barrelDir = BarrelDir.IDLE;
 
+        [HideInInspector]
         public Cooldown cannonCooldown;
 
         Animator myAnim;

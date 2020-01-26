@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Project.Utilities;
+using Project.Gameplay;
 
 namespace Project.Controllers {
     public class TargetingController : MonoBehaviour
@@ -15,11 +16,28 @@ namespace Project.Controllers {
 
         public float currentDist;
         public float maxDist = 8000f;
+        [SerializeField]
+        LineRenderer trajectory;
+        [SerializeField]
+        Projectile projectile;
+        Rigidbody projectileRb;
+        [SerializeField]
+        Transform barrel, trajectoryStart;
+        bool possibleHit = false;
+        public enum AimState {
+            IN_SIGHT,
+            TOO_FAR,
+            TOO_CLOSE,
+        }
+
+        public AimState aimState;
 
         void Start()
         {
             playerController = GetComponentInParent<PlayerController>();
+            projectileRb = projectile.GetComponent<Rigidbody>();
             StartCoroutine(CheckTargetsInSight());
+            StartCoroutine(CheckTrajectory());
         }
 
         void Update()
@@ -28,6 +46,12 @@ namespace Project.Controllers {
             {
                 currentDist = (transform.position - currentTarget.position).sqrMagnitude;
             }
+        }
+
+        public void SetProjectile(Projectile newProjectile)
+        {
+            projectile = newProjectile;
+            projectileRb = projectile.GetComponent<Rigidbody>();
         }
 
         public void TargetEnemy()
@@ -109,6 +133,50 @@ namespace Project.Controllers {
                 yield return new WaitForSeconds(0.25f);
             }
         }
-
+        IEnumerator CheckTrajectory()
+        {
+            Vector3 startPos = trajectory.GetPosition(0);
+            int step = 0;
+            int maxSteps = 10;
+            trajectory.positionCount = maxSteps;
+            float fTime = 0;
+            while (true)
+            {
+                step++;
+                possibleHit = false;
+                Vector3 vel = (trajectoryStart.position - trajectoryStart.forward) / projectileRb.mass * 0.25f;
+                float pVel = Mathf.Sqrt((vel.z * vel.z) + (vel.y * vel.y));
+                float angle = Mathf.Rad2Deg*(Mathf.Atan2(vel.y, vel.z));
+                float dz = pVel * fTime * Mathf.Cos(angle * Mathf.Deg2Rad);
+                if (dz < 0) dz *= -1;
+                float dy = pVel * fTime * Mathf.Sin(angle * Mathf.Deg2Rad) - (Physics2D.gravity.magnitude * fTime * fTime / 2.0f);
+                Vector3 pos = new Vector3(startPos.x, startPos.y + dy, startPos.z + dz);
+                fTime += 0.1f;
+                // yPos = (step * Mathf.Tan(0) - (Physics.gravity.y * (step * step))) / 2 * 3 * 3 * (Mathf.Cos(0) * Mathf.Cos(0));
+                // Debug.Log("steps: " + trajectory.positionCount + " and step: " + step);
+                trajectory.SetPosition(step, pos);
+                if (!possibleHit)
+                {
+                    possibleHit = (pos - currentTarget.position).sqrMagnitude < 500f;
+                }
+                if (step >= maxSteps - 1) 
+                {
+                    if (!possibleHit)
+                    {
+                        if ((pos - transform.position).sqrMagnitude < currentDist)
+                        {
+                            aimState = AimState.TOO_CLOSE;
+                        } else {
+                            aimState = AimState.TOO_FAR;
+                        }
+                    } else {
+                        aimState = AimState.IN_SIGHT;
+                    }
+                    step = 0;
+                    fTime = 0.1f;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+        }
     }
 }
