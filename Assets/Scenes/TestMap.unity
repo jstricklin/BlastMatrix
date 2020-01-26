@@ -677,7 +677,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 378962174}
-  m_LocalRotation: {x: 0.07904124, y: -0.82813257, z: 0.12085532, w: 0.5416115}
+  m_LocalRotation: {x: 0.07904124, y: -0.8281326, z: 0.12085534, w: 0.54161143}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1079,7 +1079,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 9.390227e+26, y: 256325140, z: 1.8319352e+25, w: 9.390231e+26}
+  m_BoundingSphereOverride: {x: 0, y: 5.342177e+22, z: 0, w: 22143.828}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1394,7 +1394,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 995651223}
-  m_LocalRotation: {x: 0.079041235, y: -0.82813257, z: 0.12085529, w: 0.5416115}
+  m_LocalRotation: {x: 0.07904125, y: -0.8281326, z: 0.12085535, w: 0.5416114}
   m_LocalPosition: {x: 1.170402, y: 2.25, z: 0.32205343}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -2317,7 +2317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targets: []
   tankBot: {fileID: 94240458607752579, guid: d7d88913bf4204375b80a39a3e006bc9, type: 3}
-  maxBots: 8
+  maxBots: 2
   spawnPoints: {fileID: 1179946542}
 --- !u!4 &1546918894
 Transform:

@@ -12,7 +12,7 @@ namespace Project.Gameplay {
         void OnCollisionEnter(Collision coll)
         {
             if (NetworkClient.ClientID == null) {
-                Debug.Log("offline hit...");
+                // Debug.Log("offline hit...");
                 Destroy(gameObject);
                 return;
             }

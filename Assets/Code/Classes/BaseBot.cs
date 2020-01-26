@@ -119,19 +119,34 @@ public class BaseBot : PlayerController
         float lastMove = Time.time;
         while (true)
         {
-            if (attackReady && !cannonCooldown.IsOnCooldown())
+            switch (targetingController.aimState)
+            {
+                case TargetingController.AimState.IN_SIGHT : 
+                    AimUp(false);
+                    AimDown(false);
+                    break;
+                case TargetingController.AimState.TOO_FAR : 
+                    AimUp(false);
+                    AimDown(true);
+                    break;
+                case TargetingController.AimState.TOO_CLOSE :
+                    AimDown(false);
+                    AimUp(true);
+                    break;
+            }
+            if (attackReady && !cannonCooldown.IsOnCooldown() && targetingController.aimState == TargetingController.AimState.IN_SIGHT)
             {
                 cannonCooldown.StartCooldown();
                 FireWeapon();
                 TestFireProjectile();
             }
             // TODO work on routine below
-            if (Time.time > lastMove + moveTime + (Random.Range(0, 100000)) && Random.Range(0, 100) > 99)
-            {
-                Debug.Log("moving...");
-                StartCoroutine(AttackManeuvers());
-                lastMove = Time.time;
-            }  
+            // if (Time.time > lastMove + moveTime + (Random.Range(0, 100000)) && Random.Range(0, 100) > 99)
+            // {
+            //     // Debug.Log("moving...");
+            //     StartCoroutine(AttackManeuvers());
+            //     lastMove = Time.time;
+            // }  
             yield return new WaitForEndOfFrame();
         }
     }
@@ -153,21 +168,21 @@ public class BaseBot : PlayerController
             // Quaternion deltaRot = Quaternion.FromToRotation(transform.forward, -transform.right) * transform.rotation;
             // transform.rotation = Quaternion.Slerp(transform.rotation, deltaRot, turnSpeed * Time.deltaTime);
         } else {
-            switch (targetingController.aimState)
-            {
-                case TargetingController.AimState.IN_SIGHT : 
-                    AimUp(false);
-                    AimDown(false);
-                    break;
-                case TargetingController.AimState.TOO_FAR : 
-                    AimUp(false);
-                    AimDown(true);
-                    break;
-                case TargetingController.AimState.TOO_CLOSE :
-                    AimUp(true);
-                    AimDown(false);
-                    break;
-            }
+            // switch (targetingController.aimState)
+            // {
+            //     case TargetingController.AimState.IN_SIGHT : 
+            //         AimUp(false);
+            //         AimDown(false);
+            //         break;
+            //     case TargetingController.AimState.TOO_FAR : 
+            //         AimUp(false);
+            //         AimDown(true);
+            //         break;
+            //     case TargetingController.AimState.TOO_CLOSE :
+            //         AimUp(true);
+            //         AimDown(false);
+            //         break;
+            // }
         }
         if (Random.Range(0, 10) > 9)
         {

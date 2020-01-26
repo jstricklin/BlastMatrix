@@ -20,7 +20,7 @@ namespace Project.Managers
 
         void Start()
         {
-            Initialize(8);
+            Initialize(maxBots);
         }
 
         public void Initialize(int botCount)
@@ -29,8 +29,7 @@ namespace Project.Managers
             {
                 spawnPointsArr.Add(spawnPoints.transform.GetChild(i));
             }
-            maxBots = botCount;
-            for (int i = 0; i < maxBots; i++)
+            for (int i = 0; i < botCount; i++)
             {
                 SpawnBot();
             }

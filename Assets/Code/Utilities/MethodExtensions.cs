@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Project.Utilities
 {
@@ -50,6 +51,13 @@ namespace Project.Utilities
             source.clip = clip;
             source.Play();
             source.volume = startVol;
+        }
+        public static Transform NearestTarget(this Vector3 pos, List<Transform> targets)
+        {
+            if (targets.Count < 1) return null;
+            if (targets.Count < 2) return targets[0];
+            else return targets.OrderBy(a => Vector3.Distance(a.position, pos))
+           .ToList()[0];
         }
     }
 }

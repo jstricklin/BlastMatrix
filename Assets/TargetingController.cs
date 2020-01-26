@@ -15,7 +15,7 @@ namespace Project.Controllers {
         public Transform currentTarget;
 
         public float currentDist;
-        public float maxDist = 8000f;
+        public float maxDist = 15000f;
         [SerializeField]
         LineRenderer trajectory;
         [SerializeField]
@@ -137,14 +137,17 @@ namespace Project.Controllers {
         {
             Vector3 startPos = trajectory.GetPosition(0);
             int step = 0;
-            int maxSteps = 10;
-            trajectory.positionCount = maxSteps;
+            int maxSteps = 30;
+            trajectory.positionCount = 1;
             float fTime = 0;
+            Color noHitColor = trajectory.material.color;
+            Color hitColor = Color.green;
+            int hitCount = 0;
             while (true)
             {
                 step++;
-                possibleHit = false;
-                Vector3 vel = (trajectoryStart.position - trajectoryStart.forward) / projectileRb.mass * 0.25f;
+                if (trajectory.positionCount <= step) trajectory.positionCount++;
+                Vector3 vel = (trajectoryStart.position - trajectoryStart.forward) / projectileRb.mass * 0.4f;
                 float pVel = Mathf.Sqrt((vel.z * vel.z) + (vel.y * vel.y));
                 float angle = Mathf.Rad2Deg*(Mathf.Atan2(vel.y, vel.z));
                 float dz = pVel * fTime * Mathf.Cos(angle * Mathf.Deg2Rad);
@@ -152,28 +155,37 @@ namespace Project.Controllers {
                 float dy = pVel * fTime * Mathf.Sin(angle * Mathf.Deg2Rad) - (Physics2D.gravity.magnitude * fTime * fTime / 2.0f);
                 Vector3 pos = new Vector3(startPos.x, startPos.y + dy, startPos.z + dz);
                 fTime += 0.1f;
-                // yPos = (step * Mathf.Tan(0) - (Physics.gravity.y * (step * step))) / 2 * 3 * 3 * (Mathf.Cos(0) * Mathf.Cos(0));
-                // Debug.Log("steps: " + trajectory.positionCount + " and step: " + step);
-                trajectory.SetPosition(step, pos);
-                if (!possibleHit)
+                possibleHit = (trajectory.transform.TransformPoint(pos) - trajectory.transform.TransformPoint(pos).NearestTarget(allTargets).position).sqrMagnitude < 25;
+                // possibleHit = Vector3.Distance(trajectory.transform.TransformPoint(pos), trajectory.transform.TransformPoint(pos).NearestTarget(allTargets).position) < 2.5f;
+                if (possibleHit)
                 {
-                    possibleHit = (pos - currentTarget.position).sqrMagnitude < 500f;
+                    // Debug.Log("pointDist: " + (pos - pos.NearestTarget(allTargets).position).sqrMagnitude);
+                    // Debug.Log("pointDist: " + Vector3.Distance(pos, pos.NearestTarget(allTargets).position));
+                    hitCount++;
+                    trajectory.material.color = hitColor;
                 }
-                if (step >= maxSteps - 1) 
+                if (step >= maxSteps - 1 || trajectory.transform.TransformPoint(pos).y < 0 || hitCount > 0) 
                 {
-                    if (!possibleHit)
+                    float aimDot = Vector3.Dot((trajectory.transform.TransformPoint(pos) - currentTarget.transform.position).normalized, barrel.forward);
+                    if (hitCount > 0)
                     {
-                        if ((pos - transform.position).sqrMagnitude < currentDist)
+                        aimState = AimState.IN_SIGHT;
+                    } else {
+                        trajectory.material.color = noHitColor;
+                        if (aimDot < 0)
                         {
                             aimState = AimState.TOO_CLOSE;
                         } else {
                             aimState = AimState.TOO_FAR;
                         }
-                    } else {
-                        aimState = AimState.IN_SIGHT;
+                        // Debug.Log("dot " + aimDot + "| aimState: " + aimState);
                     }
+                    trajectory.positionCount = step;
+                    hitCount = 0;
                     step = 0;
                     fTime = 0.1f;
+                } else {
+                    trajectory.SetPosition(step, pos);
                 }
                 yield return new WaitForEndOfFrame();
             }
