@@ -12,6 +12,15 @@ public class BaseBot : PlayerController
     public bool attackReady;
 
     public GameObject testProjectile;
+    #region Collision Detection
+    [SerializeField]
+    Transform obstacle;
+    int checkDist = 25;
+    public Vector3 avoidVector;
+    public Vector3 obstacleHitPoint;
+
+    public bool obstacleInSight;
+    #endregion
 
     // public float maxDist = 100;
 
@@ -25,6 +34,7 @@ public class BaseBot : PlayerController
     }
     public override void Start()
     {
+        StartCoroutine(CheckObstacle());
         base.Start();
         // commented until networking re-enabled
         // if (!NetworkClient.isHost) 
@@ -35,6 +45,79 @@ public class BaseBot : PlayerController
         // }
     }
 
+    IEnumerator CheckObstacle()
+    {
+        Ray obstacleRay;
+        Debug.Log("pos: " + transform.position);
+        RaycastHit obstacleHit;
+        while (true)
+        {
+            // if (disabled)
+            // {
+            //     yield return new WaitUntil(() => !disabled);
+            // }
+            // if (attacking || repairing || battleMode == BattleMode.Idle)
+            // {
+            //     yield return new WaitUntil(() => !attacking && !repairing && battleMode != BattleMode.Idle);
+            // }
+            // //check slope below
+            // if (Physics.Raycast(groundRay, out groundHit, 10f, groundLayer))
+            // {
+            //     slopeAngle = Vector3.Angle(groundHit.normal, transform.forward) - 90;
+            //     Debug.DrawRay(transform.position, transform.forward * lookDist);
+            //     Debug.DrawRay(groundHit.point, groundHit.normal * 20, Color.yellow);
+            // }
+
+            obstacleRay = new Ray(transform.position, transform.forward);
+            if (Physics.Raycast(obstacleRay, out obstacleHit, checkDist, 1 << 0))
+            {
+                // if (currentTarget != null && obstacleHit.transform != currentTarget.transform || currentTarget == null)
+                // {
+                    // Debug.Log("obstacle detected - " + obstacleHit.transform.name);
+                    obstacleInSight = true;
+                    obstacle = obstacleHit.transform;
+                    obstacleHitPoint = obstacleHit.point;
+                    StartCoroutine(AvoidObstacle());
+                    Debug.DrawLine(transform.position, obstacleHit.point, Color.red);
+                // }
+            }
+            else
+            {
+                Debug.DrawLine(transform.position, transform.position + transform.forward * checkDist, Color.green);
+                obstacleInSight = false;
+                // lookTarget = currentTarget;
+                obstacle = null;
+            }
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
+    IEnumerator AvoidObstacle()
+    {
+        while (obstacle != null)
+        {
+            // if (attacking || repairing)
+            // {
+            //     yield break;
+            // }
+            if ((obstacleHitPoint - transform.position).sqrMagnitude < 35)
+            {
+                avoidTarget.transform.position = obstacleHitPoint;
+                lookTarget = avoidTarget.transform;
+                MoveForward(false);
+                MoveBack(true);
+            } else {
+                avoidVector = obstacleHitPoint - obstacle.transform.position;
+                avoidVector = avoidVector.normalized;
+                avoidVector.y = 0;
+                avoidTarget.transform.position = obstacleHitPoint + avoidVector.normalized * 5f;
+                lookTarget = avoidTarget.transform;
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+        lookTarget = currentTarget;
+        yield break;
+    }
     public void SetBotTargets(List<Transform> targets)
     {
         List<Transform> tankTargets = new List<Transform>();
@@ -94,6 +177,8 @@ public class BaseBot : PlayerController
             // transform.rotation = Quaternion.Slerp(transform.rotation, deltaRot, turnSpeed * Time.deltaTime);
         } else {
             attackReady = true;
+            AimLeft(false);
+            AimRight(false);
             return;
         }
         attackReady = false;
@@ -141,12 +226,12 @@ public class BaseBot : PlayerController
                 TestFireProjectile();
             }
             // TODO work on routine below
-            // if (Time.time > lastMove + moveTime + (Random.Range(0, 100000)) && Random.Range(0, 100) > 99)
-            // {
-            //     // Debug.Log("moving...");
-            //     StartCoroutine(AttackManeuvers());
-            //     lastMove = Time.time;
-            // }  
+            if (Time.time > lastMove + moveTime + (Random.Range(0, 100000)) && Random.Range(0, 100) > 99)
+            {
+                // Debug.Log("moving...");
+                StartCoroutine(AttackManeuvers());
+            } 
+            lastMove = Time.time;
             yield return new WaitForEndOfFrame();
         }
     }

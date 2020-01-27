@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using Project.Utilities;
 using Project.Gameplay;
+using Project.Managers;
 
 namespace Project.Controllers {
     public class TargetingController : MonoBehaviour
@@ -11,7 +12,7 @@ namespace Project.Controllers {
 
         public List<Transform> allTargets = new List<Transform>();
         public List<Transform> targetsInSight = new List<Transform>();
-        PlayerController playerController;
+        BaseBot botController;
         public Transform currentTarget;
 
         public float currentDist;
@@ -23,6 +24,7 @@ namespace Project.Controllers {
         Rigidbody projectileRb;
         [SerializeField]
         Transform barrel, trajectoryStart;
+
         bool possibleHit = false;
         public enum AimState {
             IN_SIGHT,
@@ -34,7 +36,7 @@ namespace Project.Controllers {
 
         void Start()
         {
-            playerController = GetComponentInParent<PlayerController>();
+            botController = GetComponentInParent<BaseBot>();
             projectileRb = projectile.GetComponent<Rigidbody>();
             StartCoroutine(CheckTargetsInSight());
             StartCoroutine(CheckTrajectory());
@@ -64,7 +66,7 @@ namespace Project.Controllers {
             } else {
                 trans = NearestEnemy();
             }
-            playerController.UpdateTarget(trans);
+            botController.UpdateTarget(trans);
             currentTarget = trans;
         }
 
@@ -102,11 +104,6 @@ namespace Project.Controllers {
            .ToList()[0];
         }
 
-        public bool CheckObstacle()
-        {
-            return false;
-        }
-
         public bool TargetInSight()
         {
             return transform.TargetInSight(currentTarget);
@@ -142,12 +139,15 @@ namespace Project.Controllers {
             float fTime = 0;
             Color noHitColor = trajectory.material.color;
             Color hitColor = Color.green;
+            hitColor.a = noHitColor.a;
             int hitCount = 0;
+            // List<Vector3> posList = new List<Vector3>();
             while (true)
             {
+                // posList.Add(startPos);
                 step++;
                 if (trajectory.positionCount <= step) trajectory.positionCount++;
-                Vector3 vel = (trajectoryStart.position - trajectoryStart.forward) / projectileRb.mass * 0.4f;
+                Vector3 vel = (trajectoryStart.position - trajectoryStart.forward) / projectileRb.mass * 0.33f;
                 float pVel = Mathf.Sqrt((vel.z * vel.z) + (vel.y * vel.y));
                 float angle = Mathf.Rad2Deg*(Mathf.Atan2(vel.y, vel.z));
                 float dz = pVel * fTime * Mathf.Cos(angle * Mathf.Deg2Rad);
@@ -155,7 +155,7 @@ namespace Project.Controllers {
                 float dy = pVel * fTime * Mathf.Sin(angle * Mathf.Deg2Rad) - (Physics2D.gravity.magnitude * fTime * fTime / 2.0f);
                 Vector3 pos = new Vector3(startPos.x, startPos.y + dy, startPos.z + dz);
                 fTime += 0.1f;
-                possibleHit = (trajectory.transform.TransformPoint(pos) - trajectory.transform.TransformPoint(pos).NearestTarget(allTargets).position).sqrMagnitude < 25;
+                possibleHit = (trajectory.transform.TransformPoint(pos) - trajectory.transform.TransformPoint(pos).NearestTarget(allTargets).position).sqrMagnitude < 10;
                 // possibleHit = Vector3.Distance(trajectory.transform.TransformPoint(pos), trajectory.transform.TransformPoint(pos).NearestTarget(allTargets).position) < 2.5f;
                 if (possibleHit)
                 {
@@ -183,11 +183,23 @@ namespace Project.Controllers {
                     trajectory.positionCount = step;
                     hitCount = 0;
                     step = 0;
-                    fTime = 0.1f;
+                    fTime = 0f;
+                    // if (BotManager.Instance.displayTrajectories)
+                    //     DisplayTrajectory(trajectory, posList);
+                    // posList.Clear();
                 } else {
                     trajectory.SetPosition(step, pos);
+                    // posList.Add(pos);
                 }
                 yield return new WaitForEndOfFrame();
+            }
+        }
+        public void DisplayTrajectory(LineRenderer line, List<Vector3> positions)
+        {
+            for (int i = 0; i < line.positionCount; i++)
+            {
+                Debug.Log("positions count: " + positions.Count + "line count : " + line.positionCount);
+                line.SetPosition(i, positions[i]);
             }
         }
     }

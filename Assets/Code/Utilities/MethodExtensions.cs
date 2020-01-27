@@ -33,14 +33,13 @@ namespace Project.Utilities
         }
         public static bool TargetInSight(this Transform src, Transform target)
         {
-            LayerMask targetableLayer = 1 << 0;
+            // LayerMask targetableLayer = (1 << 0) | (1 << 10);
+            LayerMask targetableLayer = (1 << 0);
             RaycastHit hit;
             if (Physics.Raycast(src.position, target.position - src.position, out hit, Mathf.Infinity, targetableLayer))
             {
-                // Debug.Log("hit: " + hit.transform.name);
-                // Debug.DrawLine(src.position, target.position, Color.red, 0.1f);
-                // return hit.transform.GetComponent<ITargetable>() != null;
-                return hit.transform == target;
+                // return hit.transform == target;
+                return (hit.point - src.position).sqrMagnitude > (target.position - src.position).sqrMagnitude;
             } else return false;
         }
         public static void PlayNewClip(this AudioSource source, AudioClip clip)

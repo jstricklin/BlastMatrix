@@ -13,8 +13,8 @@ namespace SA
 
         public override bool CheckCondition(StateManager state)
         {
-            return false;
-            // return !state.baseBot.targetingController.targetsInSight.Contains(state.currentTarget);
+            // return false;
+            return !state.baseBot.targetingController.targetsInSight.Contains(state.currentTarget);
         }
     }
 }

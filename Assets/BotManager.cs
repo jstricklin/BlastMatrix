@@ -15,8 +15,10 @@ namespace Project.Managers
         int maxBots = 8;
         [SerializeField]
         GameObject spawnPoints;
+        Transform spawnPoint;
         List<Transform> spawnPointsArr = new List<Transform>();
         List<BaseBot> spawnedBots = new List<BaseBot>();
+        public bool displayTrajectories = false;
 
         void Start()
         {
@@ -36,12 +38,27 @@ namespace Project.Managers
             UpdateBotTargets();
         }
 
-        public void SpawnBot()
+        public void SpawnBot(bool canSpawn = false)
         {
-            Transform spawnPoint = spawnPointsArr[Random.Range(0, spawnPointsArr.Count - 1)];
-            GameObject bot = Instantiate(tankBot);
-            bot.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
-            spawnedBots.Add(bot.GetComponent<BaseBot>());
+            // Transform spawnPoint = spawnPointsArr[0];
+            // Transform spawnPoint;
+            if (!canSpawn)
+            {
+                spawnPoint = spawnPointsArr[Random.Range(0, spawnPointsArr.Count - 1)];
+                foreach(BaseBot spawnedBot in spawnedBots)
+                {
+                    if ((spawnedBot.transform.position - spawnPoint.position).sqrMagnitude < 100)
+                    {
+                        SpawnBot();
+                        return;
+                    }
+                }
+                SpawnBot(true);
+            } else {
+                GameObject bot = Instantiate(tankBot);
+                bot.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
+                spawnedBots.Add(bot.GetComponent<BaseBot>());
+            }
         }
 
         public void UpdateBotTargets()

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7903634736264548966}
   - component: {fileID: 5546979786271359820}
   - component: {fileID: 2529498192949602897}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BasicBot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,6 +185,10 @@ MonoBehaviour:
   attackReady: 0
   testProjectile: {fileID: 4610914980914332192, guid: a9da8a910ad7e4da4826fc3af33bdfe9,
     type: 3}
+  obstacle: {fileID: 0}
+  avoidVector: {x: 0, y: 0, z: 0}
+  obstacleHitPoint: {x: 0, y: 0, z: 0}
+  obstacleInSight: 0
 --- !u!1 &94240459767767269
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,7 +198,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 94240459767767270}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[ Weapon ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +231,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6095847467456192030}
   - component: {fileID: 6600629250193666085}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,7 +361,7 @@ GameObject:
   - component: {fileID: 6353726687629574207}
   - component: {fileID: 797262104789744838}
   - component: {fileID: 4581725550663614561}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: tank_barrel_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -450,7 +454,7 @@ GameObject:
   - component: {fileID: 4412133227705909211}
   - component: {fileID: 4776932658852933429}
   - component: {fileID: 8014461719813623394}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PlayerName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -604,7 +608,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 676210076038382574}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[ Barrel ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -637,7 +641,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1841631027950312379}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ProjectileSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -670,7 +674,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7925262142101807563}
   - component: {fileID: 6602816082772649275}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WeaponBarrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -798,7 +802,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2593642164949062255}
   - component: {fileID: 2593642164949062254}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[ TargetingSystem ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -853,7 +857,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 479256886576837662}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Move Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -886,7 +890,7 @@ GameObject:
   - component: {fileID: 9080999879566166816}
   - component: {fileID: 3259119786824824793}
   - component: {fileID: 2392501010727806905}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: tank_cannon_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -980,7 +984,7 @@ GameObject:
   - component: {fileID: 9026738955354088028}
   - component: {fileID: 3348956469533105829}
   - component: {fileID: 4835409068342963422}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: tank_body_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1072,7 +1076,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4557384249450484366}
   - component: {fileID: 4802985967910854052}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WeaponBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1199,7 +1203,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8764951246582189691}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Avoid Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1231,7 +1235,7 @@ GameObject:
   - component: {fileID: 6751357218197423389}
   - component: {fileID: 6751357218197423387}
   - component: {fileID: 6751357218197423386}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BlastSparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6041,7 +6045,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6751357219422002229}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6075,7 +6079,7 @@ GameObject:
   - component: {fileID: 2952513142895527355}
   - component: {fileID: 6080431912039237919}
   - component: {fileID: 3168588203001981250}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BlastSparksMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10887,7 +10891,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3919745527321006672}
   - component: {fileID: 5013670832245336505}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[ AudioController ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10938,7 +10942,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8244365793090588662}
   - component: {fileID: 1640120740961847889}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Reticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11019,7 +11023,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3655263431608260854}
   - component: {fileID: 3130761546156286566}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Engine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11146,7 +11150,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1204337650704327827}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[ Model ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11179,7 +11183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3896822248011280498}
   - component: {fileID: 6704892122510279164}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: sparklight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11271,7 +11275,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5398779433935380609}
   - component: {fileID: 5239365692210045349}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Trajectory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11402,7 +11406,7 @@ GameObject:
   - component: {fileID: 984127818929234869}
   - component: {fileID: 5783348742243105905}
   - component: {fileID: 2653116113405184457}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TankCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
