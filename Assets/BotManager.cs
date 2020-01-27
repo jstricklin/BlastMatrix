@@ -17,7 +17,7 @@ namespace Project.Managers
         GameObject spawnPoints;
         Transform spawnPoint;
         List<Transform> spawnPointsArr = new List<Transform>();
-        List<BaseBot> spawnedBots = new List<BaseBot>();
+        public static List<BaseBot> SpawnedBots = new List<BaseBot>();
         public bool displayTrajectories = false;
 
         void Start()
@@ -45,7 +45,7 @@ namespace Project.Managers
             if (!canSpawn)
             {
                 spawnPoint = spawnPointsArr[Random.Range(0, spawnPointsArr.Count - 1)];
-                foreach(BaseBot spawnedBot in spawnedBots)
+                foreach(BaseBot spawnedBot in SpawnedBots)
                 {
                     if ((spawnedBot.transform.position - spawnPoint.position).sqrMagnitude < 100)
                     {
@@ -57,14 +57,14 @@ namespace Project.Managers
             } else {
                 GameObject bot = Instantiate(tankBot);
                 bot.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
-                spawnedBots.Add(bot.GetComponent<BaseBot>());
+                SpawnedBots.Add(bot.GetComponent<BaseBot>());
             }
         }
 
         public void UpdateBotTargets()
         {
             List<Transform> transformArr = new List<Transform>();
-            foreach(BaseBot bot in spawnedBots)
+            foreach(BaseBot bot in SpawnedBots)
             {
                 transformArr.Add(bot.transform);
             }

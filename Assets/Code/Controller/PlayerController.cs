@@ -204,25 +204,21 @@ namespace Project.Controllers {
         private void AimDown(InputAction.CallbackContext obj)
         {
             AimDown(obj.performed);
-            audioController.CannonAim(obj.performed);
         }
 
         private void AimUp(InputAction.CallbackContext obj)
         {
             AimUp(obj.performed);
-            audioController.CannonAim(obj.performed);
         }
 
         private void AimLeft(InputAction.CallbackContext obj)
         {
             AimLeft(obj.performed);
-            audioController.CannonTurn(obj.performed);
         }
 
         private void AimRight(InputAction.CallbackContext obj)
         {
             AimRight(obj.performed);
-            audioController.CannonTurn(obj.performed);
         }
         private void Move()
         {
@@ -307,22 +303,26 @@ namespace Project.Controllers {
         }
         public void AimLeft(bool aim)
         {
+            audioController.CannonTurn(aim);
             aimDir = aim ? AimDir.LEFT 
                 : aimDir != AimDir.RIGHT ? AimDir.IDLE
                 : aimDir;
         }
         public void AimRight(bool aim)
         {
+            audioController.CannonTurn(aim);
             aimDir = aim ? AimDir.RIGHT 
                 : aimDir != AimDir.LEFT ? AimDir.IDLE
                 : aimDir;
         }
         public void AimUp(bool aim)
         {
+            audioController.CannonAim(aim);
             barrelDir = aim ? BarrelDir.UP : BarrelDir.IDLE;
         }
         public void AimDown(bool aim)
         {
+            audioController.CannonAim(aim);
             barrelDir = aim ? BarrelDir.DOWN : BarrelDir.IDLE;
         }
         #endregion

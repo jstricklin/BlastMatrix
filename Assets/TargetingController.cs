@@ -132,7 +132,7 @@ namespace Project.Controllers {
         }
         IEnumerator CheckTrajectory()
         {
-            Vector3 startPos = trajectory.GetPosition(0);
+            Vector3 startPos; 
             int step = 0;
             int maxSteps = 30;
             trajectory.positionCount = 1;
@@ -145,6 +145,7 @@ namespace Project.Controllers {
             while (true)
             {
                 // posList.Add(startPos);
+                startPos = trajectory.GetPosition(0);
                 step++;
                 if (trajectory.positionCount <= step) trajectory.positionCount++;
                 Vector3 vel = (trajectoryStart.position - barrel.forward) / projectileRb.mass * 0.33f;
@@ -155,7 +156,7 @@ namespace Project.Controllers {
                 float dy = pVel * fTime * Mathf.Sin(angle * Mathf.Deg2Rad) - (Physics2D.gravity.magnitude * fTime * fTime / 2.0f);
                 Vector3 pos = new Vector3(startPos.x, startPos.y + dy, startPos.z + dz);
                 fTime += 0.1f;
-                possibleHit = (trajectory.transform.TransformPoint(pos) - trajectory.transform.TransformPoint(pos).NearestTarget(allTargets).position).sqrMagnitude < 10;
+                possibleHit = (trajectory.transform.TransformPoint(pos) - trajectory.transform.TransformPoint(pos).NearestTarget(allTargets).position).sqrMagnitude < 15;
                 // possibleHit = Vector3.Distance(trajectory.transform.TransformPoint(pos), trajectory.transform.TransformPoint(pos).NearestTarget(allTargets).position) < 2.5f;
                 if (possibleHit)
                 {
@@ -172,7 +173,7 @@ namespace Project.Controllers {
                         aimState = AimState.IN_SIGHT;
                     } else {
                         trajectory.material.color = noHitColor;
-                        if (aimDot < 0)
+                        if (aimDot < 0.1f)
                         {
                             aimState = AimState.TOO_CLOSE;
                         } else {
