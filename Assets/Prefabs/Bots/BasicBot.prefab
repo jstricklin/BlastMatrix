@@ -841,7 +841,7 @@ MonoBehaviour:
   targetsInSight: []
   currentTarget: {fileID: 0}
   currentDist: 0
-  maxDist: 8000
+  maxDist: 5500
   trajectory: {fileID: 5239365692210045349}
   projectile: {fileID: -8872867200065514599, guid: a9da8a910ad7e4da4826fc3af33bdfe9,
     type: 3}
@@ -11359,7 +11359,7 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}

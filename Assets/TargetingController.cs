@@ -147,7 +147,7 @@ namespace Project.Controllers {
                 // posList.Add(startPos);
                 step++;
                 if (trajectory.positionCount <= step) trajectory.positionCount++;
-                Vector3 vel = (trajectoryStart.position - trajectoryStart.forward) / projectileRb.mass * 0.33f;
+                Vector3 vel = (trajectoryStart.position - barrel.forward) / projectileRb.mass * 0.33f;
                 float pVel = Mathf.Sqrt((vel.z * vel.z) + (vel.y * vel.y));
                 float angle = Mathf.Rad2Deg*(Mathf.Atan2(vel.y, vel.z));
                 float dz = pVel * fTime * Mathf.Cos(angle * Mathf.Deg2Rad);

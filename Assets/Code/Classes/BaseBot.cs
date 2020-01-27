@@ -20,6 +20,8 @@ public class BaseBot : PlayerController
     public Vector3 obstacleHitPoint;
 
     public bool obstacleInSight;
+    bool maneuvering = false;
+    private bool avoiding;
     #endregion
 
     // public float maxDist = 100;
@@ -96,11 +98,12 @@ public class BaseBot : PlayerController
     {
         while (obstacle != null)
         {
+            avoiding = true;
             // if (attacking || repairing)
             // {
             //     yield break;
             // }
-            if ((obstacleHitPoint - transform.position).sqrMagnitude < 35)
+            if ((obstacleHitPoint - transform.position).sqrMagnitude < 100)
             {
                 avoidTarget.transform.position = obstacleHitPoint;
                 lookTarget = avoidTarget.transform;
@@ -115,6 +118,7 @@ public class BaseBot : PlayerController
             }
             yield return new WaitForSeconds(0.1f);
         }
+        avoiding = false;
         lookTarget = currentTarget;
         yield break;
     }
@@ -145,6 +149,7 @@ public class BaseBot : PlayerController
 
     public void FaceTarget()
     {
+        if (maneuvering && obstacle != null) return;
         dot = Vector3.Dot((transform.position - lookTarget.transform.position).normalized, -transform.forward.normalized);
 
         if (dot < 0.9f)
@@ -199,7 +204,6 @@ public class BaseBot : PlayerController
         MoveBack(false);
         TurnLeft(false);
         TurnRight(false);
-        bool moving = false;
         float moveTime = 100000f;
         float lastMove = Time.time;
         while (true)
@@ -224,14 +228,17 @@ public class BaseBot : PlayerController
                 cannonCooldown.StartCooldown();
                 FireWeapon();
                 TestFireProjectile();
+                if (!maneuvering && !avoiding && Random.Range(0, 10) > 7)
+                    StartCoroutine(AttackManeuvers());
             }
             // TODO work on routine below
             if (Time.time > lastMove + moveTime + (Random.Range(0, 100000)) && Random.Range(0, 100) > 99)
             {
                 // Debug.Log("moving...");
-                StartCoroutine(AttackManeuvers());
+                if (!maneuvering && !avoiding)
+                    StartCoroutine(AttackManeuvers());
+                lastMove = Time.time;
             } 
-            lastMove = Time.time;
             yield return new WaitForEndOfFrame();
         }
     }
@@ -239,15 +246,16 @@ public class BaseBot : PlayerController
     IEnumerator AttackManeuvers()
     {
         // float dot;
+        maneuvering = true;
         dot = Vector3.Dot((transform.position - lookTarget.transform.position).normalized, transform.forward.normalized);
 
-        if (dot > 0.01f)
+        if (dot > 0f)
         {
             TurnRight(true);
             // Quaternion deltaRot = Quaternion.FromToRotation(transform.forward, transform.right) * transform.rotation;
             // transform.rotation = Quaternion.Slerp(transform.rotation, deltaRot, turnSpeed * Time.deltaTime);
         }
-        else if (dot < -0.01f)
+        else if (dot < 0f)
         {
             TurnLeft(true);
             // Quaternion deltaRot = Quaternion.FromToRotation(transform.forward, -transform.right) * transform.rotation;
@@ -269,7 +277,7 @@ public class BaseBot : PlayerController
             //         break;
             // }
         }
-        if (Random.Range(0, 10) > 9)
+        if (Random.Range(0, 10) > 5)
         {
             if (Random.Range(0, 10) > 4) MoveForward(true);
             else MoveBack(true);
@@ -284,6 +292,7 @@ public class BaseBot : PlayerController
         TurnLeft(false);
         MoveForward(false);
         MoveBack(false);
+        maneuvering = false;
         yield break;
     }
 

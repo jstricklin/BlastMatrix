@@ -17,8 +17,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: dfff1413192ff417eb721f0c20da6b7f, type: 2}
     windowRect:
       serializedVersion: 2
-      x: -251.40012
-      y: 506.40106
+      x: -322.8003
+      y: 467.40097
       width: 200
       height: 435
     windowTitle: State Node
@@ -39,8 +39,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: 894fec9f5a8a8424387ce237e64e675d, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 30.599836
-      y: 441.40015
+      x: -40.79985
+      y: 402.40005
       width: 200
       height: 100
     windowTitle: Condition
@@ -62,8 +62,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: dfff1413192ff417eb721f0c20da6b7f, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 308.40073
-      y: 125.59984
+      x: 237.00143
+      y: 86.599884
       width: 200
       height: 455
     windowTitle: State Node
@@ -84,8 +84,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: 894fec9f5a8a8424387ce237e64e675d, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 577.0004
-      y: 303.19986
+      x: 505.60095
+      y: 264.19977
       width: 200
       height: 100
     windowTitle: Condition
@@ -107,8 +107,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: dfff1413192ff417eb721f0c20da6b7f, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 875.4003
-      y: 135.19974
+      x: 804.001
+      y: 96.199745
       width: 200
       height: 435
     windowTitle: State Node
@@ -129,8 +129,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: 894fec9f5a8a8424387ce237e64e675d, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 1156.4004
-      y: 229.59985
+      x: 1085.001
+      y: 190.5999
       width: 200
       height: 100
     windowTitle: Condition
@@ -152,8 +152,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: f0b651e6b32244ffc900d923d01d8637, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 1441.7996
-      y: 255.19968
+      x: 1370.3999
+      y: 216.19972
       width: 100
       height: 50
     windowTitle: Portal Node
@@ -165,8 +165,8 @@ MonoBehaviour:
     collapse: 0
     previousCollapse: 0
     stateRef:
-      currentState: {fileID: 11400000, guid: edd26067ed76d4b85bf7f651bef541dd, type: 2}
-      previousState: {fileID: 11400000, guid: edd26067ed76d4b85bf7f651bef541dd, type: 2}
+      currentState: {fileID: 11400000, guid: ea059cbfc1e8f4e6d85c0f779361edec, type: 2}
+      previousState: {fileID: 11400000, guid: ea059cbfc1e8f4e6d85c0f779361edec, type: 2}
     transRef:
       previousCondition: {fileID: 0}
       transitionId: 0
