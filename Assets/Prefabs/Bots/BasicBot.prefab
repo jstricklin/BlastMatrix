@@ -183,12 +183,14 @@ MonoBehaviour:
   cannonCooldown: {fileID: 0}
   isBot: 0
   attackReady: 0
-  testProjectile: {fileID: 4610914980914332192, guid: a9da8a910ad7e4da4826fc3af33bdfe9,
+  testProjectile: {fileID: 4610914980914332192, guid: 691aa80fb2cad443d8b9817f044c6f79,
     type: 3}
   obstacle: {fileID: 0}
   avoidVector: {x: 0, y: 0, z: 0}
   obstacleHitPoint: {x: 0, y: 0, z: 0}
   obstacleInSight: 0
+  avoiding: 0
+  backingUp: 0
 --- !u!1 &94240459767767269
 GameObject:
   m_ObjectHideFlags: 0
@@ -839,6 +841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allTargets: []
   targetsInSight: []
+  posList: []
   currentTarget: {fileID: 0}
   currentDist: 0
   maxDist: 5500

@@ -265,9 +265,7 @@ namespace Project.Controllers {
                 {
                     Quaternion deltaRot = Quaternion.FromToRotation(barrel.forward, barrel.up) * barrel.rotation;
                     barrel.rotation = Quaternion.Slerp(barrel.rotation, deltaRot, aimSpeed * Time.deltaTime);
-                } else if (barrelDir == BarrelDir.DOWN && barrel.localEulerAngles.x > 0){
-                    if (barrel.localEulerAngles.x < 0)
-                        Debug.Log("aiming down..." + barrel.localEulerAngles.x);
+                } else if (barrelDir == BarrelDir.DOWN && barrel.localRotation.x < 0){
                     Quaternion deltaRot = Quaternion.FromToRotation(barrel.forward, -barrel.up) * barrel.rotation;
                     barrel.rotation = Quaternion.Slerp(barrel.rotation, deltaRot, aimSpeed * Time.deltaTime);
                 }

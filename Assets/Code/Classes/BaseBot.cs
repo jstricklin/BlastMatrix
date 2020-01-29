@@ -15,13 +15,16 @@ public class BaseBot : PlayerController
     #region Collision Detection
     [SerializeField]
     Transform obstacle;
-    int checkDist = 25;
+    int checkDist = 10;
     public Vector3 avoidVector;
     public Vector3 obstacleHitPoint;
 
     public bool obstacleInSight;
     bool maneuvering = false;
-    private bool avoiding;
+    [SerializeField]
+    bool avoiding;
+    [SerializeField]
+    bool backingUp;
     #endregion
 
     // public float maxDist = 100;
@@ -50,7 +53,8 @@ public class BaseBot : PlayerController
     IEnumerator CheckObstacle()
     {
         Ray obstacleRay;
-        Debug.Log("pos: " + transform.position);
+        bool backingUp = false;
+        // Debug.Log("pos: " + transform.position);
         RaycastHit obstacleHit;
         while (true)
         {
@@ -69,8 +73,14 @@ public class BaseBot : PlayerController
             //     Debug.DrawRay(transform.position, transform.forward * lookDist);
             //     Debug.DrawRay(groundHit.point, groundHit.normal * 20, Color.yellow);
             // }
-
-            obstacleRay = new Ray(transform.position, transform.forward);
+            Vector3 dir;
+            if (moveDir == MoveDir.BACKWARD && !backingUp)
+            {
+                dir = -transform.forward;
+            } else {
+                dir = transform.forward;
+            }
+            obstacleRay = new Ray(transform.position, dir);
             if (Physics.Raycast(obstacleRay, out obstacleHit, checkDist, 1 << 0))
             {
                 // if (currentTarget != null && obstacleHit.transform != currentTarget.transform || currentTarget == null)
@@ -109,6 +119,7 @@ public class BaseBot : PlayerController
                 lookTarget = avoidTarget.transform;
                 MoveForward(false);
                 MoveBack(true);
+                backingUp = true;
             } else {
                 avoidVector = obstacleHitPoint - obstacle.transform.position;
                 avoidVector = avoidVector.normalized;
@@ -149,7 +160,7 @@ public class BaseBot : PlayerController
 
     public void FaceTarget()
     {
-        if (maneuvering && obstacle != null) return;
+        if (lookTarget == null || maneuvering && obstacle != null) return;
         dot = Vector3.Dot((transform.position - lookTarget.transform.position).normalized, -transform.forward.normalized);
 
         if (dot < 0.9f)
@@ -200,10 +211,13 @@ public class BaseBot : PlayerController
     }
     public IEnumerator MainAttackRoutine()
     {
-        MoveForward(false);
-        MoveBack(false);
-        TurnLeft(false);
-        TurnRight(false);
+        if (!avoiding)
+        {
+            MoveForward(false);
+            MoveBack(false);
+            TurnLeft(false);
+            TurnRight(false);
+        }
         float moveTime = 100000f;
         float lastMove = Time.time;
         while (true)
@@ -249,6 +263,14 @@ public class BaseBot : PlayerController
         maneuvering = true;
         dot = Vector3.Dot((transform.position - lookTarget.transform.position).normalized, transform.forward.normalized);
 
+        if (Random.Range(0, 10) > 5)
+        {
+            if (Random.Range(0, 10) > 4) MoveForward(true);
+            else MoveBack(true);
+        } else {
+            MoveBack(false);
+            MoveForward(false);
+        }
         if (dot > 0f)
         {
             TurnRight(true);
@@ -277,22 +299,18 @@ public class BaseBot : PlayerController
             //         break;
             // }
         }
-        if (Random.Range(0, 10) > 5)
-        {
-            if (Random.Range(0, 10) > 4) MoveForward(true);
-            else MoveBack(true);
-        } else {
-            MoveBack(false);
-            MoveForward(false);
-        }
 
         yield return new WaitForSeconds(Random.Range(2, 5));
 
+        maneuvering = false;
+        if (avoiding)
+        {
+            yield return new WaitUntil(() => !avoiding);
+        }
         TurnRight(false);
         TurnLeft(false);
         MoveForward(false);
         MoveBack(false);
-        maneuvering = false;
         yield break;
     }
 

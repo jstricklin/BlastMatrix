@@ -12,11 +12,12 @@ namespace Project.Controllers {
 
         public List<Transform> allTargets = new List<Transform>();
         public List<Transform> targetsInSight = new List<Transform>();
+        public List<Vector3> posList = new List<Vector3>();
         BaseBot botController;
         public Transform currentTarget;
 
         public float currentDist;
-        public float maxDist = 15000f;
+        public float maxDist = 10000f;
         [SerializeField]
         LineRenderer trajectory;
         [SerializeField]
@@ -133,47 +134,43 @@ namespace Project.Controllers {
         IEnumerator CheckTrajectory()
         {
             Vector3 startPos; 
-            int step = 0;
+            int step = 1;
             int maxSteps = 30;
             trajectory.positionCount = 1;
-            float fTime = 0;
+            float fTime = 0.1f;
             Color noHitColor = trajectory.material.color;
             Color hitColor = Color.green;
             hitColor.a = noHitColor.a;
             int hitCount = 0;
-            // List<Vector3> posList = new List<Vector3>();
             while (true)
             {
-                // posList.Add(startPos);
                 startPos = trajectory.GetPosition(0);
-                step++;
+                posList.Add(startPos);
                 if (trajectory.positionCount <= step) trajectory.positionCount++;
-                Vector3 vel = (trajectoryStart.position - barrel.forward) / projectileRb.mass * 0.33f;
+                Vector3 vel = (barrel.transform.position - barrel.forward).normalized * 25 / projectileRb.mass;
+                // Debug.Log("vel " + vel + "barrel fwd" + (barrel.forward) * 25);
                 float pVel = Mathf.Sqrt((vel.z * vel.z) + (vel.y * vel.y));
                 float angle = Mathf.Rad2Deg*(Mathf.Atan2(vel.y, vel.z));
                 float dz = pVel * fTime * Mathf.Cos(angle * Mathf.Deg2Rad);
                 if (dz < 0) dz *= -1;
-                float dy = pVel * fTime * Mathf.Sin(angle * Mathf.Deg2Rad) - (Physics2D.gravity.magnitude * fTime * fTime / 2.0f);
+                float dy = pVel * fTime * Mathf.Sin(angle * Mathf.Deg2Rad) - Physics.gravity.magnitude * fTime * fTime * 0.5f;
                 Vector3 pos = new Vector3(startPos.x, startPos.y + dy, startPos.z + dz);
                 fTime += 0.1f;
-                possibleHit = (trajectory.transform.TransformPoint(pos) - trajectory.transform.TransformPoint(pos).NearestTarget(allTargets).position).sqrMagnitude < 15;
-                // possibleHit = Vector3.Distance(trajectory.transform.TransformPoint(pos), trajectory.transform.TransformPoint(pos).NearestTarget(allTargets).position) < 2.5f;
+                possibleHit = allTargets.Count > 0 ? (barrel.transform.TransformPoint(pos) - barrel.transform.TransformPoint(pos).NearestTarget(allTargets).position).sqrMagnitude < 10 : false;
                 if (possibleHit)
                 {
-                    // Debug.Log("pointDist: " + (pos - pos.NearestTarget(allTargets).position).sqrMagnitude);
-                    // Debug.Log("pointDist: " + Vector3.Distance(pos, pos.NearestTarget(allTargets).position));
                     hitCount++;
                     trajectory.material.color = hitColor;
                 }
-                if (step >= maxSteps - 1 || trajectory.transform.TransformPoint(pos).y < 0 || hitCount > 0) 
+                if (step >= maxSteps - 1 || barrel.transform.TransformPoint(pos).y < 0 /* || hitCount > 0 */) 
                 {
-                    float aimDot = Vector3.Dot((trajectory.transform.TransformPoint(pos) - currentTarget.transform.position).normalized, barrel.forward);
+                    float aimDot = currentTarget != null ? Vector3.Dot((barrel.transform.TransformPoint(pos) - currentTarget.transform.position).normalized, barrel.forward) : 0;
                     if (hitCount > 0)
                     {
                         aimState = AimState.IN_SIGHT;
                     } else {
                         trajectory.material.color = noHitColor;
-                        if (aimDot < 0.1f)
+                        if (aimDot < 0)
                         {
                             aimState = AimState.TOO_CLOSE;
                         } else {
@@ -181,27 +178,26 @@ namespace Project.Controllers {
                         }
                         // Debug.Log("dot " + aimDot + "| aimState: " + aimState);
                     }
-                    trajectory.positionCount = step;
+                    posList.Clear();
+                    trajectory.positionCount = step > 1 ? step - 1 : 1;
                     hitCount = 0;
-                    step = 0;
-                    fTime = 0f;
-                    // if (BotManager.Instance.displayTrajectories)
-                    //     DisplayTrajectory(trajectory, posList);
-                    // posList.Clear();
+                    step = 1;
+                    fTime = 0.1f;
                 } else {
+                    posList.Add(pos);
                     trajectory.SetPosition(step, pos);
-                    // posList.Add(pos);
+                    step++;
                 }
                 yield return new WaitForEndOfFrame();
             }
         }
-        public void DisplayTrajectory(LineRenderer line, List<Vector3> positions)
-        {
-            for (int i = 0; i < line.positionCount; i++)
-            {
-                Debug.Log("positions count: " + positions.Count + "line count : " + line.positionCount);
-                line.SetPosition(i, positions[i]);
-            }
-        }
+        // public void DisplayTrajectory(LineRenderer line, List<Vector3> positions)
+        // {
+        //     for (int i = 0; i < line.positionCount; i++)
+        //     {
+        //         Debug.Log("positions count: " + positions.Count + "line count : " + line.positionCount);
+        //         line.SetPosition(i, positions[i]);
+        //     }
+        // }
     }
 }
