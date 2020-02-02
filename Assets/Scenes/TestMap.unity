@@ -1452,7 +1452,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1e-45, y: 7.1e-44, z: 0, w: 1.2556231e+10}
+  m_BoundingSphereOverride: {x: 0.099609375, y: 0.029296875, z: 0.02734375, w: -0.029296875}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -2690,7 +2690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targets: []
   tankBot: {fileID: 94240458607752579, guid: d7d88913bf4204375b80a39a3e006bc9, type: 3}
-  maxBots: 8
+  maxBots: 4
   spawnPoints: {fileID: 1179946542}
   displayTrajectories: 1
 --- !u!4 &1546918894

@@ -17,6 +17,7 @@ namespace Project.Controllers {
         private float speed = 6.5f;
         public float turnSpeed = 0.75f;
         public float aimSpeed = 0.5f;
+        public float barrelSpeed = 0.25f;
         // private float shotForce = 15;
         private float maxBarrelUp = 0.2f;
         [SerializeField]
@@ -264,10 +265,10 @@ namespace Project.Controllers {
                 if (barrelDir == BarrelDir.UP && barrel.localRotation.x * -1 < maxBarrelUp)
                 {
                     Quaternion deltaRot = Quaternion.FromToRotation(barrel.forward, barrel.up) * barrel.rotation;
-                    barrel.rotation = Quaternion.Slerp(barrel.rotation, deltaRot, aimSpeed * Time.deltaTime);
+                    barrel.rotation = Quaternion.Slerp(barrel.rotation, deltaRot, barrelSpeed * Time.deltaTime);
                 } else if (barrelDir == BarrelDir.DOWN && barrel.localRotation.x < 0){
                     Quaternion deltaRot = Quaternion.FromToRotation(barrel.forward, -barrel.up) * barrel.rotation;
-                    barrel.rotation = Quaternion.Slerp(barrel.rotation, deltaRot, aimSpeed * Time.deltaTime);
+                    barrel.rotation = Quaternion.Slerp(barrel.rotation, deltaRot, barrelSpeed * Time.deltaTime);
                 }
             }
         }

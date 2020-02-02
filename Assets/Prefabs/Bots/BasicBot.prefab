@@ -165,6 +165,7 @@ MonoBehaviour:
   baseBot: {fileID: 0}
   turnSpeed: 0.75
   aimSpeed: 0.5
+  barrelSpeed: 0.25
   tankUI: {fileID: 7292350256726526122}
   shotCooldown: 3
   cannon: {fileID: 94240459767767270}
@@ -658,11 +659,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1841631027950312378}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.153, z: 3.734}
+  m_LocalPosition: {x: 0, y: 0.153, z: 3.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6751357219422002229}
-  - {fileID: 5398779433935380609}
   m_Father: {fileID: 676210076038382574}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -824,6 +824,7 @@ Transform:
   m_Children:
   - {fileID: 8764951246582189691}
   - {fileID: 479256886576837662}
+  - {fileID: 5517432254532791910}
   m_Father: {fileID: 94240458607752604}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -844,10 +845,13 @@ MonoBehaviour:
   posList: []
   currentTarget: {fileID: 0}
   currentDist: 0
+  currentAngle: 0
+  angleToTarget: 0
   maxDist: 5500
   trajectory: {fileID: 5239365692210045349}
   projectile: {fileID: -8872867200065514599, guid: a9da8a910ad7e4da4826fc3af33bdfe9,
     type: 3}
+  cannonBase: {fileID: 94240459767767270}
   barrel: {fileID: 676210076038382574}
   trajectoryStart: {fileID: 1841631027950312379}
   aimState: 0
@@ -1197,6 +1201,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &5236314954757091763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5517432254532791910}
+  m_Layer: 10
+  m_Name: '[ Trajectory ]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5517432254532791910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5236314954757091763}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.155, z: -0.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5398779433935380609}
+  m_Father: {fileID: 2593642164949062255}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6654725334106471487
 GameObject:
   m_ObjectHideFlags: 0
@@ -11296,8 +11331,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1841631027950312379}
-  m_RootOrder: 1
+  m_Father: {fileID: 5517432254532791910}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &5239365692210045349
 LineRenderer:

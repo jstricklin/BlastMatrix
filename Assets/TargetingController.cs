@@ -5,6 +5,7 @@ using System.Linq;
 using Project.Utilities;
 using Project.Gameplay;
 using Project.Managers;
+using Project.Ballistics;
 
 namespace Project.Controllers {
     public class TargetingController : MonoBehaviour
@@ -12,11 +13,13 @@ namespace Project.Controllers {
 
         public List<Transform> allTargets = new List<Transform>();
         public List<Transform> targetsInSight = new List<Transform>();
-        public List<Vector3> posList = new List<Vector3>();
+        public Vector3[] posList;
         BaseBot botController;
         public Transform currentTarget;
 
         public float currentDist;
+        public float currentAngle;
+        public float angleToTarget;
         public float maxDist = 10000f;
         [SerializeField]
         LineRenderer trajectory;
@@ -24,7 +27,7 @@ namespace Project.Controllers {
         Projectile projectile;
         Rigidbody projectileRb;
         [SerializeField]
-        Transform barrel, trajectoryStart;
+        Transform cannonBase, barrel, trajectoryStart;
 
         bool possibleHit = false;
         public enum AimState {
@@ -134,43 +137,64 @@ namespace Project.Controllers {
         IEnumerator CheckTrajectory()
         {
             Vector3 startPos; 
-            int step = 1;
-            int maxSteps = 30;
-            trajectory.positionCount = 1;
-            float fTime = 0.1f;
+            // int step = 1;
+            int maxSteps = 50;
+            trajectory.positionCount = maxSteps;
+            trajectory.transform.SetParent(cannonBase);
+            // trajectory.transform.position = cannonBase.transform.position;
+            Quaternion rotation = trajectory.transform.rotation;
+            // float fTime = 0.1f;
             Color noHitColor = trajectory.material.color;
             Color hitColor = Color.green;
             hitColor.a = noHitColor.a;
+            // List<Vector3> trajectoryPoints = new List<Vector3>();
             int hitCount = 0;
+            startPos = Vector3.zero;
             while (true)
             {
-                startPos = trajectory.GetPosition(0);
-                posList.Add(startPos);
-                if (trajectory.positionCount <= step) trajectory.positionCount++;
-                Vector3 vel = (barrel.transform.position - barrel.forward).normalized * 25 / projectileRb.mass;
-                // Debug.Log("vel " + vel + "barrel fwd" + (barrel.forward) * 25);
-                float pVel = Mathf.Sqrt((vel.z * vel.z) + (vel.y * vel.y));
-                float angle = Mathf.Rad2Deg*(Mathf.Atan2(vel.y, vel.z));
-                float dz = pVel * fTime * Mathf.Cos(angle * Mathf.Deg2Rad);
-                if (dz < 0) dz *= -1;
-                float dy = pVel * fTime * Mathf.Sin(angle * Mathf.Deg2Rad) - Physics.gravity.magnitude * fTime * fTime * 0.5f;
-                Vector3 pos = new Vector3(startPos.x, startPos.y + dy, startPos.z + dz);
-                fTime += 0.1f;
-                possibleHit = allTargets.Count > 0 ? (barrel.transform.TransformPoint(pos) - barrel.transform.TransformPoint(pos).NearestTarget(allTargets).position).sqrMagnitude < 10 : false;
+                // posList.Add(startPos);
+                // if (trajectory.positionCount <= step) trajectory.positionCount++;
+                currentAngle = Vector3.Angle(cannonBase.forward, barrel.forward);
+                // Debug.Log("angle " + currentAngle);
+                // Vector3 vector = Vector3.ProjectOnPlane(barrel.forward * 25, barrel.forward - Vector3.forward);
+                Vector3 vector = new Vector3(0, Mathf.Sin(currentAngle * Mathf.Deg2Rad), Mathf.Cos(currentAngle * Mathf.Deg2Rad)) * 25;
+                posList = Ballistics.Ballistics.GetTrajectory(trajectory.positionCount, startPos, vector, projectileRb, currentAngle);
+                // int i = 0;
+                // foreach(Vector3 pos in posList)
+                // {
+                //     trajectory.SetPosition(i, pos);
+                //     i++;
+                // }
+                trajectory.SetPositions(posList);
+                // Vector3 vel = (barrel.transform.position - barrel.forward).normalized * 25 / projectileRb.mass;
+                // // Debug.Log("vel " + vel + "barrel fwd" + (barrel.forward) * 25);
+                // float pVel = Mathf.Sqrt((vel.z * vel.z) + (vel.y * vel.y));
+                // float angle = Mathf.Rad2Deg*(Mathf.Atan2(vel.y, vel.z));
+                // float dz = pVel * fTime * Mathf.Cos(angle * Mathf.Deg2Rad);
+                // if (dz < 0) dz *= -1;
+                // float dy = pVel * fTime * Mathf.Sin(angle * Mathf.Deg2Rad) - Physics.gravity.magnitude * fTime * fTime * 0.5f;
+                // Vector3 pos = new Vector3(startPos.x, startPos.y + dy, startPos.z + dz);
+                // fTime += 0.1f;
+
+                // possibleHit = allTargets.Count > 0 ? (barrel.transform.TransformPoint(pos) - barrel.transform.TransformPoint(pos).NearestTarget(allTargets).position).sqrMagnitude < 10 : false;
                 if (possibleHit)
                 {
                     hitCount++;
                     trajectory.material.color = hitColor;
                 }
-                if (step >= maxSteps - 1 || barrel.transform.TransformPoint(pos).y < 0 /* || hitCount > 0 */) 
-                {
-                    float aimDot = currentTarget != null ? Vector3.Dot((barrel.transform.TransformPoint(pos) - currentTarget.transform.position).normalized, barrel.forward) : 0;
-                    if (hitCount > 0)
+                // if (step >= maxSteps - 1 || barrel.transform.TransformPoint(pos).y < 0/* || hitCount > 0 */) 
+                // {
+                    // float aimDot = currentTarget != null ? Vector3.Dot((barrel.transform.TransformPoint(pos) - currentTarget.transform.position).normalized, barrel.forward) : 0;
+                    // Debug.Log("Angle... " + Vector3.Angle(cannonBase.forward, barrel.forward));
+                    if (currentTarget)
+                        angleToTarget = cannonBase.transform.GetAngleToTarget(currentTarget.position, 25);
+                        // Debug.Log("angle to target: " + barrel.transform.GetAngleToTarget(currentTarget.position, 25));
+                    if (Mathf.FloorToInt(currentAngle) == Mathf.FloorToInt(angleToTarget))
                     {
                         aimState = AimState.IN_SIGHT;
                     } else {
                         trajectory.material.color = noHitColor;
-                        if (aimDot < 0)
+                        if (currentAngle < angleToTarget)
                         {
                             aimState = AimState.TOO_CLOSE;
                         } else {
@@ -178,17 +202,17 @@ namespace Project.Controllers {
                         }
                         // Debug.Log("dot " + aimDot + "| aimState: " + aimState);
                     }
-                    posList.Clear();
-                    trajectory.positionCount = step > 1 ? step - 1 : 1;
-                    hitCount = 0;
-                    step = 1;
-                    fTime = 0.1f;
-                } else {
-                    posList.Add(pos);
-                    trajectory.SetPosition(step, pos);
-                    step++;
-                }
-                yield return new WaitForEndOfFrame();
+                    // posList.Clear();
+                    // trajectory.positionCount = step > 1 ? step - 1 : 1;
+                    // hitCount = 0;
+                    // step = 1;
+                    // fTime = 0.1f;
+                // } else {
+                    // posList.Add(pos);
+                    // trajectory.SetPosition(step, pos);
+                    // step++;
+                // }
+                yield return new WaitForFixedUpdate();
             }
         }
         // public void DisplayTrajectory(LineRenderer line, List<Vector3> positions)
