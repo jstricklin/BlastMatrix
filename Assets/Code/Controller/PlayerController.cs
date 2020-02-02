@@ -19,7 +19,7 @@ namespace Project.Controllers {
         public float aimSpeed = 0.5f;
         public float barrelSpeed = 0.25f;
         // private float shotForce = 15;
-        private float maxBarrelUp = 0.2f;
+        private float maxBarrelUp = 45;
         [SerializeField]
         Canvas tankUI;
         [SerializeField]
@@ -262,11 +262,12 @@ namespace Project.Controllers {
             }
             if (barrelDir != BarrelDir.IDLE) 
             {
-                if (barrelDir == BarrelDir.UP && barrel.localRotation.x * -1 < maxBarrelUp)
+                float angle = Vector3.Angle(cannon.forward, barrel.forward);
+                if (barrelDir == BarrelDir.UP && angle <= maxBarrelUp)
                 {
                     Quaternion deltaRot = Quaternion.FromToRotation(barrel.forward, barrel.up) * barrel.rotation;
                     barrel.rotation = Quaternion.Slerp(barrel.rotation, deltaRot, barrelSpeed * Time.deltaTime);
-                } else if (barrelDir == BarrelDir.DOWN && barrel.localRotation.x < 0){
+                } else if (barrelDir == BarrelDir.DOWN && angle > 0){
                     Quaternion deltaRot = Quaternion.FromToRotation(barrel.forward, -barrel.up) * barrel.rotation;
                     barrel.rotation = Quaternion.Slerp(barrel.rotation, deltaRot, barrelSpeed * Time.deltaTime);
                 }
