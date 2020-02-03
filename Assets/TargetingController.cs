@@ -166,6 +166,7 @@ namespace Project.Controllers {
                     angleToTarget = trajectoryStart.GetAngleToTarget(currentTarget.transform.position, vector.magnitude);
                 }
                 float tolerance = 0.5f;
+                // float swizzle = Random.Range(-5, 5);
                 if (Mathf.Abs(currentAngle - angleToTarget) < tolerance && possibleHit)
                 {
                     aimState = AimState.IN_SIGHT;
@@ -180,7 +181,6 @@ namespace Project.Controllers {
                     }
                     // Debug.Log("dot " + aimDot + "| aimState: " + aimState);
                 }
-                // hitCount = 0;
                 yield return new WaitForFixedUpdate();
             }
         }

@@ -161,15 +161,15 @@ public class BaseBot : PlayerController
     public void FaceTarget()
     {
         if (lookTarget == null || maneuvering && obstacle != null) return;
-        dot = Vector3.Dot((transform.position - lookTarget.transform.position).normalized, -transform.forward.normalized);
+        dot = Vector3.Dot((transform.position - lookTarget.transform.position).normalized, transform.right.normalized);
 
-        if (dot < 0.9f)
+        if (dot < 0f)
         {
             TurnRight(true);
             // Quaternion deltaRot = Quaternion.FromToRotation(transform.forward, transform.right) * transform.rotation;
             // transform.rotation = Quaternion.Slerp(transform.rotation, deltaRot, turnSpeed * Time.deltaTime);
         }
-        else if (dot > -0.9f)
+        else if (dot > 0f)
         {
             TurnLeft(true);
             // Quaternion deltaRot = Quaternion.FromToRotation(transform.forward, -transform.right) * transform.rotation;
