@@ -430,6 +430,9 @@ namespace Project.Networking
                         spawnPoints.spawnPoints[i] = points[i].position;
                         spawnPoints.spawnRotations[i] = points[i].rotation;
                     }
+                    // spawn bots   
+                    BotManager.Instance.Initialize(8);
+                    Debug.Log("spawned bots... " + BotManager.SpawnedBots.Count);
                     socketIO.Emit("updateSpawnPoints", JsonUtility.ToJson(spawnPoints)); 
                 }
                 socketIO.Emit("levelLoaded");

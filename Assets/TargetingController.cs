@@ -6,6 +6,7 @@ using Project.Utilities;
 using Project.Gameplay;
 using Project.Managers;
 using Project.Ballistics;
+using Project.Networking;
 
 namespace Project.Controllers {
     public class TargetingController : MonoBehaviour
@@ -36,14 +37,21 @@ namespace Project.Controllers {
             TOO_CLOSE,
         }
 
+        Vector3 vector;
+
         public AimState aimState;
 
         void Start()
         {
             botController = GetComponentInParent<BaseBot>();
+            if (botController != null) 
+            {
+                StartCoroutine(CheckTargetsInSight());
+                StartCoroutine(CheckTrajectory());
+            } else {
+                StartCoroutine(DisplayProjectileTrajectory());
+            }
             projectileRb = projectile.GetComponent<Rigidbody>();
-            StartCoroutine(CheckTargetsInSight());
-            StartCoroutine(CheckTrajectory());
         }
 
         void Update()
@@ -52,6 +60,11 @@ namespace Project.Controllers {
             {
                 currentDist = (transform.position - currentTarget.position).sqrMagnitude;
             }
+        }
+        void FixedUpdate()
+        {
+            currentAngle = Vector3.Angle(cannonBase.forward, barrel.forward);
+            vector = new Vector3(0, Mathf.Sin(currentAngle * Mathf.Deg2Rad), Mathf.Cos(currentAngle * Mathf.Deg2Rad)) * 25;
         }
 
         public void SetProjectile(Projectile newProjectile)
@@ -134,39 +147,35 @@ namespace Project.Controllers {
                 yield return new WaitForSeconds(0.25f);
             }
         }
-        IEnumerator CheckTrajectory()
+        IEnumerator DisplayProjectileTrajectory()
         {
-            // SphereCollider rangeColl = gameObject.AddComponent<SphereCollider>();
-            // rangeColl.isTrigger = true;
-            // Vector3 startPos; 
-            // int step = 1;
             int maxSteps = 100;
             trajectory.transform.SetParent(cannonBase);
-            // trajectory.transform.position = cannonBase.transform.position;
-            Quaternion rotation = trajectory.transform.rotation;
-            // float fTime = 0.1f;
             Color noHitColor = trajectory.material.color;
             Color hitColor = Color.green;
             hitColor.a = noHitColor.a;
-            // List<Vector3> trajectoryPoints = new List<Vector3>();
-            // int hitCount = 0;
-            // startPos = Vector3.zero;
+            while(true)
+            {
+                bool possibleHit = Ballistics.Ballistics.DisplayTrajectory(trajectory, trajectoryStart, vector, maxSteps, currentAngle, allTargets);
+                yield return new WaitForFixedUpdate();
+            }
+        }
+        IEnumerator CheckTrajectory()
+        {
+            int maxSteps = 100;
+            trajectory.transform.SetParent(cannonBase);
+            Color noHitColor = trajectory.material.color;
+            Color hitColor = Color.green;
+            hitColor.a = noHitColor.a;
             while (true)
             {
-                // posList.Add(startPos);
-                // if (trajectory.positionCount <= step) trajectory.positionCount++;
-                currentAngle = Vector3.Angle(cannonBase.forward, barrel.forward);
-                // Debug.Log("angle " + currentAngle);
-                // Vector3 vector = Vector3.ProjectOnPlane(barrel.forward * 25, barrel.forward - Vector3.forward);
-                Vector3 vector = new Vector3(0, Mathf.Sin(currentAngle * Mathf.Deg2Rad), Mathf.Cos(currentAngle * Mathf.Deg2Rad)) * 25;
-                // posList = Ballistics.Ballistics.GetTrajectory(maxSteps, vector, currentAngle);
-                bool possibleHit = Ballistics.Ballistics.DisplayTrajectory(trajectory, trajectoryStart, vector, maxSteps, currentAngle, allTargets);
+                trajectory.enabled = BotManager.Instance.displayTrajectories;
+                bool possibleHit = Ballistics.Ballistics.DisplayTrajectory(trajectory, trajectoryStart, vector, maxSteps, currentAngle, allTargets);                    
                 if (currentTarget)
                 {
                     angleToTarget = trajectoryStart.GetAngleToTarget(currentTarget.transform.position, vector.magnitude);
                 }
                 float tolerance = 0.5f;
-                // float swizzle = Random.Range(-5, 5);
                 if (Mathf.Abs(currentAngle - angleToTarget) < tolerance && possibleHit)
                 {
                     aimState = AimState.IN_SIGHT;
@@ -179,7 +188,6 @@ namespace Project.Controllers {
                     } else {
                         aimState = AimState.TOO_FAR;
                     }
-                    // Debug.Log("dot " + aimDot + "| aimState: " + aimState);
                 }
                 yield return new WaitForFixedUpdate();
             }

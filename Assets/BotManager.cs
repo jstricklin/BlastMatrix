@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Project.Networking;
 using Project.ScriptableObjects;
 using Project.Utilities;
 using UnityEngine;
@@ -25,7 +26,7 @@ namespace Project.Managers
 
         void Start()
         {
-            Initialize(maxBots);
+            // Initialize(maxBots);
         }
 
         public void Initialize(int botCount)
@@ -41,10 +42,8 @@ namespace Project.Managers
             UpdateBotTargets();
         }
 
-        public void SpawnBot(bool canSpawn = false)
+        public GameObject SpawnBot(bool canSpawn = false)
         {
-            // Transform spawnPoint = spawnPointsArr[0];
-            // Transform spawnPoint;
             if (!canSpawn)
             {
                 spawnPoint = spawnPointsArr[Random.Range(0, spawnPointsArr.Count - 1)];
@@ -52,17 +51,18 @@ namespace Project.Managers
                 {
                     if ((spawnedBot.transform.position - spawnPoint.position).sqrMagnitude < 100)
                     {
-                        SpawnBot();
-                        return;
+                        Invoke("SpawnBot", 0.25f);
+                        return null;
                     }
                 }
                 SpawnBot(true);
             } else {
-                // GameObject bot = Instantiate(tankBot);
                 GameObject bot = bots.GenerateBotByName("Basic_Bot");
                 bot.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
                 SpawnedBots.Add(bot.GetComponent<BaseBot>());
+                return bot;
             }
+            return null;
         }
 
         public void UpdateBotTargets()

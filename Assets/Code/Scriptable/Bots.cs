@@ -15,13 +15,12 @@ namespace Project.ScriptableObjects {
             // Debug.Log(name);
             GameObject bot = Instantiate(bots[name]);
             Color newPrimary = Random.ColorHSV();
-            Color newGlow = Random.ColorHSV();
+            // Color newGlow = Random.ColorHSV();
             foreach(MeshRenderer mesh in bot.GetComponentsInChildren<MeshRenderer>())
             {
                 mesh.material.SetColor("_primaryColor", newPrimary);
-                mesh.material.SetColor("_glowColor", newGlow);
+                // mesh.material.SetColor("_glowColor", newGlow);
             }
-
             return bot;
         }
     }

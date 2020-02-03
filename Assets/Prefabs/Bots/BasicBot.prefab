@@ -96,13 +96,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 94240458607752579}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 807111cdc09c54624b0c210590eeca13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   oldRotation: {x: 0, y: 0, z: 0, w: 0}
-  playerController: {fileID: 0}
+  playerController: {fileID: 2529498192949602897}
 --- !u!114 &5546979786271359820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 94240458607752579}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b08709a3e2bcf439cb52106a4300e0d4, type: 3}
   m_Name: 
