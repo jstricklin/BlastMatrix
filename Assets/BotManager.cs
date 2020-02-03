@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Project.ScriptableObjects;
 using Project.Utilities;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ namespace Project.Managers
         public List<GameObject> targets = new List<GameObject>();
         [SerializeField]
         GameObject tankBot;
+        [SerializeField]
+        Bots bots;
         [SerializeField]
         int maxBots = 8;
         [SerializeField]
@@ -55,7 +58,8 @@ namespace Project.Managers
                 }
                 SpawnBot(true);
             } else {
-                GameObject bot = Instantiate(tankBot);
+                // GameObject bot = Instantiate(tankBot);
+                GameObject bot = bots.GenerateBotByName("Basic_Bot");
                 bot.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
                 SpawnedBots.Add(bot.GetComponent<BaseBot>());
             }

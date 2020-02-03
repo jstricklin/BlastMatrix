@@ -2690,6 +2690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targets: []
   tankBot: {fileID: 94240458607752579, guid: d7d88913bf4204375b80a39a3e006bc9, type: 3}
+  bots: {fileID: 11400000, guid: bf0548947f2004da3a951d4a468cdb7f, type: 2}
   maxBots: 8
   spawnPoints: {fileID: 1179946542}
   displayTrajectories: 1
