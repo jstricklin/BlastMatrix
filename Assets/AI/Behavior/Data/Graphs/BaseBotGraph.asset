@@ -17,8 +17,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: dfff1413192ff417eb721f0c20da6b7f, type: 2}
     windowRect:
       serializedVersion: 2
-      x: -322.8003
-      y: 467.40097
+      x: 8.399596
+      y: 457.80093
       width: 200
       height: 435
     windowTitle: State Node
@@ -39,8 +39,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: 894fec9f5a8a8424387ce237e64e675d, type: 2}
     windowRect:
       serializedVersion: 2
-      x: -40.79985
-      y: 402.40005
+      x: 290.40018
+      y: 392.79996
       width: 200
       height: 100
     windowTitle: Condition
@@ -62,8 +62,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: dfff1413192ff417eb721f0c20da6b7f, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 237.00143
-      y: 86.599884
+      x: 568.2014
+      y: 76.999886
       width: 200
       height: 455
     windowTitle: State Node
@@ -84,8 +84,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: 894fec9f5a8a8424387ce237e64e675d, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 505.60095
-      y: 264.19977
+      x: 836.8008
+      y: 254.59981
       width: 200
       height: 100
     windowTitle: Condition
@@ -107,8 +107,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: dfff1413192ff417eb721f0c20da6b7f, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 804.001
-      y: 96.199745
+      x: 1135.2008
+      y: 86.59976
       width: 200
       height: 435
     windowTitle: State Node
@@ -129,8 +129,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: 894fec9f5a8a8424387ce237e64e675d, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 1085.001
-      y: 190.5999
+      x: 1416.2012
+      y: 180.99994
       width: 200
       height: 100
     windowTitle: Condition
@@ -152,8 +152,8 @@ MonoBehaviour:
     drawNode: {fileID: 11400000, guid: f0b651e6b32244ffc900d923d01d8637, type: 2}
     windowRect:
       serializedVersion: 2
-      x: 1370.3999
-      y: 216.19972
+      x: 1701.6002
+      y: 206.59976
       width: 100
       height: 50
     windowTitle: Portal Node

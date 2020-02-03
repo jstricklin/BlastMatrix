@@ -20,7 +20,7 @@ namespace Project.Controllers {
         public float currentDist;
         public float currentAngle;
         public float angleToTarget;
-        public float maxDist = 750f;
+        public float maxDist;
         [SerializeField]
         LineRenderer trajectory;
         [SerializeField]
@@ -138,7 +138,7 @@ namespace Project.Controllers {
         {
             // SphereCollider rangeColl = gameObject.AddComponent<SphereCollider>();
             // rangeColl.isTrigger = true;
-            Vector3 startPos; 
+            // Vector3 startPos; 
             // int step = 1;
             int maxSteps = 100;
             trajectory.transform.SetParent(cannonBase);
@@ -149,47 +149,24 @@ namespace Project.Controllers {
             Color hitColor = Color.green;
             hitColor.a = noHitColor.a;
             // List<Vector3> trajectoryPoints = new List<Vector3>();
-            int hitCount = 0;
-            startPos = Vector3.zero;
+            // int hitCount = 0;
+            // startPos = Vector3.zero;
             while (true)
             {
-                trajectory.positionCount = maxSteps;
                 // posList.Add(startPos);
                 // if (trajectory.positionCount <= step) trajectory.positionCount++;
                 currentAngle = Vector3.Angle(cannonBase.forward, barrel.forward);
                 // Debug.Log("angle " + currentAngle);
                 // Vector3 vector = Vector3.ProjectOnPlane(barrel.forward * 25, barrel.forward - Vector3.forward);
                 Vector3 vector = new Vector3(0, Mathf.Sin(currentAngle * Mathf.Deg2Rad), Mathf.Cos(currentAngle * Mathf.Deg2Rad)) * 25;
-                posList = Ballistics.Ballistics.GetTrajectory(maxSteps, startPos, vector, projectileRb, currentAngle);
-                int i = 0;
-                foreach(Vector3 pos in posList)
-                {
-                    Vector3 newPos = pos + trajectory.transform.InverseTransformPoint(trajectoryStart.transform.position);
-                    trajectory.SetPosition(i, newPos);
-                    // trajectory.SetPosition(i, trajectory.transform.TransformPoint(pos));
-                    // possibleHit = allTargets.Count > 0 ? (barrel.transform.TransformPoint(newPos) - barrel.transform.TransformPoint(newPos).NearestTarget(allTargets).position).sqrMagnitude < 50 : false;
-                    possibleHit = allTargets.Count > 0 ? (trajectory.transform.TransformPoint(newPos) - trajectory.transform.TransformPoint(newPos).NearestTarget(allTargets).position).sqrMagnitude < 100 : false;
-                    if (possibleHit)
-                    {
-                        hitCount++;
-                    }
-                    if (trajectory.transform.TransformPoint(pos).y <= 0)
-                    {
-                        trajectory.positionCount = i + 1;
-                        // Debug.Log("new pos + " + trajectory.transform.TransformPoint(newPos));
-                        // rangeColl.radius = pos.z; 
-                        break;
-                    }
-                    i++;
-                }
+                // posList = Ballistics.Ballistics.GetTrajectory(maxSteps, vector, currentAngle);
+                bool possibleHit = Ballistics.Ballistics.DisplayTrajectory(trajectory, trajectoryStart, vector, maxSteps, currentAngle, allTargets);
                 if (currentTarget)
                 {
-                    // Debug.Log("angle inputs - dist: " + Vector3.Distance(cannonBase.position, currentTarget.transform.position) + " angleToHit " + angleToTarget);
-                    angleToTarget = cannonBase.GetAngleToTarget(currentTarget.transform.position, vector.magnitude);
-                    // Debug.Log("angle to target: " + barrel.transform.GetAngleToTarget(currentTarget.position, 25));
+                    angleToTarget = trajectoryStart.GetAngleToTarget(currentTarget.transform.position, vector.magnitude);
                 }
                 float tolerance = 0.5f;
-                if (Mathf.Abs(currentAngle - angleToTarget) < tolerance && hitCount > 0)
+                if (Mathf.Abs(currentAngle - angleToTarget) < tolerance && possibleHit)
                 {
                     aimState = AimState.IN_SIGHT;
                     trajectory.material.color = hitColor;
@@ -203,17 +180,9 @@ namespace Project.Controllers {
                     }
                     // Debug.Log("dot " + aimDot + "| aimState: " + aimState);
                 }
-                hitCount = 0;
+                // hitCount = 0;
                 yield return new WaitForFixedUpdate();
             }
         }
-        // public void DisplayTrajectory(LineRenderer line, List<Vector3> positions)
-        // {
-        //     for (int i = 0; i < line.positionCount; i++)
-        //     {
-        //         Debug.Log("positions count: " + positions.Count + "line count : " + line.positionCount);
-        //         line.SetPosition(i, positions[i]);
-        //     }
-        // }
     }
 }

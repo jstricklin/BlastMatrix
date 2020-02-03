@@ -270,6 +270,8 @@ namespace Project.Controllers {
                 } else if (barrelDir == BarrelDir.DOWN && angle > 0){
                     Quaternion deltaRot = Quaternion.FromToRotation(barrel.forward, -barrel.up) * barrel.rotation;
                     barrel.rotation = Quaternion.Slerp(barrel.rotation, deltaRot, barrelSpeed * Time.deltaTime);
+                } else {
+                    barrelDir = BarrelDir.IDLE;
                 }
             }
         }
