@@ -185,6 +185,36 @@ namespace Project.Networking
                 }
                 networkObjects.Add(id, ni);
             });
+            socketIO.On("spawnBot", (e) => {
+                JSONObject data = new JSONObject(e.data);
+                string id = data["id"].ToString().RemoveQuotes();
+                string name = data["username"].ToString().RemoveQuotes();
+                // GameObject go = Instantiate(playerGO, networkContainer);
+                // go.name = string.Format("Player ({0})", name);
+                GameObject bot = BotManager.Instance.bots.GenerateBotByName("Basic_Bot");
+
+                float x = data["position"]["x"].f;
+                float y = data["position"]["y"].f;
+                float z = data["position"]["z"].f;
+
+                Vector3 pos = new Vector3(x, y, z);
+                bot.transform.position = pos;
+                Debug.Log("new bot spawn.. " + id + ": " + name + " | " + pos);
+                NetworkIdentity ni = bot.GetComponent<NetworkIdentity>();
+                TankCanvasController canvasController = ni.GetComponentInChildren<TankCanvasController>();
+                ni.SetControllerID(id);
+                ni.SetSocketReference(this.socketIO);
+                canvasController.playerLabel.enabled = true;
+                canvasController.playerLabel.text = name;
+                // if (ni.IsControlling())
+                // {
+                //     // playerName = name;
+                //     // UIManager.Instance.playerLabel.text = name;
+                // } else {
+                //     Debug.Log("name " + name);
+                // }
+                networkObjects.Add(id, ni);
+            });
              socketIO.On("playerHit", (e) => {
                 JSONObject data = new JSONObject(e.data);
                 string id = data["id"].str;
@@ -431,8 +461,8 @@ namespace Project.Networking
                         spawnPoints.spawnRotations[i] = points[i].rotation;
                     }
                     // spawn bots   
-                    BotManager.Instance.Initialize(8);
-                    Debug.Log("spawned bots... " + BotManager.SpawnedBots.Count);
+                    // BotManager.Instance.Initialize(8);
+                    // Debug.Log("spawned bots... " + BotManager.SpawnedBots.Count);
                     socketIO.Emit("updateSpawnPoints", JsonUtility.ToJson(spawnPoints)); 
                 }
                 socketIO.Emit("levelLoaded");

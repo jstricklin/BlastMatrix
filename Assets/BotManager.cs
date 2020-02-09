@@ -14,7 +14,7 @@ namespace Project.Managers
         [SerializeField]
         GameObject tankBot;
         [SerializeField]
-        Bots bots;
+        public Bots bots;
         [SerializeField]
         int maxBots = 8;
         [SerializeField]
