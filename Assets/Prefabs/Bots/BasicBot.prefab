@@ -184,7 +184,7 @@ MonoBehaviour:
   cannonCooldown: {fileID: 0}
   isBot: 0
   attackReady: 0
-  testProjectile: {fileID: 4610914980914332192, guid: 691aa80fb2cad443d8b9817f044c6f79,
+  testProjectile: {fileID: 4610914980914332192, guid: a9da8a910ad7e4da4826fc3af33bdfe9,
     type: 3}
   obstacle: {fileID: 0}
   avoidVector: {x: 0, y: 0, z: 0}

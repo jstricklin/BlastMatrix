@@ -29,7 +29,7 @@ namespace Project.Controllers {
         [SerializeField]
         ParticleSystem muzzleFlash;
         [SerializeField]
-        NetworkIdentity networkIdentity;
+        public NetworkIdentity networkIdentity;
         ProjectileData projectileData;
         private Quaternion lastRotation;
         WeaponRotation weaponRotation;
@@ -159,9 +159,14 @@ namespace Project.Controllers {
 
         private void FireCannon(InputAction.CallbackContext obj)
         {
+            FireCannon(NetworkClient.ClientID);
+        }
+
+        public void FireCannon(string activator) 
+        {
             if (cannonCooldown.IsOnCooldown()) return;
             cannonCooldown.StartCooldown();
-            projectileData.activator = NetworkClient.ClientID;
+            projectileData.activator = activator;
             // Debug.Log("activator: " + projectileData.activator);
             projectileData.position.x = projectileSpawnPoint.position.x.TwoDecimals();
             projectileData.position.y = projectileSpawnPoint.position.y.TwoDecimals();

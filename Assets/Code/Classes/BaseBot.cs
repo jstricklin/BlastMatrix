@@ -8,7 +8,7 @@ using Project.Gameplay;
 
 public class BaseBot : PlayerController
 {
-    NetworkClient networkClient;
+    // NetworkIdentity networkIdentity;
     public bool attackReady;
 
     public GameObject testProjectile;
@@ -34,7 +34,7 @@ public class BaseBot : PlayerController
     {
         isBot = true;
         // baseBot = this;
-        networkClient = FindObjectOfType<NetworkClient>();
+        // networkIdentity = GetComponent<NetworkIdentity>();
         base.Awake();
     }
     public override void Start()
@@ -239,9 +239,9 @@ public class BaseBot : PlayerController
             }
             if (attackReady && !cannonCooldown.IsOnCooldown() && targetingController.aimState == TargetingController.AimState.IN_SIGHT)
             {
-                cannonCooldown.StartCooldown();
-                FireWeapon();
-                TestFireProjectile();
+                // cannonCooldown.StartCooldown();
+                FireCannon(networkIdentity.GetID());
+                // TestFireProjectile();
                 if (!maneuvering && !avoiding && Random.Range(0, 10) > 7)
                     StartCoroutine(AttackManeuvers());
             }

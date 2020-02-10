@@ -21,6 +21,9 @@ namespace Project.Networking
         [SerializeField]
         private PlayerController playerController;
         private Player player;
+        string eventName = "updateRotation";
+
+        bool isBot;
 
         private float stillCounter = 0;
 
@@ -30,18 +33,24 @@ namespace Project.Networking
             // playerManager = GetComponent<PlayerManager>();
             oldWeaponRotation = playerController.GetLastWeaponRotation();
             player = new Player();
+            player.id = networkIdentity.GetID();
             player.rotation = new Rotation();
             // player.rotation.weaponRotation = 0;
+            isBot = GetComponent<BaseBot>() != null;
 
-            if (!networkIdentity.IsControlling())
+            if (!networkIdentity.IsControlling() && !isBot)
             {
                 enabled = false;
+            }
+            if (isBot) 
+            {
+                eventName = "updateBotRotation";
             }
         }
 
         public void Update()
         {
-            if (networkIdentity.IsControlling())
+            if (networkIdentity.IsControlling() || isBot && NetworkClient.isHost)
             {
                 if (oldWeaponRotation.lastWeaponRotation != playerController.GetLastWeaponRotation().lastWeaponRotation 
                 || oldWeaponRotation.lastBarrelRotation != playerController.GetLastWeaponRotation().lastBarrelRotation
@@ -79,7 +88,7 @@ namespace Project.Networking
             player.rotation.rotation = playerController.GetLastRotation();
 
             // serialized player class makes it easy to convert to JSON
-            networkIdentity.GetSocket().Emit("updateRotation", JsonUtility.ToJson(player));
+            networkIdentity.GetSocket().Emit(eventName, JsonUtility.ToJson(player));
         }
     }
 }

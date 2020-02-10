@@ -22,6 +22,7 @@ namespace Project.Networking
     {
         public static string ClientID { get; private set; }
         public const float SERVER_UPDATE_TIME = 10;
+        public static List<Transform> SpawnedPlayers = new List<Transform>();
         [SerializeField]
         Transform networkContainer;
         [SerializeField]
@@ -165,11 +166,15 @@ namespace Project.Networking
                 GameObject go = Instantiate(playerGO, networkContainer);
                 go.name = string.Format("Player ({0})", name);
 
+                SpawnedPlayers.Add(go.transform);
+
                 float x = data["position"]["x"].f;
                 float y = data["position"]["y"].f;
                 float z = data["position"]["z"].f;
+                Quaternion tankRot = new Quaternion(data["rotation"]["x"].f, data["rotation"]["y"].f, data["rotation"]["z"].f, data["rotation"]["w"].f);
 
                 go.transform.position = new Vector3(x, y, z);
+                go.transform.rotation = tankRot;
                 NetworkIdentity ni = go.GetComponent<NetworkIdentity>();
                 TankCanvasController canvasController = ni.GetComponentInChildren<TankCanvasController>();
                 ni.SetControllerID(id);
@@ -191,14 +196,16 @@ namespace Project.Networking
                 string name = data["username"].ToString().RemoveQuotes();
                 // GameObject go = Instantiate(playerGO, networkContainer);
                 // go.name = string.Format("Player ({0})", name);
-                GameObject bot = BotManager.Instance.bots.GenerateBotByName("Basic_Bot");
 
                 float x = data["position"]["x"].f;
                 float y = data["position"]["y"].f;
                 float z = data["position"]["z"].f;
-
                 Vector3 pos = new Vector3(x, y, z);
-                bot.transform.position = pos;
+                Quaternion tankRot = new Quaternion(data["rotation"]["x"].f, data["rotation"]["y"].f, data["rotation"]["z"].f, data["rotation"]["w"].f);
+                GameObject bot = BotManager.Instance.SpawnBot(pos, tankRot, isHost);
+                bot.transform.SetParent(networkContainer);
+                bot.name = string.Format("Bot ({0})", name);
+                // bot.transform.position = pos;
                 Debug.Log("new bot spawn.. " + id + ": " + name + " | " + pos);
                 NetworkIdentity ni = bot.GetComponent<NetworkIdentity>();
                 TankCanvasController canvasController = ni.GetComponentInChildren<TankCanvasController>();

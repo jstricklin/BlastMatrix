@@ -65,16 +65,44 @@ namespace Project.Managers
             return null;
         }
 
+        public GameObject SpawnBot(Vector3 pos, Quaternion rot, bool isHost)
+        {
+            GameObject bot = bots.GenerateBotByName("Basic_Bot");
+            bot.transform.SetPositionAndRotation(pos, rot);
+            BaseBot botController = bot.GetComponent<BaseBot>();
+            SpawnedBots.Add(botController);
+            if (!isHost) {
+                botController.enabled = false;
+            }
+            UpdateBotTargets();
+            return bot;
+        }
+
+        public void RemoveBot(BaseBot toRemove)
+        {
+            if (SpawnedBots.Contains(toRemove))
+            {
+                SpawnedBots.Remove(toRemove);
+                Destroy(toRemove.gameObject);
+            }
+            UpdateBotTargets();
+        }
+
         public void UpdateBotTargets()
         {
+            if (SpawnedBots.Count > 1) return;
             List<Transform> transformArr = new List<Transform>();
+            if (NetworkClient.ClientID != null) 
+            {
+                transformArr.AddRange(NetworkClient.SpawnedPlayers);
+            }
             foreach(BaseBot bot in SpawnedBots)
             {
                 transformArr.Add(bot.transform);
             }
-            foreach(Transform bot in transformArr)
+            foreach(BaseBot bot in SpawnedBots)
             {
-                bot.GetComponent<BaseBot>().SetBotTargets(transformArr);
+                bot.SetBotTargets(transformArr);
             }
         }
     }

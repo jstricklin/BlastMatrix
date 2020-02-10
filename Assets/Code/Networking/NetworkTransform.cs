@@ -17,26 +17,34 @@ namespace Project.Networking
         public Player player;
 
         private float stillCounter = 0;
+        string eventName = "updatePosition";
+        bool isBot;
 
         public void Start()
         {
             networkIdentity = GetComponent<NetworkIdentity>();
             oldPosition = transform.position;
             player = new Player();
+            player.id = networkIdentity.GetID();
             player.position = new Position();
             player.position.x = 0;
             player.position.y = 0;
             player.position.z = 0;
 
-            if (!networkIdentity.IsControlling())
+            isBot = GetComponent<BaseBot>() != null;
+            if (!networkIdentity.IsControlling() && !isBot)
             {
                 enabled = false;
+            }
+            if (isBot) 
+            {
+                eventName = "updateBotPosition";
             }
         }
 
         public void FixedUpdate()
         {
-            if (networkIdentity.IsControlling())
+            if (networkIdentity.IsControlling() || isBot && NetworkClient.isHost)
             {
                 if (oldPosition != transform.position)
                 {
@@ -65,7 +73,7 @@ namespace Project.Networking
             player.position.z = transform.position.z.TwoDecimals();
 
             // serialized player class makes it easy to convert to JSON
-            networkIdentity.GetSocket().Emit("updatePosition", JsonUtility.ToJson(player));
+            networkIdentity.GetSocket().Emit(eventName, JsonUtility.ToJson(player));
         }
     }
 }
