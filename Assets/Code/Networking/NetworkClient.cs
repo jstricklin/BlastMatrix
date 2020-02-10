@@ -133,7 +133,7 @@ namespace Project.Networking
             });
             socketIO.On("messageReceived", (e) => {
                 JSONObject data = new JSONObject(e.data);
-                Debug.Log("message received: " + data);
+                // Debug.Log("message received: " + data);
                 string messageString = data["message"].str;
                 string username = data["player"]["username"].str;
                 string msgDate = data["date"].str;
