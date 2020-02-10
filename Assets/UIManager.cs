@@ -63,7 +63,7 @@ namespace Project.UI {
                     lerpVal = currentHealth == 0 ? 0 : 1;
                 } else {
                     lerpVal = healthBar.value / healthBar.maxValue;
-                    Debug.Log("lerp val " + lerpVal);
+                    // Debug.Log("lerp val " + lerpVal);
                 }
                 newColor = Color.Lerp(lowHealthColor, fullHealthColor, lerpVal);
                 healthBar.fillRect.GetComponent<Image>().color = newColor;
@@ -73,7 +73,7 @@ namespace Project.UI {
 
         public void DisplayHitMarker(int score)
         {
-            Debug.Log("hit score: " + score);
+            // Debug.Log("hit score: " + score);
             myAnim.SetTrigger("hit");
         }
         public void UpdateScore(int score)
