@@ -206,7 +206,7 @@ namespace Project.Networking
                 bot.transform.SetParent(networkContainer);
                 bot.name = string.Format("Bot ({0})", name);
                 // bot.transform.position = pos;
-                Debug.Log("new bot spawn.. " + id + ": " + name + " | " + pos);
+                // Debug.Log("new bot spawn.. " + id + ": " + name + " | " + pos);
                 NetworkIdentity ni = bot.GetComponent<NetworkIdentity>();
                 TankCanvasController canvasController = ni.GetComponentInChildren<TankCanvasController>();
                 ni.SetControllerID(id);
@@ -320,7 +320,7 @@ namespace Project.Networking
             });
             socketIO.On("serverDespawn", (e) =>
             {
-                Debug.Log("server despawn... ");
+                // Debug.Log("server despawn... ");
                 string id = new JSONObject(e.data)["id"].str;
                 NetworkIdentity ni = networkObjects[id];
                 networkObjects.Remove(id);

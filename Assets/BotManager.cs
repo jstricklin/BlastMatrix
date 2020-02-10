@@ -90,7 +90,7 @@ namespace Project.Managers
 
         public void UpdateBotTargets()
         {
-            if (SpawnedBots.Count > 1) return;
+            if (SpawnedBots.Count < 1) return;
             List<Transform> transformArr = new List<Transform>();
             if (NetworkClient.ClientID != null) 
             {

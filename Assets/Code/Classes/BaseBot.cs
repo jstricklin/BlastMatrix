@@ -136,10 +136,10 @@ public class BaseBot : PlayerController
     public void SetBotTargets(List<Transform> targets)
     {
         List<Transform> tankTargets = new List<Transform>();
-        foreach (Transform bot in targets)
+        foreach (Transform target in targets)
         {
-            if (bot != this.transform)
-                tankTargets.Add(bot);
+            if (target != this.transform)
+                tankTargets.Add(target);
         }
         targetingController.SetTargets(tankTargets);
     }

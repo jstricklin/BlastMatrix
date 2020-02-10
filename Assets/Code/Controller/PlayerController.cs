@@ -184,6 +184,7 @@ namespace Project.Controllers {
 
         public void TankHit()
         {
+            Debug.Log("tank hit!");
             myAnim.SetTrigger("isHit");
         }
         
