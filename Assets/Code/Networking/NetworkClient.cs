@@ -443,12 +443,13 @@ namespace Project.Networking
                     if (IsSceneLoaded(SceneList.CHAT)) SceneManagementManager.Instance.UnLoadLevel(SceneList.CHAT);
                     if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                     if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
-                    networkObjects.Clear();
-                    for (int i = 0; i < networkContainer.childCount; i++)
-                    {
-                        Debug.Log("destroying network objects...");
-                        Destroy(networkContainer.GetChild(i).gameObject);
-                    }
+                    ClearNetworkObjects();
+                    // networkObjects.Clear();
+                    // for (int i = 0; i < networkContainer.childCount; i++)
+                    // {
+                    //     Debug.Log("destroying network objects...");
+                    //     Destroy(networkContainer.GetChild(i).gameObject);
+                    // }
                     FindObjectOfType<MenuManager>().loggedInText.text = $"{message}";
                 });
             }
