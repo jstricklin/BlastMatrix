@@ -15,6 +15,7 @@ namespace Project.Gameplay
         [SerializeField]
         GameObject explosionFX;
         NetworkIdentity networkIdentity;
+        bool botShot = false;
         Rigidbody myRb;
 
         public string activator { get; set; }
@@ -41,9 +42,10 @@ namespace Project.Gameplay
             return activator;
         }
 
-        public void SetActivator(string ID)
+        public void SetActivator(string ID, bool fromBot)
         {
             activator = ID;
+            botShot = fromBot;
         }
 
         void Awake()
@@ -63,7 +65,7 @@ namespace Project.Gameplay
 
         public void UpdateProjectile()
         {
-            if (!NetworkClient.isHost || NetworkClient.ClientID == null)
+            if (NetworkClient.ClientID != activator || NetworkClient.ClientID == null || botShot && !NetworkClient.isHost)
             {
                 return;
             }
@@ -95,6 +97,7 @@ namespace Project.Gameplay
         }
         void OnCollisionEnter(Collision coll)
         {
+
             NetworkIdentity ni = coll.transform.GetComponent<NetworkIdentity>();
             // Debug.Log("network id check: " + ni?.GetID() + " and activator is " + activator);
             if (ni == null || ni.GetID() != activator)

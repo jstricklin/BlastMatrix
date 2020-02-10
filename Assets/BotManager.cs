@@ -78,6 +78,16 @@ namespace Project.Managers
             return bot;
         }
 
+        public void UpdateBotHost()
+        {
+            Debug.Log("updating bot host");
+            foreach(BaseBot bot in SpawnedBots)
+            {
+                bot.enabled = true;
+                Debug.Log(bot.name + " enabled: " + bot.enabled);
+            }
+        }
+
         public void RemoveBot(BaseBot toRemove)
         {
             if (SpawnedBots.Contains(toRemove))

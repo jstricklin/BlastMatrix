@@ -6,7 +6,7 @@ namespace Project.Interfaces {
     public interface IActivate 
     {
         string activator { get; set; }
-        void SetActivator(string ID);
+        void SetActivator(string ID, bool fromBot);
         string GetActivator();
     }
 }

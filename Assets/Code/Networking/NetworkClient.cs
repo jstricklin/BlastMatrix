@@ -104,6 +104,7 @@ namespace Project.Networking
             socketIO.On("setHost", (e) => {
                 Debug.Log("host event...");
                 isHost = true;
+                BotManager.Instance?.UpdateBotHost();
             });
         }
         void Initialize() 
@@ -222,6 +223,15 @@ namespace Project.Networking
                 // }
                 networkObjects.Add(id, ni);
             });
+            socketIO.On("despawnBot", (e) =>
+            {
+                // Debug.Log("server despawn... ");
+                string id = new JSONObject(e.data)["id"].str;
+                NetworkIdentity ni = networkObjects[id];
+                networkObjects.Remove(id);
+                BotManager.Instance.RemoveBot(ni.gameObject.GetComponent<BaseBot>());
+                // Destroy(ni.gameObject);
+            });
              socketIO.On("playerHit", (e) => {
                 JSONObject data = new JSONObject(e.data);
                 string id = data["id"].str;
@@ -311,7 +321,7 @@ namespace Project.Networking
                         spawnObject.transform.rotation = Quaternion.Euler(lookTo.eulerAngles);
 
                         Projectile projectile = spawnObject.GetComponent<Projectile>();
-                        projectile.SetActivator(activator);
+                        projectile.SetActivator(activator, networkObjects[activator].GetComponent<BaseBot>() != null);
                         networkObjects[activator].GetComponent<PlayerController>().FireWeapon();
                         projectile.FireProjectile(speed, direction);
                     }
@@ -369,6 +379,8 @@ namespace Project.Networking
                 GameObject go = networkObjects[id].gameObject;
                 Destroy(go); // remove GO from game
                 networkObjects.Remove(id);
+                SpawnedPlayers.Remove(go.transform);
+                BotManager.Instance.UpdateBotTargets();
             });
         }
 

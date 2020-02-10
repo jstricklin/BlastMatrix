@@ -74,11 +74,11 @@ namespace Project.Controllers {
         {
             myRb = GetComponent<Rigidbody>();
             myAnim = GetComponent<Animator>();
-            cannonCooldown = new Cooldown(1.5f);
+            cannonCooldown = new Cooldown(shotCooldown);
             projectileData = new ProjectileData();
             weaponRotation = new WeaponRotation();
-            if (isBot) return;
-            EnableInputs();
+            // if (isBot) return;
+            // EnableInputs();
         }
 
         void OnEnable() 
