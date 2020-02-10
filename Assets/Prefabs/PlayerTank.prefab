@@ -1343,7 +1343,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 2, y: 1}
+  m_SizeDelta: {x: 100, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5101969398061267026
 Canvas:
@@ -1553,11 +1553,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4211075002321333059}
     m_Modifications:
-    - target: {fileID: 5050017606459681505, guid: 269f51d5938c844d79a5c3eef516d55a,
-        type: 3}
-      propertyPath: m_Name
-      value: MuzzleFlash
-      objectReference: {fileID: 0}
     - target: {fileID: 5748545053733289930, guid: 269f51d5938c844d79a5c3eef516d55a,
         type: 3}
       propertyPath: lengthInSec
@@ -1643,6 +1638,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 5050017606459681505, guid: 269f51d5938c844d79a5c3eef516d55a,
+        type: 3}
+      propertyPath: m_Name
+      value: MuzzleFlash
+      objectReference: {fileID: 0}
     - target: {fileID: 5050017605536510920, guid: 269f51d5938c844d79a5c3eef516d55a,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -1689,11 +1689,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3070354016371077910}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: 4a3dac4a469ad4ac08b29bb011fc0c79,
-        type: 3}
-      propertyPath: m_Name
-      value: tank_barrel_01
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 4a3dac4a469ad4ac08b29bb011fc0c79,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1749,6 +1744,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 4a3dac4a469ad4ac08b29bb011fc0c79,
+        type: 3}
+      propertyPath: m_Name
+      value: tank_barrel_01
+      objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 4a3dac4a469ad4ac08b29bb011fc0c79,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1775,11 +1775,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2499701186607599646}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: c350fd7e3995f430bbe017a99c5e8b8e,
-        type: 3}
-      propertyPath: m_Name
-      value: tank_cannon_01
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c350fd7e3995f430bbe017a99c5e8b8e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1834,6 +1829,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: c350fd7e3995f430bbe017a99c5e8b8e,
+        type: 3}
+      propertyPath: m_Name
+      value: tank_cannon_01
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: c350fd7e3995f430bbe017a99c5e8b8e,
         type: 3}
@@ -1861,11 +1861,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3695447004884702315}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: 533db4b10cd5f4d51af06ce891bba08d,
-        type: 3}
-      propertyPath: m_Name
-      value: tank_body_01
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 533db4b10cd5f4d51af06ce891bba08d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1920,6 +1915,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 533db4b10cd5f4d51af06ce891bba08d,
+        type: 3}
+      propertyPath: m_Name
+      value: tank_body_01
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 533db4b10cd5f4d51af06ce891bba08d,
         type: 3}
