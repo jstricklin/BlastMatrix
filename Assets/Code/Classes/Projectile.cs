@@ -63,7 +63,7 @@ namespace Project.Gameplay
 
         public void UpdateProjectile()
         {
-            if (NetworkClient.ClientID != activator || NetworkClient.ClientID == null)
+            if (!NetworkClient.isHost || NetworkClient.ClientID == null)
             {
                 return;
             }

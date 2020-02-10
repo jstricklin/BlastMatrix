@@ -81,6 +81,12 @@ namespace Project.Controllers {
             EnableInputs();
         }
 
+        void OnEnable() 
+        {
+            if (isBot) return;
+            EnableInputs();
+        }
+
         public new virtual void Update()
         {
             if (isBot) 
@@ -184,7 +190,6 @@ namespace Project.Controllers {
 
         public void TankHit()
         {
-            Debug.Log("tank hit!");
             myAnim.SetTrigger("isHit");
         }
         

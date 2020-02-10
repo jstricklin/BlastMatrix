@@ -41,19 +41,30 @@ namespace Project.Controllers {
 
         public AimState aimState;
 
-        void Start()
+        void Awake()
         {
             botController = GetComponentInParent<BaseBot>();
-            if (botController != null) 
-            {
-                StartCoroutine(CheckTargetsInSight());
-                StartCoroutine(CheckTrajectory());
-            } else {
-                StartCoroutine(DisplayProjectileTrajectory());
-            }
             projectileRb = projectile.GetComponent<Rigidbody>();
         }
+        void OnEnable()
+        {
+            if (botController != null) 
+            {
+                InitializeBotTargeting();
+            } else {
+                InitializePlayerTargteing();
+            }
+        }
 
+        void InitializeBotTargeting()
+        {
+            StartCoroutine(CheckTargetsInSight());
+            StartCoroutine(CheckTrajectory());
+        }
+        void InitializePlayerTargteing()
+        {
+            StartCoroutine(DisplayProjectileTrajectory());
+        }
         void Update()
         {
             if (currentTarget != null)
