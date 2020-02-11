@@ -206,6 +206,7 @@ namespace Project.Networking
                 GameObject bot = BotManager.Instance.SpawnBot(pos, tankRot, isHost);
                 bot.transform.SetParent(networkContainer);
                 bot.name = string.Format("Bot ({0})", name);
+                Debug.Log("adding bot " + bot.name);
                 // bot.transform.position = pos;
                 // Debug.Log("new bot spawn.. " + id + ": " + name + " | " + pos);
                 NetworkIdentity ni = bot.GetComponent<NetworkIdentity>();
@@ -361,8 +362,8 @@ namespace Project.Networking
 
             socketIO.On("endGame", (e) => {
                 JSONObject data = new JSONObject(e.data);
+                BotManager.Instance.DisableBots();
                 Debug.Log("end game");
-                // ClearNetworkObjects();
                 SceneManagementManager.Instance.LoadLevel(levelName: SceneList.ENDGAME, onLevelLoaded: (levelName) =>
                 {
                     SceneManagementManager.Instance.UnLoadLevel(SceneList.UI);
@@ -425,9 +426,13 @@ namespace Project.Networking
         {
             foreach(string id in networkObjects.Keys)
             {
+                Debug.Log("destroying - " + networkObjects[id].name);
                 DestroyImmediate(networkObjects[id].gameObject);
             }
+            SpawnedPlayers.Clear();
             networkObjects.Clear();
+            BotManager.Instance?.ClearSpawnedBots();
+            // Debug.Break();
         }
         public void ReturnToMainMenu(string message)
         {

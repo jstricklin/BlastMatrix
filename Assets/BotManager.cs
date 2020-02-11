@@ -29,18 +29,18 @@ namespace Project.Managers
             // Initialize(maxBots);
         }
 
-        public void Initialize(int botCount)
-        {
-            for (int i = 0; i < spawnPoints.transform.childCount; i++)
-            {
-                spawnPointsArr.Add(spawnPoints.transform.GetChild(i));
-            }
-            for (int i = 0; i < botCount; i++)
-            {
-                SpawnBot();
-            }
-            UpdateBotTargets();
-        }
+        // public void Initialize(int botCount)
+        // {
+        //     for (int i = 0; i < spawnPoints.transform.childCount; i++)
+        //     {
+        //         spawnPointsArr.Add(spawnPoints.transform.GetChild(i));
+        //     }
+        //     for (int i = 0; i < botCount; i++)
+        //     {
+        //         SpawnBot();
+        //     }
+        //     UpdateBotTargets();
+        // }
 
         public GameObject SpawnBot(bool canSpawn = false)
         {
@@ -81,11 +81,7 @@ namespace Project.Managers
         public void UpdateBotHost()
         {
             Debug.Log("updating bot host");
-            foreach(BaseBot bot in SpawnedBots)
-            {
-                bot.enabled = true;
-                Debug.Log(bot.name + " enabled: " + bot.enabled);
-            }
+            EnableBots();
         }
 
         public void RemoveBot(BaseBot toRemove)
@@ -97,10 +93,32 @@ namespace Project.Managers
             }
             UpdateBotTargets();
         }
+        public void ClearSpawnedBots()
+        {
+            SpawnedBots.Clear();
+            Debug.Log("spawned bots clear " + SpawnedBots.Count);
+            // Debug.Break();
+        }
+        public void EnableBots()
+        {
+            foreach(BaseBot bot in SpawnedBots)
+            {
+                bot.enabled = true;
+                Debug.Log(bot.name + " enabled: " + bot.enabled);
+            }
+        }
+        public void DisableBots()
+        {
+            foreach(BaseBot bot in SpawnedBots)
+            {
+                bot.enabled = false;
+                Debug.Log(bot.name + " enabled: " + bot.enabled);
+            }
 
+        }
         public void UpdateBotTargets()
         {
-            if (SpawnedBots.Count < 1) return;
+            // if (SpawnedBots.Count < 1) return;
             List<Transform> transformArr = new List<Transform>();
             if (NetworkClient.ClientID != null) 
             {
