@@ -46,6 +46,7 @@ namespace Project.Networking
         public static event UserLogin UserLoginHandler;
         public static long responseCode;
         public static bool isHost = false;
+        Message welcomeMessage;
 
         public string GetClientID()
         {
@@ -137,15 +138,16 @@ namespace Project.Networking
                 string messageString = data["message"].str;
                 string username = data["player"]["username"].str;
                 string msgDate = data["date"].str;
-                if (data["serverMessage"].b)
-                {
+                Message message = new Message();
+                message.username = username;
+                message.message = messageString;
+                message.date = msgDate;
+                if (data["serverAlert"].b) {
                     chat.UpdateChat(messageString);
+                } else if (data["welcomeMessage"].b) {
+                    welcomeMessage = message;   
                 } else {
-                    Message message = new Message();
-                    message.username = username;
-                    message.message = messageString;
-                    message.date = msgDate;
-                    ChatController.Instance.OnMessageReceived(message);
+                    ChatController.Instance?.OnMessageReceived(message);
                 }
             });
             socketIO.On("updateRotation", (e) =>
@@ -495,6 +497,7 @@ namespace Project.Networking
                 AudioController.Instance.StartBGM(SceneList.LEVEL);
             });
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.CHAT, onLevelLoaded: (levelName) => {
+                ChatController.Instance?.OnMessageReceived(welcomeMessage);
                 // UIManager.Instance.playerLabel.text = playerName;
             });
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.UI, onLevelLoaded: (levelName) => {

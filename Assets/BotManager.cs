@@ -96,8 +96,6 @@ namespace Project.Managers
         public void ClearSpawnedBots()
         {
             SpawnedBots.Clear();
-            Debug.Log("spawned bots clear " + SpawnedBots.Count);
-            // Debug.Break();
         }
         public void EnableBots()
         {
