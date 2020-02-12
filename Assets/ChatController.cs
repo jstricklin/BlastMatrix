@@ -51,9 +51,21 @@ namespace Project.Controllers {
         public void OnMessageReceived(Message message) 
         {
             // chatText.text += "\n"+message;
+            Debug.Log("message update " + message.message);
             messages.Add(message);
             string text = chat.chatText.text;
             text += "\n" + message.username +  ": " + message.message;
+            chat.UpdateChat(text);
+        }
+
+        public void SetWelcomeMessage(Message message) 
+        {
+            // chatText.text += "\n"+message;
+            // messages.Add(message);
+            // string text = chat.chatText.text;
+            // text += "\n" + message.username +  ": " + message.message;
+            // text += "\n" + message.username +  ": " + message.message;
+            string text = message.message + "\n";
             chat.UpdateChat(text);
         }
 

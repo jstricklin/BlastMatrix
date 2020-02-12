@@ -46,7 +46,7 @@ namespace Project.Networking
         public static event UserLogin UserLoginHandler;
         public static long responseCode;
         public static bool isHost = false;
-        Message welcomeMessage;
+        public Message welcomeMessage;
 
         public string GetClientID()
         {
@@ -103,7 +103,7 @@ namespace Project.Networking
                 InitServerCommunication();
             });
             socketIO.On("setHost", (e) => {
-                Debug.Log("host event...");
+                // Debug.Log("host event...");
                 isHost = true;
                 BotManager.Instance?.UpdateBotHost();
             });
@@ -146,6 +146,9 @@ namespace Project.Networking
                     chat.UpdateChat(messageString);
                 } else if (data["welcomeMessage"].b) {
                     welcomeMessage = message;   
+                    Debug.Log("message received" + message.message);
+                    // ChatController.Instance?.SetWelcomeMessage(welcomeMessage);
+                    ChatController.Instance?.OnMessageReceived(welcomeMessage);
                 } else {
                     ChatController.Instance?.OnMessageReceived(message);
                 }
@@ -186,9 +189,10 @@ namespace Project.Networking
                 {
                     playerName = name;
                     canvasController.playerLabel.enabled = false;
-                    // UIManager.Instance.playerLabel.text = name;
+                    if (UIManager.Instance != null)
+                        UIManager.Instance.playerLabel.text = name;
                 } else {
-                    Debug.Log("name " + name);
+                    // Debug.Log("name " + name);
                     canvasController.playerLabel.text = name;
                 }
                 networkObjects.Add(id, ni);
@@ -208,7 +212,7 @@ namespace Project.Networking
                 GameObject bot = BotManager.Instance.SpawnBot(pos, tankRot, isHost);
                 bot.transform.SetParent(networkContainer);
                 bot.name = string.Format("Bot ({0})", name);
-                Debug.Log("adding bot " + bot.name);
+                // Debug.Log("adding bot " + bot.name);
                 // bot.transform.position = pos;
                 // Debug.Log("new bot spawn.. " + id + ": " + name + " | " + pos);
                 NetworkIdentity ni = bot.GetComponent<NetworkIdentity>();
@@ -428,7 +432,7 @@ namespace Project.Networking
         {
             foreach(string id in networkObjects.Keys)
             {
-                Debug.Log("destroying - " + networkObjects[id].name);
+                // Debug.Log("destroying - " + networkObjects[id].name);
                 DestroyImmediate(networkObjects[id].gameObject);
             }
             SpawnedPlayers.Clear();
@@ -474,6 +478,7 @@ namespace Project.Networking
                 if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
                 if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.MAIN_MENU)) SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
+                if (IsSceneLoaded(SceneList.CHAT)) SceneManagementManager.Instance.UnLoadLevel(SceneList.CHAT);
                 if (isHost)
                 {
                     Debug.Log("is host!");
@@ -497,11 +502,13 @@ namespace Project.Networking
                 AudioController.Instance.StartBGM(SceneList.LEVEL);
             });
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.CHAT, onLevelLoaded: (levelName) => {
-                ChatController.Instance?.OnMessageReceived(welcomeMessage);
-                // UIManager.Instance.playerLabel.text = playerName;
+                // if (welcomeMessage != null) 
+                //     ChatController.Instance?.OnMessageReceived(welcomeMessage);
+                    // ChatController.Instance?.SetWelcomeMessage(welcomeMessage);
             });
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.UI, onLevelLoaded: (levelName) => {
-                UIManager.Instance.playerLabel.text = playerName;
+                if (playerName != null && UIManager.Instance != null) 
+                    UIManager.Instance.playerLabel.text = playerName;
             });
         }
         bool IsSceneLoaded(string scene)
@@ -529,7 +536,7 @@ namespace Project.Networking
                 }
                 else
                 {
-                    Debug.Log("web req: " + webRequest.responseCode);
+                    Debug.Log("web response: " + webRequest.responseCode);
                     base.Awake();
                     yield return new WaitForSeconds(0.15f);
                     Initialize();

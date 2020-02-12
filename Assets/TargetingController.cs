@@ -17,7 +17,7 @@ namespace Project.Controllers {
         public Vector3[] posList;
         BaseBot botController;
         public Transform currentTarget;
-
+        NetworkIdentity networkIdentity;
         public float currentDist;
         public float currentAngle;
         public float angleToTarget;
@@ -54,6 +54,11 @@ namespace Project.Controllers {
             } else {
                 InitializePlayerTargteing();
             }
+        }
+
+        void Start()
+        {
+            networkIdentity = GetComponentInParent<NetworkIdentity>();
         }
 
         void InitializeBotTargeting()
@@ -167,6 +172,14 @@ namespace Project.Controllers {
             hitColor.a = noHitColor.a;
             while(true)
             {
+                if (NetworkClient.ClientID != null && networkIdentity == null)
+                {
+                    yield return null;
+                }
+                if (networkIdentity != null && !networkIdentity.IsControlling())
+                {
+                    yield break;
+                }
                 bool possibleHit = Ballistics.Ballistics.DisplayTrajectory(trajectory, trajectoryStart, vector, maxSteps, currentAngle, allTargets);
                 yield return new WaitForFixedUpdate();
             }
