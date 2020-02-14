@@ -25,6 +25,16 @@ public class BaseBot : PlayerController
     bool avoiding;
     [SerializeField]
     bool backingUp;
+
+
+    enum AIState {
+        IDLE,
+        CHASING,
+        ATTACKING
+    }
+
+    AIState aiState = AIState.IDLE;
+
     #endregion
 
     // public float maxDist = 100;
@@ -81,14 +91,15 @@ public class BaseBot : PlayerController
                 dir = transform.forward;
             }
             obstacleRay = new Ray(transform.position, dir);
-            if (Physics.Raycast(obstacleRay, out obstacleHit, checkDist, 1 << 0))
+            LayerMask targetableLayer = (1 << 0) | (1 << 10);
+            if (Physics.Raycast(obstacleRay, out obstacleHit, checkDist, targetableLayer))
             {
                 // if (currentTarget != null && obstacleHit.transform != currentTarget.transform || currentTarget == null)
                 // {
                     // Debug.Log("obstacle detected - " + obstacleHit.transform.name);
                     obstacleInSight = true;
                     obstacle = obstacleHit.transform;
-                    obstacleHitPoint = obstacleHit.point;
+                    obstacleHitPoint = (obstacleHit.point - obstacle.position) * 5;
                     StartCoroutine(AvoidObstacle());
                     Debug.DrawLine(transform.position, obstacleHit.point, Color.red);
                 // }
@@ -115,7 +126,7 @@ public class BaseBot : PlayerController
             // }
             if ((obstacleHitPoint - transform.position).sqrMagnitude < 100)
             {
-                avoidTarget.transform.position = obstacleHitPoint;
+                avoidTarget.transform.localPosition = obstacleHitPoint;
                 lookTarget = avoidTarget.transform;
                 MoveForward(false);
                 MoveBack(true);
@@ -146,12 +157,26 @@ public class BaseBot : PlayerController
 
     #region BotActions
 
+    public void StartChasing()
+    {
+
+        aiState = AIState.CHASING;
+        targetingController.TargetEnemy();
+    }
+
     public void StartPatrolling()
     {
         currentTarget = targetingController.NearestEnemy();
         lookTarget = currentTarget;
     }
-
+    public override void TankHit(Transform attacker)
+    {
+        if (aiState == AIState.CHASING)
+        {
+            UpdateTarget(attacker);
+        }
+        base.TankHit(attacker);
+    }
     public override void UpdateTarget(Transform target)
     {
         currentTarget = target;
@@ -218,7 +243,7 @@ public class BaseBot : PlayerController
             TurnLeft(false);
             TurnRight(false);
         }
-        float moveTime = 100000f;
+        float moveTime = 3f;
         float lastMove = Time.time;
         while (true)
         {
@@ -248,7 +273,7 @@ public class BaseBot : PlayerController
                     StartCoroutine(AttackManeuvers());
             }
             // TODO work on routine below
-            if (Time.time > lastMove + moveTime + (Random.Range(0, 100000)) && Random.Range(0, 100) > 99)
+            if (Time.time > lastMove + moveTime + (Random.Range(0, 10)) && Random.Range(0, 100) > 85)
             {
                 // Debug.Log("moving...");
                 if (!maneuvering && !avoiding)

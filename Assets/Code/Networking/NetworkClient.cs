@@ -251,7 +251,7 @@ namespace Project.Networking
                     UIManager.Instance.UpdateScore(playerScore);
                 }
                 NetworkIdentity ni = networkObjects[id];
-                ni.GetComponent<PlayerController>().TankHit();
+                ni.GetComponent<PlayerController>().TankHit(ni.transform);
                 if (ni.IsControlling())
                 {
                     float currentHealth = data["currentHealth"].f;

@@ -17,7 +17,7 @@ namespace Project.Gameplay
         NetworkIdentity networkIdentity;
         bool botShot = false;
         Rigidbody myRb;
-
+        public int blastRadius = 100;
         public string activator { get; set; }
 
         public Vector2 Direction
@@ -103,6 +103,13 @@ namespace Project.Gameplay
             if (ni == null || ni.GetID() != activator)
             {
                 SpawnExplosion(coll.GetContact(0).normal);
+                // add sphere check for possible hits
+                LayerMask layers = 1 << 10;
+                Collider[] hits = new Collider[10];
+                if (Physics.OverlapSphereNonAlloc(transform.position, blastRadius, hits, layers) > 1)
+                {
+                    Debug.Log("hits! " + hits.Length);
+                }
             }
         }
     }

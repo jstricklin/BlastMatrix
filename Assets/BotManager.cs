@@ -26,12 +26,13 @@ namespace Project.Managers
         [SerializeField]
         bool spawnBots;
 
+        string botToSpawn = "Basic_Bot";
+
         void Start()
         {
             // if (NetworkClient.ClientID == null && spawnBots)
             //     Initialize(maxBots);
         }
-
         public void Initialize(int botCount)
         {
             for (int i = 0; i < spawnPoints.transform.childCount; i++)
@@ -45,6 +46,10 @@ namespace Project.Managers
             UpdateBotTargets();
         }
 
+        public void SetBotsToSpawn(string botType)
+        {
+            botToSpawn = botType;
+        }
         public GameObject SpawnBot(bool canSpawn = false)
         {
             if (!canSpawn)
@@ -60,7 +65,7 @@ namespace Project.Managers
                 }
                 SpawnBot(true);
             } else {
-                GameObject bot = bots.GenerateBotByName("Basic_Bot");
+                GameObject bot = bots.GenerateBotByName(botToSpawn);
                 bot.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
                 SpawnedBots.Add(bot.GetComponent<BaseBot>());
                 return bot;
@@ -70,7 +75,7 @@ namespace Project.Managers
 
         public GameObject SpawnBot(Vector3 pos, Quaternion rot, bool isHost)
         {
-            GameObject bot = bots.GenerateBotByName("Basic_Bot");
+            GameObject bot = bots.GenerateBotByName(botToSpawn);
             bot.transform.SetPositionAndRotation(pos, rot);
             BaseBot botController = bot.GetComponent<BaseBot>();
             SpawnedBots.Add(botController);

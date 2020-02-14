@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
 using System.Linq;
+using Project.Controllers;
 
 namespace Project.Utilities
 {
@@ -33,13 +34,14 @@ namespace Project.Utilities
         }
         public static bool TargetInSight(this Transform src, Transform target)
         {
-            // LayerMask targetableLayer = (1 << 0) | (1 << 10);
-            LayerMask targetableLayer = (1 << 0);
+            LayerMask targetableLayer = (1 << 0) | (1 << 10);
+            // LayerMask targetableLayer = (1 << 0);
             RaycastHit hit;
             if (Physics.Raycast(src.position, target.position - src.position, out hit, Mathf.Infinity, targetableLayer))
             {
                 // return hit.transform == target;
-                return (hit.point - src.position).sqrMagnitude > (target.position - src.position).sqrMagnitude;
+                // return (hit.point - src.position).sqrMagnitude > (target.position - src.position).sqrMagnitude;
+                return hit.transform.GetComponentInParent<PlayerController>() != null;
             } else return false;
         }
         public static void PlayNewClip(this AudioSource source, AudioClip clip)

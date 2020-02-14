@@ -128,7 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2499701186607599646}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[ Weapon ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,6 +244,7 @@ MonoBehaviour:
   aimDot: 0
   mTransform: {fileID: 0}
   baseBot: {fileID: 0}
+  speed: 10
   turnSpeed: 0.75
   aimSpeed: 0.5
   barrelSpeed: 0.25
@@ -258,6 +259,7 @@ MonoBehaviour:
   networkIdentity: {fileID: 5392563328149267095}
   audioController: {fileID: 3704879165003645592}
   targetingController: {fileID: 0}
+  startHeight: 0
   moveDir: 2
   turnDir: 2
   aimDir: 2
@@ -546,7 +548,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3070354016371077910}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[ Barrel ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -735,7 +737,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4211075002321333059}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ProjectileSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1023,7 +1025,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5879353435907227406}
   - component: {fileID: 3836106807382325929}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Reticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1103,7 +1105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3695447004884702315}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[ Model ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1563,6 +1565,11 @@ PrefabInstance:
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 8821719571096397328, guid: 269f51d5938c844d79a5c3eef516d55a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5050017606459681504, guid: 269f51d5938c844d79a5c3eef516d55a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1643,6 +1650,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: MuzzleFlash
       objectReference: {fileID: 0}
+    - target: {fileID: 5050017606459681505, guid: 269f51d5938c844d79a5c3eef516d55a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7624763274362135628, guid: 269f51d5938c844d79a5c3eef516d55a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5050017605536510920, guid: 269f51d5938c844d79a5c3eef516d55a,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -1657,6 +1674,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5050017605536510921, guid: 269f51d5938c844d79a5c3eef516d55a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5050017605536510926, guid: 269f51d5938c844d79a5c3eef516d55a,
         type: 3}
@@ -1749,6 +1771,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: tank_barrel_01
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 4a3dac4a469ad4ac08b29bb011fc0c79,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 4a3dac4a469ad4ac08b29bb011fc0c79,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1835,6 +1862,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: tank_cannon_01
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: c350fd7e3995f430bbe017a99c5e8b8e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: c350fd7e3995f430bbe017a99c5e8b8e,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1920,6 +1952,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tank_body_01
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 533db4b10cd5f4d51af06ce891bba08d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 533db4b10cd5f4d51af06ce891bba08d,
         type: 3}

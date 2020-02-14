@@ -55,7 +55,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 3
+  m_CollisionDetection: 2
 --- !u!95 &1816463714808142586
 Animator:
   serializedVersion: 3
@@ -163,6 +163,7 @@ MonoBehaviour:
   aimDot: 0
   mTransform: {fileID: 0}
   baseBot: {fileID: 0}
+  speed: 6.5
   turnSpeed: 0.75
   aimSpeed: 0.5
   barrelSpeed: 0.25
@@ -177,6 +178,7 @@ MonoBehaviour:
   networkIdentity: {fileID: 7577389972384223855}
   audioController: {fileID: 5013670832245336505}
   targetingController: {fileID: 2593642164949062254}
+  startHeight: 0
   moveDir: 2
   turnDir: 2
   aimDir: 2

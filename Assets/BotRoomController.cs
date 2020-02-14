@@ -18,6 +18,7 @@ public class BotRoomController : MonoBehaviour
     {
         if (NetworkClient.ClientID == null && spawnOfflineBots)
         {
+            BotManager.Instance.SetBotsToSpawn("Basic_Offline");
             BotManager.Instance.Initialize(maxBots);
         }
     }

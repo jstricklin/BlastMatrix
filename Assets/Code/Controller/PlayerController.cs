@@ -36,7 +36,7 @@ namespace Project.Controllers {
         #endregion
 
         // override Rigidbody myRb;
-        private float speed = 6.5f;
+        public float speed = 6.5f;
         public float turnSpeed = 0.75f;
         public float aimSpeed = 0.5f;
         public float barrelSpeed = 0.25f;
@@ -59,6 +59,8 @@ namespace Project.Controllers {
         [SerializeField]
         PlayerAudioController audioController;
         public TargetingController targetingController;
+        [SerializeField]
+        float startHeight;
 
         public enum MoveDir {
             FORWARD,
@@ -122,6 +124,10 @@ namespace Project.Controllers {
             Move();
             Turn();
             Aim();
+            if (transform.position.y < startHeight)
+            {
+                transform.position = new Vector3(transform.position.x, startHeight, transform.position.z);
+            }
         }
 
         public new virtual void Start()
@@ -134,6 +140,7 @@ namespace Project.Controllers {
                 cam.Follow = cannon;
                 cam.LookAt = cannon;
             }
+            startHeight = transform.position.y;
         }
 
         void OnDisable()
@@ -210,7 +217,7 @@ namespace Project.Controllers {
             audioController.FireCannon();
         }
 
-        public void TankHit()
+        public virtual void TankHit(Transform attacker)
         {
             myAnim.SetTrigger("isHit");
         }

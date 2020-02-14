@@ -9,10 +9,7 @@ namespace SA
     {
         public override void Execute(StateManager states)
         {
-            // states.currentTarget = states.baseBot.EnemyTarget();
-            // states.lookTarget = states.currentTarget;
-            // states.battleMode = StateManager.BattleMode.Chasing;
-            states.baseBot.targetingController.TargetEnemy();
+            states.baseBot.StartChasing();
         }
     }
 }
