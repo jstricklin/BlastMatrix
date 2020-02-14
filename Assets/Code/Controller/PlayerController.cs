@@ -11,8 +11,30 @@ using Project.UI;
 using SA;
 
 namespace Project.Controllers {
-    public class PlayerController : StateManager, ITargetable
+    public class PlayerController : StateManager, ITargetable, IDamageable
     {
+        #region client side (offline) damage logic 
+        public int maxHealth { get; set; }
+        public int currentHealth { get; set; }
+
+        public void DealDamage(int amount)
+        {
+            currentHealth -= amount;
+        }
+
+        public void AddHealth (int amount)
+        {
+            currentHealth += amount;
+        }
+
+        public void ResetHealth()
+        {
+            currentHealth = maxHealth;
+        }
+
+
+        #endregion
+
         // override Rigidbody myRb;
         private float speed = 6.5f;
         public float turnSpeed = 0.75f;
@@ -285,6 +307,11 @@ namespace Project.Controllers {
                     barrelDir = BarrelDir.IDLE;
                 }
             }
+        }
+
+        public void DestroyTank()
+        {
+
         }
 
         #region Actions

@@ -240,8 +240,10 @@ public class BaseBot : PlayerController
             if (attackReady && !cannonCooldown.IsOnCooldown() && targetingController.aimState == TargetingController.AimState.IN_SIGHT)
             {
                 // cannonCooldown.StartCooldown();
-                FireCannon(networkIdentity.GetID());
-                // TestFireProjectile();
+                if (NetworkClient.ClientID == null)
+                    TestFireProjectile();
+                else
+                    FireCannon(networkIdentity.GetID());
                 if (!maneuvering && !avoiding && Random.Range(0, 10) > 7)
                     StartCoroutine(AttackManeuvers());
             }
@@ -316,6 +318,7 @@ public class BaseBot : PlayerController
 
     void TestFireProjectile()
     {
+        cannonCooldown.StartCooldown();
         var spawnObject = Instantiate(testProjectile);
         Quaternion lookTo = Quaternion.LookRotation(barrel.transform.forward, spawnObject.transform.up);
         spawnObject.transform.rotation = Quaternion.Euler(lookTo.eulerAngles);

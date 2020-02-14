@@ -15,32 +15,35 @@ namespace Project.Managers
         GameObject tankBot;
         [SerializeField]
         public Bots bots;
-        [SerializeField]
-        int maxBots = 8;
+        // [SerializeField]
+        // int maxBots = 8;
         [SerializeField]
         GameObject spawnPoints;
         Transform spawnPoint;
         List<Transform> spawnPointsArr = new List<Transform>();
         public static List<BaseBot> SpawnedBots = new List<BaseBot>();
         public bool displayTrajectories = false;
+        [SerializeField]
+        bool spawnBots;
 
         void Start()
         {
-            // Initialize(maxBots);
+            // if (NetworkClient.ClientID == null && spawnBots)
+            //     Initialize(maxBots);
         }
 
-        // public void Initialize(int botCount)
-        // {
-        //     for (int i = 0; i < spawnPoints.transform.childCount; i++)
-        //     {
-        //         spawnPointsArr.Add(spawnPoints.transform.GetChild(i));
-        //     }
-        //     for (int i = 0; i < botCount; i++)
-        //     {
-        //         SpawnBot();
-        //     }
-        //     UpdateBotTargets();
-        // }
+        public void Initialize(int botCount)
+        {
+            for (int i = 0; i < spawnPoints.transform.childCount; i++)
+            {
+                spawnPointsArr.Add(spawnPoints.transform.GetChild(i));
+            }
+            for (int i = 0; i < botCount; i++)
+            {
+                SpawnBot();
+            }
+            UpdateBotTargets();
+        }
 
         public GameObject SpawnBot(bool canSpawn = false)
         {
