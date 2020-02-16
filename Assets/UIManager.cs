@@ -74,6 +74,7 @@ namespace Project.UI {
         public void DisplayHitMarker(int score)
         {
             // Debug.Log("hit score: " + score);
+            if (myAnim == null) return;
             myAnim.SetTrigger("hit");
         }
         public void UpdateScore(int score)

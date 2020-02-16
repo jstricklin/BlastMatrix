@@ -171,7 +171,10 @@ namespace Project.Controllers {
             Color onCooldown = trajectory.material.color;
             Color weaponReady = Color.green;
             weaponReady.a = onCooldown.a;
-            weaponCooldown = GetComponentInParent<PlayerController>().cannonCooldown;
+            if (botController == null) 
+            {
+                weaponCooldown = GetComponentInParent<PlayerController>().cannonCooldown;
+            }
             while(true)
             {
                 if (NetworkClient.ClientID != null && networkIdentity == null)
@@ -182,14 +185,11 @@ namespace Project.Controllers {
                 {
                     yield break;
                 }
-                if (weaponCooldown != null) 
+                if (weaponCooldown.IsOnCooldown())
                 {
-                    if (weaponCooldown.IsOnCooldown())
-                    {
-                        trajectory.material.color = onCooldown;
-                    } else {
-                        trajectory.material.color = weaponReady;
-                    }
+                    trajectory.material.color = onCooldown;
+                } else {
+                    trajectory.material.color = weaponReady;
                 }
                 bool possibleHit = Ballistics.Ballistics.DisplayTrajectory(trajectory, trajectoryStart, vector, maxSteps, currentAngle, allTargets);
                 yield return new WaitForFixedUpdate();

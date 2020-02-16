@@ -15,7 +15,7 @@ namespace Project.Controllers {
     {
         #region client side (offline) damage logic 
         public int maxHealth { get; set; }
-        public int currentHealth { get; set; }
+        // public int currentHealth { get; set; }
 
         public void DealDamage(int amount)
         {

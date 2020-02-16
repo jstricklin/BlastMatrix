@@ -21,7 +21,7 @@ namespace SA
         public Transform attacker;
         public Transform homeBase;
         // public IResourceReceiver homeReceiver => homeBase.GetComponent<IResourceReceiver>();
-        public int maxHealth = 25;
+        public int maxHealth = 100;
         public int currentHealth { get; set; }
 
         // public AIBehaviorMode behaviorMode;

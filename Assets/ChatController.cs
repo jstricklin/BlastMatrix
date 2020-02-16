@@ -51,7 +51,7 @@ namespace Project.Controllers {
         public void OnMessageReceived(Message message) 
         {
             // chatText.text += "\n"+message;
-            Debug.Log("message update " + message.message);
+            // Debug.Log("message update " + message.message);
             messages.Add(message);
             string text = chat.chatText.text;
             text += "\n" + message.username +  ": " + message.message;
@@ -128,7 +128,7 @@ public class Chat : MonoBehaviour {
     }
    public IEnumerator ChatSystem()
     {
-        Debug.Log(chatText + " chat text");
+        // Debug.Log(chatText + " chat text");
         Color col = chatText.color;
         Color colClear = col;
         Color bgClear = chatBGColor;

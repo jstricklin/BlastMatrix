@@ -146,7 +146,7 @@ namespace Project.Networking
                     chat.UpdateChat(messageString);
                 } else if (data["welcomeMessage"].b) {
                     welcomeMessage = message;   
-                    Debug.Log("message received" + message.message);
+                    // Debug.Log("message received " + message.message);
                     // ChatController.Instance?.SetWelcomeMessage(welcomeMessage);
                     ChatController.Instance?.OnMessageReceived(welcomeMessage);
                 } else {
