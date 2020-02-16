@@ -110,7 +110,7 @@ public class Chat : MonoBehaviour {
         lastMessageTime = Time.time;
         if (chatView != null)
         {
-            // chatView.verticalNormalizedPosition = 0.1f;
+            chatView.verticalNormalizedPosition = 0.5f;
         }
     }
     public void DisplayChatOrSendMessage()

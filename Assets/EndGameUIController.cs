@@ -4,6 +4,7 @@ using Project.Utilities;
 using UnityEngine;
 using TMPro;
 using Project.Networking;
+using UnityEngine.UI;
 
 namespace Project.Controllers {
     public class EndGameUIController : Singleton<EndGameUIController>
@@ -11,6 +12,8 @@ namespace Project.Controllers {
 
         [SerializeField]
         TMP_Text playerScoreText;
+        [SerializeField]
+        ScrollRect scoreScroll;
         string matchResults;
         [SerializeField]
         TMP_Text matchCountdown;
@@ -20,6 +23,7 @@ namespace Project.Controllers {
         {
             matchResults = results.FixLineBreaks();
             playerScoreText.text = matchResults;
+            scoreScroll.verticalNormalizedPosition = 1;
             StartCoroutine(NextMatchCountdown(countDown));
         }
         IEnumerator NextMatchCountdown(int time)
