@@ -108,7 +108,7 @@ namespace Project.Gameplay
                 Collider[] hits = new Collider[10];
                 if (Physics.OverlapSphereNonAlloc(transform.position, blastRadius, hits, layers) > 1)
                 {
-                    Debug.Log("hits! " + hits.Length);
+                    // Debug.Log("hits! " + hits.Length);
                 }
             }
         }

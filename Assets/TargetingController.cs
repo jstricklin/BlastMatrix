@@ -16,6 +16,7 @@ namespace Project.Controllers {
         public List<Transform> targetsInSight = new List<Transform>();
         public Vector3[] posList;
         BaseBot botController;
+        Cooldown weaponCooldown;
         public Transform currentTarget;
         NetworkIdentity networkIdentity;
         public float currentDist;
@@ -167,9 +168,10 @@ namespace Project.Controllers {
         {
             int maxSteps = 100;
             trajectory.transform.SetParent(cannonBase);
-            Color noHitColor = trajectory.material.color;
-            Color hitColor = Color.green;
-            hitColor.a = noHitColor.a;
+            Color onCooldown = trajectory.material.color;
+            Color weaponReady = Color.green;
+            weaponReady.a = onCooldown.a;
+            weaponCooldown = GetComponentInParent<PlayerController>().cannonCooldown;
             while(true)
             {
                 if (NetworkClient.ClientID != null && networkIdentity == null)
@@ -179,6 +181,15 @@ namespace Project.Controllers {
                 if (networkIdentity != null && !networkIdentity.IsControlling())
                 {
                     yield break;
+                }
+                if (weaponCooldown != null) 
+                {
+                    if (weaponCooldown.IsOnCooldown())
+                    {
+                        trajectory.material.color = onCooldown;
+                    } else {
+                        trajectory.material.color = weaponReady;
+                    }
                 }
                 bool possibleHit = Ballistics.Ballistics.DisplayTrajectory(trajectory, trajectoryStart, vector, maxSteps, currentAngle, allTargets);
                 yield return new WaitForFixedUpdate();

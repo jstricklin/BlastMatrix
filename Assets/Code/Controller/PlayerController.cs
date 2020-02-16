@@ -59,6 +59,7 @@ namespace Project.Controllers {
         [SerializeField]
         PlayerAudioController audioController;
         public TargetingController targetingController;
+        public HingeController hingeController;
         [SerializeField]
         float startHeight;
 
@@ -215,6 +216,7 @@ namespace Project.Controllers {
         {
             muzzleFlash.Play();
             audioController.FireCannon();
+            hingeController.CannonFired(barrel.transform.forward);
         }
 
         public virtual void TankHit(Transform attacker)
