@@ -180,6 +180,7 @@ MonoBehaviour:
   networkIdentity: {fileID: 7577389972384223855}
   audioController: {fileID: 5013670832245336505}
   targetingController: {fileID: 2593642164949062254}
+  hingeController: {fileID: 0}
   startHeight: 0
   moveDir: 2
   turnDir: 2
@@ -1273,41 +1274,41 @@ ConfigurableJoint:
   m_ConnectedAnchor: {x: 0, y: -0.5, z: 0}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
-  m_XMotion: 1
-  m_YMotion: 1
+  m_XMotion: 0
+  m_YMotion: 0
   m_ZMotion: 1
   m_AngularXMotion: 1
   m_AngularYMotion: 1
   m_AngularZMotion: 1
   m_LinearLimitSpring:
-    spring: 50
-    damper: 1
+    spring: 500
+    damper: 2.5
   m_LinearLimit:
-    limit: 0
+    limit: 0.001
     bounciness: 1
-    contactDistance: 0.1
+    contactDistance: 0
   m_AngularXLimitSpring:
     spring: 50
-    damper: 1
+    damper: 5
   m_LowAngularXLimit:
-    limit: -1
+    limit: 0
     bounciness: 1
-    contactDistance: 0.1
+    contactDistance: 0
   m_HighAngularXLimit:
-    limit: 1
+    limit: 0.01
     bounciness: 1
-    contactDistance: 0.1
+    contactDistance: 0
   m_AngularYZLimitSpring:
     spring: 50
-    damper: 1
+    damper: 2.5
   m_AngularYLimit:
     limit: 3
     bounciness: 1
-    contactDistance: 0.1
+    contactDistance: 0
   m_AngularZLimit:
-    limit: 0
+    limit: 3
     bounciness: 1
-    contactDistance: 0.1
+    contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
