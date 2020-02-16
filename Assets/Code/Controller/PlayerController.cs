@@ -36,7 +36,9 @@ namespace Project.Controllers {
         #endregion
 
         // override Rigidbody myRb;
-        public float speed = 6.5f;
+        public float speed = 0f;
+        public float maxSpeed = 6.5f;
+        public float acceleration = 3f;
         public float turnSpeed = 0.75f;
         public float aimSpeed = 0.5f;
         public float barrelSpeed = 0.25f;
@@ -141,6 +143,7 @@ namespace Project.Controllers {
                 cam.Follow = cannon;
                 cam.LookAt = cannon;
             }
+            StartCoroutine(HandleSpeed());
             startHeight = transform.position.y;
         }
 
@@ -402,6 +405,28 @@ namespace Project.Controllers {
         {
             currentTarget = target;
             // lookTarget = currentTarget;
+        }
+
+        public IEnumerator HandleSpeed()
+        {
+            MoveDir lastMove = moveDir;
+            while(true)
+            {
+                if (moveDir != MoveDir.IDLE && speed < maxSpeed)
+                {
+                    if (lastMove != moveDir)
+                    {
+                        lastMove = moveDir;
+                        speed = 0f;
+                    }
+                    speed += 0.1f * acceleration;
+                } else if (moveDir == MoveDir.IDLE && speed > 0) {
+                    speed -= 0.3f;
+                    Vector3 dir = lastMove == MoveDir.FORWARD ? transform.forward : -transform.forward;
+                    myRb.MovePosition(transform.position + ((dir * speed) * Time.fixedDeltaTime));
+                }
+                yield return new WaitForEndOfFrame();
+            }
         }
     }
     public struct WeaponRotation 
