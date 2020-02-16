@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -8872867200065514599}
   - component: {fileID: -8790933029396598956}
   - component: {fileID: 796364261359217555}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,6 +81,7 @@ MonoBehaviour:
   speed: 10
   explosionFX: {fileID: 5050017606459681505, guid: 8dabd48da52fe4e1991460b2730c0001,
     type: 3}
+  blastRadius: 100
 --- !u!114 &-8790933029396598956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,7 +129,7 @@ GameObject:
   - component: {fileID: 4610914981250305480}
   - component: {fileID: 4610914981250305481}
   - component: {fileID: 4610914981250305482}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

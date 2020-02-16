@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9c8dfda8f9364a108c96d6fd38bdad0, type: 3}
+  m_Name: ColorSettings
+  m_EditorClassIdentifier: 
+  primaryColors:
+  - {r: 0, g: 0.35183308, b: 0.9150943, a: 1}
+  - {r: 0.5943396, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0.5660378, b: 0.50190675, a: 1}
+  - {r: 0, g: 0.8584906, b: 0.10745501, a: 1}
+  - {r: 0, g: 0.55882114, b: 0.9137255, a: 1}
+  - {r: 0.6155115, g: 0, b: 0.754717, a: 1}
+  - {r: 0, g: 0.8679245, b: 0.748375, a: 1}
+  - {r: 0.18898647, g: 0, b: 0.8018868, a: 1}
+  - {r: 0.7830189, g: 0.24413684, b: 0, a: 1}
+  - {r: 0.5283019, g: 0.3244103, b: 0.11213957, a: 1}
+  - {r: 0.764151, g: 0.5562582, b: 0, a: 1}
+  - {r: 0.48022282, g: 0.5471698, b: 0.25551796, a: 1}
+  secondaryColors: []

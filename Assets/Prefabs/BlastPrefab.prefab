@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1753262702}
   - component: {fileID: 1753262701}
   - component: {fileID: 1753262700}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Blast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8060323170367750017}
   - component: {fileID: 4584741318705291407}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 5050017605536510920}
   - component: {fileID: 5050017605536510926}
   - component: {fileID: 5050017605536510927}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: BlastSparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5063,7 +5063,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5050017606459681504}
   - component: {fileID: 1642677932501365045}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: BlastPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
