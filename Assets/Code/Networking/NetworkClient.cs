@@ -137,18 +137,18 @@ namespace Project.Networking
                 // Debug.Log("message received: " + data);
                 string messageString = data["message"].str;
                 string username = data["player"]["username"].str;
-                string msgDate = data["date"].str;
+                // string msgDate = data["date"].str;
                 Message message = new Message();
                 message.username = username;
                 message.message = messageString;
-                // message.date = msgDate;
+                message.date = Time.time;
                 if (data["serverAlert"].b) {
                     chat.UpdateChat(messageString);
                 } else if (data["welcomeMessage"].b) {
                     welcomeMessage = message;   
                     // Debug.Log("message received " + message.message);
                     // ChatController.Instance?.SetWelcomeMessage(welcomeMessage);
-                    ChatController.Instance?.OnMessageReceived(welcomeMessage);
+                    ChatController.Instance?.SetWelcomeMessage(welcomeMessage);
                 } else {
                     ChatController.Instance?.OnMessageReceived(message);
                 }
@@ -263,9 +263,11 @@ namespace Project.Networking
                 string id = data["id"].str;
                 string attackerId = data["attackerId"].str;
                 NetworkIdentity ni = networkObjects[id];
-
+                bool killer = false;
+                bool killed = false;
                 if (this.GetClientID() == attackerId)
                 {
+                    killer = true;
                     int score = (int)data["hitScore"].f;
                     int playerScore = (int)data["playerScore"].f;
                     UIManager.Instance.DisplayHitMarker(score);
@@ -274,8 +276,10 @@ namespace Project.Networking
 
                 if (ni.IsControlling())
                 {
+                    killed = true;
                     UIManager.Instance.SetHealth(0);
                 }
+                UIManager.Instance.OnPlayerKilled(networkObjects[attackerId].name, networkObjects[id].name, killer, killed);
                 ni.gameObject.SetActive(false);
             });
             socketIO.On("playerRespawn", (e) => {
@@ -594,7 +598,7 @@ namespace Project.Networking
     {
         public Message()
         {
-            this.date = Time.time;
+            // this.date = Time.time;
         }
         public string username;
         public float date;

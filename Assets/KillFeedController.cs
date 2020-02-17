@@ -6,6 +6,7 @@ using Project.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Project.Controllers {
     public class KillFeedController : Singleton<KillFeedController>
@@ -18,7 +19,7 @@ namespace Project.Controllers {
         [SerializeField]
         List<Message> killFeedMessages = new List<Message>();
         [SerializeField]
-        bool testFeed = true;
+        bool testFeed = false;
 
         void Start()
         {
@@ -32,8 +33,7 @@ namespace Project.Controllers {
         public void OnPlayerKilled(string killer, string player)
         {
             
-            Message feedMessage = new Message();
-            feedMessage.message = $"{killer} destroyed {player}";
+            Message feedMessage = killFeed.GenerateKillMessage(killer, player);
             killFeedMessages.Add(feedMessage);
             OnUpdateKillFeed(feedMessage);
         }
@@ -67,6 +67,42 @@ namespace Project.Controllers {
     int messagesToDisplay = 3;
     List<Message> feedMessages = new List<Message>();
 
+    string[] killActions = {
+        "destroyed",
+        "blasted",
+        "wrecked",
+        "obliterated",
+        "disintegrated",
+        "disincorporated",
+        "atomized",
+        "dusted",
+        "explosively distributed",
+        "popped",
+        "finished",
+        "got one over",
+        "exploded",
+        "nullified",
+        "discomposed",
+        "extirpated",
+        "ruined",
+        "outplayed",
+        "exterminated",
+        "demolished",
+        "eradicated",
+        "smashed",
+        "annihilated",
+        "floored"
+    };
+
+    public Message GenerateKillMessage(string killer, string player)
+    {
+        Message feedMessage = new Message();
+        feedMessage.date = Time.time;
+        feedMessage.message = $"{killer} {killActions[Random.Range(0, killActions.Length)]} {player}";
+
+        return feedMessage;
+    }
+
     public KillFeed(TMP_Text textObj, float displayTime, ScrollRect view = null) {
         networkClient = FindObjectOfType<NetworkClient>();
         this.feedText = textObj;
@@ -82,7 +118,6 @@ namespace Project.Controllers {
     public void UpdateKillFeed(Message message) 
     {
         feedMessages.Add(message);
-        // feedText.text += message.message + "\n";
         lastMessageTime = Time.time;
         if (feedView != null)
         {

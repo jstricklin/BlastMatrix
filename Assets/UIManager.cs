@@ -98,5 +98,17 @@ namespace Project.UI {
             pauseMenu?.SetActive(!pauseMenu.activeSelf);
         }
 
+        public void OnPlayerKilled(string attacker, string player, bool killer = false, bool killed = false)
+        {
+            KillFeedController.Instance.OnPlayerKilled(attacker, player);
+            if (killer)
+            {
+                // TODO add kill notification
+            }  
+            if (killed)
+            {
+                // TODO add killed notification
+            }
+        }
     }
 }

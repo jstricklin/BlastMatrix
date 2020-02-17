@@ -72,8 +72,6 @@ namespace Project.Controllers {
 
         public void OnMessageReceived(Message message) 
         {
-            // chatText.text += "\n"+message;
-            // Debug.Log("message update " + message.message);
             messages.Add(message);
             string text = chat.chatText.text;
             text += "\n" + message.username +  ": " + message.message;
@@ -82,7 +80,7 @@ namespace Project.Controllers {
 
         public void SetWelcomeMessage(Message message) 
         {
-            string text = message.message + "\n";
+            string text = message.message + "\n\n\n\n\n\n\n\n\n";
             chat.UpdateChat(text);
         }
 
@@ -91,7 +89,6 @@ namespace Project.Controllers {
             messages.Clear();
             chat.chatText.text = "";
         }
-
     }
 }
 
@@ -111,6 +108,7 @@ public class Chat : MonoBehaviour {
     public Chat(TMP_Text textObj, float displayTime, TMP_InputField input = null, ScrollRect chatView = null) {
         networkClient = FindObjectOfType<NetworkClient>();
         this.chatText = textObj;
+        this.chatText.text = "";
         this.maxDisplayTime = displayTime;
         this.chatInput = input;
         this.chatInput?.gameObject.SetActive(false);
@@ -127,7 +125,7 @@ public class Chat : MonoBehaviour {
         lastMessageTime = Time.time;
         if (chatView != null)
         {
-            chatView.verticalNormalizedPosition -= 1f;
+            // chatView.verticalNormalizedPosition -= 1f;
             // chatView.vertical;
         }
     }

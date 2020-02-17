@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -430,7 +430,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1194180919}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -577,8 +577,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 300}
+  m_AnchoredPosition: {x: 0, y: 0.00044723492}
+  m_SizeDelta: {x: 0, y: 195}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &440431896
 GameObject:
@@ -661,8 +661,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 321679231}
   m_HandleRect: {fileID: 321679230}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.6666667
+  m_Value: 0
+  m_Size: 0.9997455
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1802,7 +1802,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2023004596
@@ -1823,7 +1823,40 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'system: test
+
+    system: test
+
+    system: test
+
+    system: test
+
+    system:
+    test
+
+    system: test
+
+    system: test
+
+    system: test
+
+    system: test
+
+    system:
+    test
+
+    system: test
+
+    system: test
+
+    system: test
+
+    system: test
+
+    system:
+    test
+
+    system: test2'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a4f8e4cad86f46f8bb42c5b4ca2e6ac, type: 2}
   m_sharedMaterial: {fileID: -8806488503165778996, guid: 9a4f8e4cad86f46f8bb42c5b4ca2e6ac,
@@ -1859,7 +1892,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 257
+  m_textAlignment: 1025
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 25
@@ -1869,7 +1902,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 104
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -1893,13 +1926,13 @@ MonoBehaviour:
   m_margin: {x: 15, y: 10, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 2023004596}
-    characterCount: 0
+    characterCount: 208
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 0
+    spaceCount: 31
+    wordCount: 32
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 16
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
