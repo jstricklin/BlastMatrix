@@ -43,7 +43,10 @@ namespace Project.UI {
         {
             base.OnEnable();
             inputController = FindObjectOfType<InputController>();
-            inputController.pause.performed += TogglePauseMenu;
+            if (inputController != null)
+            {
+                inputController.pause.performed += TogglePauseMenu;
+            }
         }
         void OnDisable()
         {
@@ -94,5 +97,6 @@ namespace Project.UI {
         {
             pauseMenu?.SetActive(!pauseMenu.activeSelf);
         }
+
     }
 }

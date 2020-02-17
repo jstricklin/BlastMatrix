@@ -17,6 +17,8 @@ namespace Project.Controllers {
         [SerializeField]
         TMP_Text chatText;
         [SerializeField]
+        bool testChat;
+        [SerializeField]
         ScrollRect scrollView;
         Chat chat;
         float maxDisplayTime = 5f;
@@ -33,11 +35,31 @@ namespace Project.Controllers {
             // chatBGColor = chatBG.color;
             networkClient = FindObjectOfType<NetworkClient>();
             inputController = FindObjectOfType<InputController>();
-            inputController.chat.performed += ToggleChat;
+            if (inputController != null)
+            {
+                inputController.chat.performed += ToggleChat;
+            }
             chat = new Chat(chatText, maxDisplayTime, chatInput, chatView: scrollView);
             StartCoroutine(chat.ChatSystem());
+            if (testChat)
+            {
+                StartCoroutine(TestChat());
+            }
         }
 
+        IEnumerator TestChat()
+        {
+            Message testMessage = new Message();
+            testMessage.username = "System";
+            int i = 1;
+            while (true)
+            {
+                testMessage.message = "test message " + i;
+                OnMessageReceived(testMessage);
+                i++;
+                yield return new WaitForSeconds(0.3f);
+            }
+        }
         void OnDisable()
         {
             inputController.chat.performed -= ToggleChat;
@@ -60,11 +82,6 @@ namespace Project.Controllers {
 
         public void SetWelcomeMessage(Message message) 
         {
-            // chatText.text += "\n"+message;
-            // messages.Add(message);
-            // string text = chat.chatText.text;
-            // text += "\n" + message.username +  ": " + message.message;
-            // text += "\n" + message.username +  ": " + message.message;
             string text = message.message + "\n";
             chat.UpdateChat(text);
         }
@@ -110,7 +127,8 @@ public class Chat : MonoBehaviour {
         lastMessageTime = Time.time;
         if (chatView != null)
         {
-            chatView.verticalNormalizedPosition = 0.5f;
+            chatView.verticalNormalizedPosition -= 1f;
+            // chatView.vertical;
         }
     }
     public void DisplayChatOrSendMessage()

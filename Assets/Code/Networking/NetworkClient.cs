@@ -141,7 +141,7 @@ namespace Project.Networking
                 Message message = new Message();
                 message.username = username;
                 message.message = messageString;
-                message.date = msgDate;
+                // message.date = msgDate;
                 if (data["serverAlert"].b) {
                     chat.UpdateChat(messageString);
                 } else if (data["welcomeMessage"].b) {
@@ -592,8 +592,12 @@ namespace Project.Networking
     [Serializable]
     public class Message 
     {
+        public Message()
+        {
+            this.date = Time.time;
+        }
         public string username;
-        public string date;
+        public float date;
         public string message;
     }
     [Serializable]
