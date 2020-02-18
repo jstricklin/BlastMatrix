@@ -11,15 +11,20 @@ namespace Project.Controllers {
         Joint hinge;
         [SerializeField]
         bool enableHinge;
+        [SerializeField]
+        bool unparentHinge = false;
 
         Rigidbody hingeRb;
+
+        //TODO work on hinge parent logic to smooth and fix bugs
         // Start is called before the first frame update
         void Awake()
         {
             if (enableHinge)
             {
-                // hinge.transform?.SetParent(null);
                 hingeRb = hinge.GetComponent<Rigidbody>();
+                if (unparentHinge)
+                    hinge.transform?.SetParent(null);
             } else {
                 Destroy(hingeBase.GetComponent<Rigidbody>());
                 Destroy(hinge);

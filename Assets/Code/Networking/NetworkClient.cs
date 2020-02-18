@@ -280,7 +280,8 @@ namespace Project.Networking
                     UIManager.Instance.SetHealth(0);
                 }
                 UIManager.Instance.OnPlayerKilled(networkObjects[attackerId].name, networkObjects[id].name, killer, killed);
-                ni.gameObject.SetActive(false);
+                // ni.gameObject.SetActive(false);
+                ni.gameObject.GetComponent<PlayerController>().IsDestroyed();
             });
             socketIO.On("playerRespawn", (e) => {
                 // Debug.Log("respawning player");
@@ -295,7 +296,8 @@ namespace Project.Networking
                 {
                     UIManager.Instance.SetHealth(100);
                 }
-                ni.gameObject.SetActive(true);
+                // ni.gameObject.SetActive(true);
+                ni.gameObject.GetComponent<PlayerController>().SpawnPlayer();
             });
             socketIO.On("serverSpawn", (e) =>
             {

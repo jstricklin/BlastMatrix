@@ -20,9 +20,12 @@ namespace Project.Controllers {
         ScrollRect feedView;
         [SerializeField]
         List<Message> killFeedMessages = new List<Message>();
+        [BoxGroup("Test Variables")]
         [SerializeField]
         bool testFeed = false;
-
+        [BoxGroup("Test Variables")]
+        [SerializeField]
+        float testMsgSpeed = 1.5f;
         [SerializeField]
         float messageDisplayTime = 3f;
         [SerializeField]
@@ -61,7 +64,7 @@ namespace Project.Controllers {
                 string b = $"player{i+2}";
                 OnPlayerKilled(a, b);
                 i+=2;
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(testMsgSpeed);
             }
         }
     }

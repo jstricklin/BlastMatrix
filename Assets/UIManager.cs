@@ -106,12 +106,10 @@ namespace Project.UI {
             mainKillFeed.OnPlayerKilled(attacker, player);
             if (killer)
             {
-                // TODO add kill notification
                 personalKillFeed.OnPlayerKilled("You", player);
             }  
             if (killed)
             {
-                // TODO add killed notification
                 killedByFeed.OnPlayerKilled(attacker, "You");
             }
         }

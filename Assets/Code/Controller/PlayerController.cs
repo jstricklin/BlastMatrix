@@ -14,7 +14,7 @@ namespace Project.Controllers {
     public class PlayerController : StateManager, ITargetable, IDamageable
     {
         #region client side (offline) damage logic 
-        public int maxHealth { get; set; }
+        // public int maxHealth { get; set; }
         // public int currentHealth { get; set; }
 
         public void DealDamage(int amount)
@@ -110,6 +110,7 @@ namespace Project.Controllers {
 
         void OnEnable() 
         {
+            StartCoroutine(HandleSpeed());
             if (isBot) return;
             EnableInputs();
         }
@@ -143,7 +144,6 @@ namespace Project.Controllers {
                 cam.Follow = cannon;
                 cam.LookAt = cannon;
             }
-            StartCoroutine(HandleSpeed());
             startHeight = transform.position.y;
         }
 
@@ -428,6 +428,17 @@ namespace Project.Controllers {
                 yield return new WaitForEndOfFrame();
             }
         }
+
+        public void IsDestroyed()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void SpawnPlayer()
+        {
+            gameObject.SetActive(true);
+        }
+
     }
     public struct WeaponRotation 
     {

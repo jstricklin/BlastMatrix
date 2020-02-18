@@ -656,6 +656,7 @@ MonoBehaviour:
   hingeBase: {fileID: 7193535396895921127}
   hinge: {fileID: 302190725971524526}
   enableHinge: 1
+  unparentHinge: 0
 --- !u!1 &1458536880200219657
 GameObject:
   m_ObjectHideFlags: 0
@@ -822,6 +823,8 @@ MonoBehaviour:
   mTransform: {fileID: 0}
   baseBot: {fileID: 0}
   speed: 10
+  maxSpeed: 6.5
+  acceleration: 3
   turnSpeed: 0.75
   aimSpeed: 0.5
   barrelSpeed: 0.25
