@@ -23,6 +23,9 @@ namespace Project.UI {
         Color fullHealthColor, lowHealthColor;
 
         [SerializeField]
+        public KillFeedController mainKillFeed, personalKillFeed, killedByFeed;
+
+        [SerializeField]
         TMP_Text gameClock;
         [SerializeField]
         TMP_Text playerScore;
@@ -100,14 +103,16 @@ namespace Project.UI {
 
         public void OnPlayerKilled(string attacker, string player, bool killer = false, bool killed = false)
         {
-            KillFeedController.Instance.OnPlayerKilled(attacker, player);
+            mainKillFeed.OnPlayerKilled(attacker, player);
             if (killer)
             {
                 // TODO add kill notification
+                personalKillFeed.OnPlayerKilled("You", player);
             }  
             if (killed)
             {
                 // TODO add killed notification
+                killedByFeed.OnPlayerKilled(attacker, "You");
             }
         }
     }

@@ -7,10 +7,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using Sirenix.OdinInspector;
 
 namespace Project.Controllers {
-    public class KillFeedController : Singleton<KillFeedController>
+    public class KillFeedController : MonoBehaviour
     {
+
         KillFeed killFeed;
         [SerializeField]
         TMP_Text killFeedText;
@@ -21,9 +23,14 @@ namespace Project.Controllers {
         [SerializeField]
         bool testFeed = false;
 
+        [SerializeField]
+        float messageDisplayTime = 3f;
+        [SerializeField]
+        int messagesToDisplay = 3;
+
         void Start()
         {
-            killFeed = new KillFeed(killFeedText, 3f, feedView);
+            killFeed = new KillFeed(killFeedText, messageDisplayTime, messagesToDisplay, feedView);
             StartCoroutine(killFeed.KillFeedSystem());
             if (testFeed)
             {
@@ -40,6 +47,10 @@ namespace Project.Controllers {
         public void OnUpdateKillFeed(Message message)
         {
             killFeed.UpdateKillFeed(message);
+        }
+        public void SetMessageDisplayTime()
+        {
+
         }
         IEnumerator TestFeed()
         {
@@ -63,7 +74,9 @@ namespace Project.Controllers {
     Image feedBG;
     Color feedBGColor;
     public float lastMessageTime;
+    [SerializeField]
     float maxDisplayTime;
+    [SerializeField]
     int messagesToDisplay = 3;
     List<Message> feedMessages = new List<Message>();
 
@@ -103,11 +116,12 @@ namespace Project.Controllers {
         return feedMessage;
     }
 
-    public KillFeed(TMP_Text textObj, float displayTime, ScrollRect view = null) {
+    public KillFeed(TMP_Text textObj, float displayTime, int messagesToDisplay, ScrollRect view = null) {
         networkClient = FindObjectOfType<NetworkClient>();
         this.feedText = textObj;
         this.feedText.text = "";
         this.maxDisplayTime = displayTime;
+        this.messagesToDisplay = messagesToDisplay;
         if (view != null)
         {
             this.feedView = view;
