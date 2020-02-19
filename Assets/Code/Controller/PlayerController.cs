@@ -432,11 +432,13 @@ namespace Project.Controllers {
         public void IsDestroyed()
         {
             gameObject.SetActive(false);
+            hingeController.DisableHinge();
         }
 
         public void SpawnPlayer()
         {
             gameObject.SetActive(true);
+            hingeController.ResetHinge();
         }
 
     }

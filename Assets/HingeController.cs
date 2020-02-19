@@ -31,6 +31,16 @@ namespace Project.Controllers {
                 Destroy(hinge.GetComponent<Rigidbody>());
             }
         }
+        public void DisableHinge()
+        {
+            hinge.gameObject.SetActive(false);
+        }
+        public void ResetHinge()
+        {
+            hinge.gameObject.SetActive(true);
+            // hinge.transform.position = hingeBase.position;
+            // hinge.transform.rotation = hingeBase.rotation;
+        }
 
         public void CannonFired(Vector3 direction)
         {
