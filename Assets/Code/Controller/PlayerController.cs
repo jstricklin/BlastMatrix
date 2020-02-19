@@ -7,6 +7,7 @@ using System;
 using Project.Utilities;
 using Project.Networking;
 using Cinemachine;
+using Sirenix.OdinInspector;
 using Project.UI;
 using SA;
 
@@ -49,6 +50,14 @@ namespace Project.Controllers {
         [SerializeField]
         private float shotCooldown = 3;
         public Transform cannon, barrel;
+        List<GameObject> cloneParts = new List<GameObject>();
+        // death vars
+        [BoxGroup("Parts to clone for destroy FX")]
+        [SerializeField]
+        Transform dCannon, dBarrel, dBody;
+        GameObject cannonClone, barrelClone, bodyClone;
+        bool isDestroyed = false;
+
         public Transform projectile, projectileSpawnPoint;
         [SerializeField]
         ParticleSystem muzzleFlash;
@@ -145,6 +154,7 @@ namespace Project.Controllers {
                 cam.LookAt = cannon;
             }
             startHeight = transform.position.y;
+            GenerateDestroyedModel();
         }
 
         void OnDisable()
@@ -194,6 +204,72 @@ namespace Project.Controllers {
             inputController.aimDown.canceled -= AimDown;
             inputController.aimRight.canceled -= AimRight;
             inputController.fire.performed -= FireCannon;
+        }
+
+        void GenerateDestroyedModel()
+        {
+            barrelClone = Instantiate(dBarrel, dBarrel.position, dBarrel.rotation, dBarrel).gameObject;
+            cannonClone = Instantiate(dCannon, dCannon.position, dCannon.rotation, dCannon).gameObject;
+            bodyClone = Instantiate(dBody, dBody.position, dBody.rotation, dBody).gameObject;
+            cloneParts.Add(barrelClone.gameObject);
+            cloneParts.Add(cannonClone.gameObject);
+            cloneParts.Add(bodyClone.gameObject);
+
+            if (hingeController.enableHinge) 
+            {
+                Destroy(bodyClone.GetComponent<Joint>());
+            }
+            foreach(GameObject clonePart in cloneParts)
+            {
+                clonePart.layer = 10;
+                Rigidbody rb;
+                rb = clonePart.GetComponent<Rigidbody>();
+                if (rb == null)
+                    rb = clonePart.AddComponent<Rigidbody>();
+                rb.mass = 5;
+                rb.useGravity = true;
+                clonePart.SetActive(false);
+            }
+        }
+
+        public void DestroyTank()
+        {
+            foreach(GameObject clonePart in cloneParts)
+            {
+                clonePart.SetActive(true);
+                clonePart.transform.SetParent(null);
+                Rigidbody rb = clonePart.GetComponent<Rigidbody>();
+                rb.AddForce(Vector3.up * 50, ForceMode.Impulse);
+                int x = UnityEngine.Random.Range(1,10);
+                int y = UnityEngine.Random.Range(1,10);
+                int z = UnityEngine.Random.Range(1,10);
+                Vector3 torque = new Vector3(x, y, z);
+                rb.AddTorque(torque, ForceMode.Impulse);
+            }
+            dBarrel.gameObject.SetActive(false);
+            dBody.gameObject.SetActive(false);
+            dCannon.gameObject.SetActive(false);
+        }
+
+        void ResetDestroyedParts()
+        {
+            barrelClone.transform.position = dBarrel.transform.position;
+            barrelClone.transform.rotation = dBarrel.transform.rotation;
+            barrelClone.transform.SetParent(dBarrel);
+            cannonClone.transform.position = dCannon.transform.position;
+            cannonClone.transform.rotation = dCannon.transform.rotation;
+            cannonClone.transform.SetParent(dCannon);
+            bodyClone.transform.position = dBody.transform.position;
+            bodyClone.transform.rotation = dBody.transform.rotation;
+            bodyClone.transform.SetParent(dBody);
+
+            foreach(GameObject clonePart in cloneParts)
+            {
+                clonePart.SetActive(false);
+            }
+            dBarrel.gameObject.SetActive(true);
+            dBody.gameObject.SetActive(true);
+            dCannon.gameObject.SetActive(true);
         }
 
         private void FireCannon(InputAction.CallbackContext obj)
@@ -268,6 +344,7 @@ namespace Project.Controllers {
         }
         private void Move()
         {
+            if (isDestroyed) return;
             if (moveDir != MoveDir.IDLE)
             {
                 if (moveDir == MoveDir.FORWARD)
@@ -280,6 +357,7 @@ namespace Project.Controllers {
         }
         private void Turn()
         {
+            if (isDestroyed) return;
             if (turnDir != TurnDir.IDLE)
             {
                 Quaternion rot;
@@ -294,6 +372,7 @@ namespace Project.Controllers {
         }
         private void Aim()
         {
+            if (isDestroyed) return;
             if (aimDir != AimDir.IDLE)
             {
                 Quaternion rot;
@@ -319,11 +398,6 @@ namespace Project.Controllers {
                     barrelDir = BarrelDir.IDLE;
                 }
             }
-        }
-
-        public void DestroyTank()
-        {
-
         }
 
         #region Actions
@@ -431,14 +505,21 @@ namespace Project.Controllers {
 
         public void IsDestroyed()
         {
-            gameObject.SetActive(false);
+            isDestroyed = true;
             hingeController.DisableHinge();
+            // gameObject.SetActive(false);
+            DestroyTank();
         }
 
         public void SpawnPlayer()
         {
             gameObject.SetActive(true);
-            hingeController.ResetHinge();
+            if (isDestroyed)
+            {
+                isDestroyed = false;
+                ResetDestroyedParts();
+                hingeController.ResetHinge();
+            }
         }
 
     }

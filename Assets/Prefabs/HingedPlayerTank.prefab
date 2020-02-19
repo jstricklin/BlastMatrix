@@ -832,6 +832,9 @@ MonoBehaviour:
   shotCooldown: 2.5
   cannon: {fileID: 1458536881221691756}
   barrel: {fileID: 2022518486460648036}
+  dCannon: {fileID: 1598280183327766684}
+  dBarrel: {fileID: 3460157454932816771}
+  dBody: {fileID: 3716899020121313468}
   projectile: {fileID: 4610914980914332223, guid: a9da8a910ad7e4da4826fc3af33bdfe9,
     type: 3}
   projectileSpawnPoint: {fileID: 936120951328461361}

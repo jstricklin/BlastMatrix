@@ -175,6 +175,9 @@ MonoBehaviour:
   shotCooldown: 3
   cannon: {fileID: 94240459767767270}
   barrel: {fileID: 676210076038382574}
+  dCannon: {fileID: 242411501496250646}
+  dBarrel: {fileID: 2699906316047727113}
+  dBody: {fileID: 2802962270143846710}
   projectile: {fileID: 4610914980914332223, guid: a9da8a910ad7e4da4826fc3af33bdfe9,
     type: 3}
   projectileSpawnPoint: {fileID: 1841631027950312379}
@@ -11913,16 +11916,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7917112516926403189}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: 08f004683bd994e01bab98dab4cecb2d,
-        type: 3}
-      propertyPath: m_Name
-      value: tank_tread_01
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 08f004683bd994e01bab98dab4cecb2d,
-        type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 08f004683bd994e01bab98dab4cecb2d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11977,6 +11970,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 08f004683bd994e01bab98dab4cecb2d,
+        type: 3}
+      propertyPath: m_Name
+      value: tank_tread_01
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 08f004683bd994e01bab98dab4cecb2d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 08f004683bd994e01bab98dab4cecb2d,
         type: 3}
@@ -12004,16 +12007,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9174492351320027944}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: 63c081315c59d4891a9633726ed27700,
-        type: 3}
-      propertyPath: m_Name
-      value: tank_body_02
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 63c081315c59d4891a9633726ed27700,
-        type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 63c081315c59d4891a9633726ed27700,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12068,6 +12061,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 63c081315c59d4891a9633726ed27700,
+        type: 3}
+      propertyPath: m_Name
+      value: tank_body_02
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 63c081315c59d4891a9633726ed27700,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 63c081315c59d4891a9633726ed27700,
         type: 3}

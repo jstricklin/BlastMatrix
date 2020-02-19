@@ -9,12 +9,12 @@ namespace Project.Controllers {
         Transform hingeBase;
         [SerializeField]
         Joint hinge;
-        [SerializeField]
-        bool enableHinge;
+        public bool enableHinge;
         [SerializeField]
         bool unparentHinge = false;
 
         Rigidbody hingeRb;
+        
 
         //TODO work on hinge parent logic to smooth and fix bugs
         // Start is called before the first frame update
@@ -45,6 +45,11 @@ namespace Project.Controllers {
         public void CannonFired(Vector3 direction)
         {
             hingeRb?.AddForce(-direction * 15, ForceMode.Impulse);
+        }
+
+        public Transform GetHingeTransform()
+        {
+            return hinge.transform;
         }
 
     }
