@@ -44,7 +44,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: Tank_Barrel
+      Data: Barrel_01
     - Name: $v
       Entry: 10
       Data: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: '"Cannon_01"'
+      Data: Cannon_01
     - Name: $v
       Entry: 10
       Data: 1
@@ -104,7 +104,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: Tank_Body_01
+      Data: Body_01
     - Name: $v
       Entry: 10
       Data: 2
@@ -132,7 +132,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: '"Tread_01"'
+      Data: Tread_01
     - Name: $v
       Entry: 10
       Data: 3
@@ -145,3 +145,4 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  tankMat: {fileID: 2100000, guid: c0e15845b10b649f387649a958688462, type: 2}
