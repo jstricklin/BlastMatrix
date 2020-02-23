@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Project.Networking;
 using Project.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,10 +30,17 @@ namespace Project.Controllers {
         Color selectedColor;
         Dictionary<string, GameObject> tankParts;
 
+        PlayerTank playerTank;
+
+        NetworkClient networkClient;
+
         // Start is called before the first frame update
         void Start()
         {
+            networkClient = FindObjectOfType<NetworkClient>();
+            playerTank = NetworkClient.ClientID != null ? networkClient.playerTank : new PlayerTank();
             tankParts = tank.GenerateTankParts(tankDummy);
+            tank.SetTankColor(tankParts, playerTank.primaryColor);
             colorThumbs = colorSettings.GenerateColorThumbs(colorContainer, colorObj.position, 5);
         }
 
@@ -48,9 +56,21 @@ namespace Project.Controllers {
                     {
                         selectedColor = colorThumb.GetComponent<Image>().color;
                         tank.SetTankColor(tankParts, selectedColor);
+                        playerTank.primaryColor = selectedColor;
                     }
                 }
             }
+        }
+
+        public void SaveAndReturnToMainMenu()
+        {
+            networkClient?.SaveTankConfig(playerTank);
+            ReturnToMainMenu();
+        }
+
+        public void ReturnToMainMenu()
+        {
+            networkClient?.ReturnToMainMenu();
         }
     }
 }

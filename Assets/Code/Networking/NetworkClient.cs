@@ -15,6 +15,7 @@ using Project.UI;
 using Project.Managers;
 using UnityEngine.Networking;
 using TMPro;
+using System.Linq;
 
 namespace Project.Networking 
 {
@@ -27,6 +28,11 @@ namespace Project.Networking
         Transform networkContainer;
         [SerializeField]
         GameObject playerGO;
+        [SerializeField]
+        Tank tank;
+        [SerializeField]
+        ColorSettings colorSettings;
+        public PlayerTank playerTank = new PlayerTank();
         string playerName;
         [SerializeField]
         TMP_Text serverMessage;
@@ -101,6 +107,7 @@ namespace Project.Networking
                 Debug.Log("registered username: " + username);
                 FindObjectOfType<MenuManager>().loggedInText.text = $"Logged in as: {username}";
                 InitServerCommunication();
+                SetupPlayerTank();
             });
             socketIO.On("setHost", (e) => {
                 // Debug.Log("host event...");
@@ -108,6 +115,36 @@ namespace Project.Networking
                 BotManager.Instance?.UpdateBotHost();
             });
         }
+
+        private void SetupPlayerTank()
+        {
+            playerTank.body = tank.bodies.Keys.ElementAt(0);
+            playerTank.barrel = tank.barrels.Keys.ElementAt(0);
+            playerTank.cannon = tank.cannonBases.Keys.ElementAt(0);
+            playerTank.primaryColor = colorSettings.primaryColors[0];
+            socketIO.Emit("queryPlayerTank", JsonUtility.ToJson(playerTank));
+            socketIO.On("updatePlayerTank", (e) => {
+                PlayerTank updatedTank = new PlayerTank();
+                UpdatePlayerTank(updatedTank);
+            });
+            SaveTankConfig();
+        }
+
+        public void SaveTankConfig(PlayerTank pTank = null)
+        {
+            // socketIO.Emit("queryPlayerTank", JsonUtility.ToJson(playerTank));
+            PlayerTank toSave = pTank != null ? pTank : playerTank;
+            socketIO.Emit("savePlayerTank", JsonUtility.ToJson(toSave));
+            // TODO update this below for server logic
+            UpdatePlayerTank(toSave);
+        }
+
+        public void UpdatePlayerTank(PlayerTank pTank)
+        {
+            playerTank = pTank;
+            Debug.Log("tank data received...");
+        }
+
         void Initialize() 
         {
             networkObjects = new Dictionary<string, NetworkIdentity>();
@@ -430,6 +467,7 @@ namespace Project.Networking
                 if (IsSceneLoaded(SceneList.CHAT)) SceneManagementManager.Instance.UnLoadLevel(SceneList.CHAT);
                 if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
+                if (IsSceneLoaded(SceneList.CUSTOMIZE_TANK)) SceneManagementManager.Instance.UnLoadLevel(SceneList.CUSTOMIZE_TANK);
                 FindObjectOfType<MenuManager>().loggedInText.text = $"Logged in as: {username}";
                 ClearNetworkObjects();
             });
@@ -460,6 +498,7 @@ namespace Project.Networking
                     if (IsSceneLoaded(SceneList.CHAT)) SceneManagementManager.Instance.UnLoadLevel(SceneList.CHAT);
                     if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                     if (IsSceneLoaded(SceneList.ENDGAME)) SceneManagementManager.Instance.UnLoadLevel(SceneList.ENDGAME);
+                    if (IsSceneLoaded(SceneList.CUSTOMIZE_TANK)) SceneManagementManager.Instance.UnLoadLevel(SceneList.CUSTOMIZE_TANK);
                     ClearNetworkObjects();
                     // networkObjects.Clear();
                     // for (int i = 0; i < networkContainer.childCount; i++)
@@ -485,6 +524,7 @@ namespace Project.Networking
                 if (IsSceneLoaded(SceneList.LOBBY_BROWSER)) SceneManagementManager.Instance.UnLoadLevel(SceneList.LOBBY_BROWSER);
                 if (IsSceneLoaded(SceneList.MAIN_MENU)) SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
                 if (IsSceneLoaded(SceneList.CHAT)) SceneManagementManager.Instance.UnLoadLevel(SceneList.CHAT);
+                if (IsSceneLoaded(SceneList.CUSTOMIZE_TANK)) SceneManagementManager.Instance.UnLoadLevel(SceneList.CUSTOMIZE_TANK);
                 if (isHost)
                 {
                     Debug.Log("is host!");
@@ -555,6 +595,15 @@ namespace Project.Networking
             }
             yield break;
         }       
+    }
+
+    [Serializable]
+    public class PlayerTank 
+    {
+        public string body;
+        public string cannon;
+        public string barrel;
+        public Color primaryColor;
     }
 
     [Serializable]

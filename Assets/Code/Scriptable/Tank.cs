@@ -39,7 +39,7 @@ namespace Project.ScriptableObjects {
         public void SetTankColor(Dictionary<string, GameObject> tankParts, Color newColor)
         {
             foreach(GameObject part in tankParts.Values) {
-                Debug.Log(part.name);
+                // Debug.Log(part.name);
                 part.GetComponent<MeshRenderer>().material.SetColor("_primaryColor", newColor);
             };
         }

@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Chat.unity
     guid: 594e74cd8f03a445fae9b7e3265a46ce
+  - enabled: 1
+    path: Assets/Scenes/CustomizeTank.unity
+    guid: 74bca72ebfd6b47f4bec009af89b079c
   m_configObjects: {}

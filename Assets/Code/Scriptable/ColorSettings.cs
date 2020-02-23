@@ -33,12 +33,10 @@ namespace Project.ScriptableObjects {
                 _colorThumb.GetComponent<Image>().color = col;
                 if (i > 0 && xStep < width) {
                     pos.x += xOffset;
-                    // Debug.Log("pos " + pos + "x step " + xStep + "width: " + width); 
                 } else if (i > 0 && xStep >= width) {
                     pos.x = startPos.x;
                     pos.y += yOffset; 
                     xStep = 0;
-                    // Debug.Log("pos " + pos); 
                 }
                 _colorThumb.transform.position = pos;
                 _colorThumb.transform.localScale = new Vector3(1, 1, 1);

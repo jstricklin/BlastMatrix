@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -194,12 +194,14 @@ MonoBehaviour:
   networkContainer: {fileID: 1271268061}
   playerGO: {fileID: 1458536880200219657, guid: 7a2aa9f363106422e9c270dd60a26748,
     type: 3}
+  tank: {fileID: 11400000, guid: 432697fa97506436883a82d4d125eba5, type: 2}
+  colorSettings: {fileID: 11400000, guid: 0787f9f43428a48538882c9886f3436a, type: 2}
   serverMessage: {fileID: 1913809081}
   serverObjects: {fileID: 11400000, guid: d218e5e5bc6ca45ea8ebae84e7ff372e, type: 2}
   useLocalHost: 0
   welcomeMessage:
     username: 
-    date: 
+    date: 0
     message: 
 --- !u!4 &1031557046
 Transform:

@@ -93,6 +93,12 @@ namespace Project.Managers
                 invalidUsername.color = col;
             }
         }
+        public void CustomizeTank()
+        {
+            SceneManagementManager.Instance.LoadLevel(levelName: SceneList.CUSTOMIZE_TANK, onLevelLoaded: (levelName) => {
+                SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
+            });
+        }
         public void BrowseLobbies()
         {
             SceneManagementManager.Instance.LoadLevel(levelName: SceneList.LOBBY_BROWSER, onLevelLoaded: (levelName) => {

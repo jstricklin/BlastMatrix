@@ -102,5 +102,6 @@ namespace Project.Utilities
         public const string ONLINE = "Online";
         public const string CHAT = "Chat";
         public const string ENDGAME = "EndGame";
+        public const string CUSTOMIZE_TANK = "CustomizeTank";
     }
 }
