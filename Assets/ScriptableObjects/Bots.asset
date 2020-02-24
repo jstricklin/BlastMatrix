@@ -67,3 +67,5 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  tank: {fileID: 11400000, guid: 432697fa97506436883a82d4d125eba5, type: 2}
+  colorSettings: {fileID: 11400000, guid: 0787f9f43428a48538882c9886f3436a, type: 2}

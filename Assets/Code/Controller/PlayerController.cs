@@ -154,7 +154,8 @@ namespace Project.Controllers {
                 cam.LookAt = cannon;
             }
             startHeight = transform.position.y;
-            GenerateDestroyedModel();
+            if (NetworkClient.ClientID == null)
+                GenerateDestroyedModel();
         }
 
         void OnDisable()
@@ -208,9 +209,23 @@ namespace Project.Controllers {
 
         void GenerateDestroyedModel()
         {
+            Dictionary<string, GameObject> offlineParts = new Dictionary<string, GameObject>();
+            offlineParts["barrel"] = dBarrel.gameObject;
+            offlineParts["cannon"] = dCannon.gameObject;
+            offlineParts["body"] = dBody.gameObject;
+            GenerateDestroyedModel(offlineParts);
+        }
+
+        public void GenerateDestroyedModel(Dictionary<string, GameObject> tankParts)
+        {
+            dBarrel = tankParts["barrel"].transform;
+            dCannon = tankParts["cannon"].transform;
+            dBody = tankParts["body"].transform;
+
             barrelClone = Instantiate(dBarrel, dBarrel.position, dBarrel.rotation, dBarrel).gameObject;
             cannonClone = Instantiate(dCannon, dCannon.position, dCannon.rotation, dCannon).gameObject;
             bodyClone = Instantiate(dBody, dBody.position, dBody.rotation, dBody).gameObject;
+
             cloneParts.Add(barrelClone.gameObject);
             cloneParts.Add(cannonClone.gameObject);
             cloneParts.Add(bodyClone.gameObject);

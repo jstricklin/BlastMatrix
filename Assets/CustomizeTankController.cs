@@ -56,7 +56,7 @@ namespace Project.Controllers {
                     {
                         selectedColor = colorThumb.GetComponent<Image>().color;
                         tank.SetTankColor(tankParts, selectedColor);
-                        playerTank.primaryColor = selectedColor;
+                        // playerTank.primaryColor = selectedColor;
                     }
                 }
             }
@@ -64,7 +64,12 @@ namespace Project.Controllers {
 
         public void SaveAndReturnToMainMenu()
         {
-            networkClient?.SaveTankConfig(playerTank);
+            PlayerTank newTankData = new PlayerTank();
+            newTankData.body = playerTank.body;
+            newTankData.barrel = playerTank.barrel;
+            newTankData.cannon = playerTank.cannon;
+            newTankData.primaryColor = selectedColor;
+            networkClient?.SaveTankConfig(newTankData);
             ReturnToMainMenu();
         }
 

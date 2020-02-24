@@ -122,27 +122,34 @@ namespace Project.Networking
             playerTank.barrel = tank.barrels.Keys.ElementAt(0);
             playerTank.cannon = tank.cannonBases.Keys.ElementAt(0);
             playerTank.primaryColor = colorSettings.primaryColors[0];
-            socketIO.Emit("queryPlayerTank", JsonUtility.ToJson(playerTank));
             socketIO.On("updatePlayerTank", (e) => {
                 PlayerTank updatedTank = new PlayerTank();
+                JSONObject tankData = new JSONObject(e.data);
+                updatedTank.body = tankData["tank"]["body"].str;
+                updatedTank.cannon = tankData["tank"]["cannon"].str;
+                updatedTank.barrel = tankData["tank"]["barrel"].str;
+                updatedTank.primaryColor = new Color(tankData["tank"]["primaryColor"]["r"].f, tankData["tank"]["primaryColor"]["g"].f, tankData["tank"]["primaryColor"]["b"].f, tankData["tank"]["primaryColor"]["a"].f);
+                Debug.Log("tank data received..." + updatedTank.primaryColor);
                 UpdatePlayerTank(updatedTank);
             });
-            SaveTankConfig();
+            socketIO.Emit("queryPlayerTank", JsonUtility.ToJson(playerTank));
+            // SaveTankConfig();
         }
 
         public void SaveTankConfig(PlayerTank pTank = null)
         {
             // socketIO.Emit("queryPlayerTank", JsonUtility.ToJson(playerTank));
             PlayerTank toSave = pTank != null ? pTank : playerTank;
+            playerTank = toSave;
             socketIO.Emit("savePlayerTank", JsonUtility.ToJson(toSave));
             // TODO update this below for server logic
-            UpdatePlayerTank(toSave);
+            // UpdatePlayerTank(toSave);
         }
 
         public void UpdatePlayerTank(PlayerTank pTank)
         {
             playerTank = pTank;
-            Debug.Log("tank data received...");
+            Debug.Log("tank data updated..." + pTank.primaryColor);
         }
 
         void Initialize() 
@@ -207,6 +214,14 @@ namespace Project.Networking
                 string name = data["username"].ToString().RemoveQuotes();
 
                 GameObject go = Instantiate(playerGO, networkContainer);
+
+                Dictionary<string, GameObject> tankParts = tank.GenerateTankParts(go.transform, data["tank"]["barrel"].str, data["tank"]["cannon"].str, data["tank"]["body"].str);
+                Color tankColor = new Color(data["tank"]["primaryColor"]["r"].f, data["tank"]["primaryColor"]["g"].f, data["tank"]["primaryColor"]["b"].f, data["tank"]["primaryColor"]["a"].f);
+                tank.SetTankColor(tankParts, tankColor);
+
+                PlayerController playerController = go.GetComponent<PlayerController>();
+                playerController.GenerateDestroyedModel(tankParts);
+                
                 go.name = string.Format("Player ({0})", name);
 
                 SpawnedPlayers.Add(go.transform);
@@ -227,7 +242,7 @@ namespace Project.Networking
                     playerName = name;
                     canvasController.playerLabel.enabled = false;
                     if (UIManager.Instance != null)
-                        UIManager.Instance.playerLabel.text = name;
+                    UIManager.Instance.playerLabel.text = name;
                 } else {
                     // Debug.Log("name " + name);
                     canvasController.playerLabel.text = name;
