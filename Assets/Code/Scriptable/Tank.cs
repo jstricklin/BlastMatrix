@@ -35,7 +35,7 @@ namespace Project.ScriptableObjects {
             tank["body"].name = "body";
             tank["tread"].name = "tread";
 
-            tank["barrel"].layer = 10;
+            tank["barrel"].layer = 11;
             tank["cannon"].layer = 10;
             tank["body"].layer = 10;
             tank["tread"].layer = 10;

@@ -644,7 +644,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 50
+  m_Intensity: 15
   m_Range: 50.36
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -4407,7 +4407,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 10
+  m_Intensity: 5
   m_Range: 50.36
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -4877,16 +4877,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1430207229}
     m_Modifications:
-    - target: {fileID: 9133143939813005131, guid: 27f3333fb1c6047e4b1ac7de46f350d0,
-        type: 3}
-      propertyPath: m_Name
-      value: ColorThumb
-      objectReference: {fileID: 0}
-    - target: {fileID: 9133143939813005131, guid: 27f3333fb1c6047e4b1ac7de46f350d0,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 9133143939813005130, guid: 27f3333fb1c6047e4b1ac7de46f350d0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4991,6 +4981,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9133143939813005131, guid: 27f3333fb1c6047e4b1ac7de46f350d0,
+        type: 3}
+      propertyPath: m_Name
+      value: ColorThumb
+      objectReference: {fileID: 0}
+    - target: {fileID: 9133143939813005131, guid: 27f3333fb1c6047e4b1ac7de46f350d0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27f3333fb1c6047e4b1ac7de46f350d0, type: 3}

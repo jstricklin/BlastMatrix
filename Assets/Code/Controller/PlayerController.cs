@@ -315,7 +315,6 @@ namespace Project.Controllers {
 
         public virtual void TankHit(Transform attacker)
         {
-            Debug.Log("is hit anim!");
             myAnim.SetTrigger("isHit");
         }
         
