@@ -98,9 +98,25 @@ namespace Project.UI {
 
         public void TogglePauseMenu(InputAction.CallbackContext obj)
         {
+            TogglePauseMenu();
+        }
+        public void TogglePauseMenu()
+        {
             pauseMenu?.SetActive(!pauseMenu.activeSelf);
         }
 
+        public void ToggleBGM()
+        {
+            Debug.Log("toggling BGM");
+        }
+        public void ToggleSFX()
+        {
+            Debug.Log("toggling SFX");
+        }
+        public void TogglePostFX()
+        {
+            Debug.Log("toggling post FX");
+        }
         public void OnPlayerKilled(string attacker, string player, bool killer = false, bool killed = false)
         {
             mainKillFeed.OnPlayerKilled(attacker, player);
