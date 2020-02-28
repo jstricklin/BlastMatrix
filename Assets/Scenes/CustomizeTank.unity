@@ -3807,7 +3807,7 @@ MonoBehaviour:
   m_Content: {fileID: 1242941842}
   m_Horizontal: 0
   m_Vertical: 0
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -4877,6 +4877,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1430207229}
     m_Modifications:
+    - target: {fileID: 9133143939813005131, guid: 27f3333fb1c6047e4b1ac7de46f350d0,
+        type: 3}
+      propertyPath: m_Name
+      value: ColorThumb
+      objectReference: {fileID: 0}
+    - target: {fileID: 9133143939813005131, guid: 27f3333fb1c6047e4b1ac7de46f350d0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9133143939813005130, guid: 27f3333fb1c6047e4b1ac7de46f350d0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4935,7 +4945,7 @@ PrefabInstance:
     - target: {fileID: 9133143939813005130, guid: 27f3333fb1c6047e4b1ac7de46f350d0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -65
+      value: -75
       objectReference: {fileID: 0}
     - target: {fileID: 9133143939813005130, guid: 27f3333fb1c6047e4b1ac7de46f350d0,
         type: 3}
@@ -4981,16 +4991,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9133143939813005131, guid: 27f3333fb1c6047e4b1ac7de46f350d0,
-        type: 3}
-      propertyPath: m_Name
-      value: ColorThumb
-      objectReference: {fileID: 0}
-    - target: {fileID: 9133143939813005131, guid: 27f3333fb1c6047e4b1ac7de46f350d0,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27f3333fb1c6047e4b1ac7de46f350d0, type: 3}

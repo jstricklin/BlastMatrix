@@ -20,12 +20,17 @@ namespace Project.ScriptableObjects {
 
         public List<GameObject> GenerateColorThumbs(Transform colorContainer, Vector3 startPos, int width)
         {
-            int xOffset = 75;
-            int yOffset = -50;
+            float containerWidth = colorContainer.GetComponent<RectTransform>().rect.width;
+
+
+            int xOffset = 50;
+            int yOffset = -25;
             List<GameObject> colorThumbs = new List<GameObject>();
             int i = 0;
             int xStep = 0;
             Vector3 pos = startPos;
+            //TODO work on dynamic size color
+            int maxX = (int)Mathf.Floor(containerWidth / xOffset + colorThumb.GetComponent<Image>().rectTransform.rect.width); 
             foreach(Color col in primaryColors)
             {
                 GameObject _colorThumb = Instantiate(colorThumb);

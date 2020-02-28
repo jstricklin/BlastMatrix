@@ -245,6 +245,8 @@ namespace Project.Controllers {
                 rb.useGravity = true;
                 clonePart.SetActive(false);
             }
+            // reset anim to account for generated tank parts
+            myAnim.Rebind();
         }
 
         public void DestroyTank()
@@ -316,6 +318,7 @@ namespace Project.Controllers {
         public virtual void TankHit(Transform attacker)
         {
             myAnim.SetTrigger("isHit");
+            Debug.Log("my anim... " + myAnim.IsInTransition(0));
         }
         
         private void MoveForward(InputAction.CallbackContext obj)

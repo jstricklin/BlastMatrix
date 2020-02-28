@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Project.Utilities;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine.Audio;
 
 namespace Project.Controllers 
 {
@@ -14,11 +15,21 @@ namespace Project.Controllers
         AudioSource bgm;
         [SerializeField]
         AudioClip mainMenu;
+        AudioMixer bgmMixer, sfxMixer;
+        List<AudioMixer> mixers = new List<AudioMixer>();
+        
 
         // public void SetBGM(string track)
         // {
         //     bgm.clip 
         // }
+
+        void Start()
+        {
+            mixers.Add(bgmMixer);
+            mixers.Add(sfxMixer);
+        }
+
         public void StartBGM(string scene)
         {
             if (bgm.isPlaying) 
@@ -37,6 +48,22 @@ namespace Project.Controllers
 
             bgm.Play();
         }
+
+        public void HandleAudio(bool enable)
+        {
+            AudioMixerSnapshot snapshot;
+            foreach(AudioMixer mixer in mixers)
+            {
+                if (enable)
+                {
+                    snapshot = bgmMixer.FindSnapshot("Default");
+                } else {
+                    snapshot = bgmMixer.FindSnapshot("Disabled");
+                }
+                snapshot.TransitionTo(0.01f);
+            }
+        }
+
         public void StopBGM()
         {
             bgm.Stop();
