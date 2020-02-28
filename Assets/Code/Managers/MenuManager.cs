@@ -38,6 +38,9 @@ namespace Project.Managers
         [SerializeField]
         public TMP_Text loggedInText;
 
+        [SerializeField]
+        bool sfxOn = true, bgmOn = true, postOn = true;
+
         private BaseSocketIO socketReference;
         private BaseSocketIO SocketReference
         {
@@ -78,6 +81,20 @@ namespace Project.Managers
         {
             loginMenu.SetActive(false);
             mainMenu.SetActive(true);
+        }
+        public void ToggleBGM()
+        {
+            bgmOn = !bgmOn;
+            AudioController.Instance?.HandleBGM(bgmOn);
+        }
+        public void ToggleSFX()
+        {
+            sfxOn = !sfxOn;
+            AudioController.Instance?.HandleSFX(sfxOn);
+        }
+        public void TogglePostFX()
+        {
+            Debug.Log("toggling post FX");
         }
         public void EnterUsername()
         {

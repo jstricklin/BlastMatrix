@@ -15,19 +15,15 @@ namespace Project.Controllers
         AudioSource bgm;
         [SerializeField]
         AudioClip mainMenu;
-        AudioMixer bgmMixer, sfxMixer;
-        List<AudioMixer> mixers = new List<AudioMixer>();
+        [SerializeField]
+        AudioMixer masterMixer;
+        public bool bgmOn = true, sfxOn = true;
         
-
-        // public void SetBGM(string track)
-        // {
-        //     bgm.clip 
-        // }
 
         void Start()
         {
-            mixers.Add(bgmMixer);
-            mixers.Add(sfxMixer);
+            HandleBGM(bgmOn);
+            HandleSFX(sfxOn);
         }
 
         public void StartBGM(string scene)
@@ -49,19 +45,37 @@ namespace Project.Controllers
             bgm.Play();
         }
 
-        public void HandleAudio(bool enable)
+        public void HandleBGM(bool enable)
         {
+            bgmOn = enable;
             AudioMixerSnapshot snapshot;
-            foreach(AudioMixer mixer in mixers)
+            if (enable && sfxOn)
             {
-                if (enable)
-                {
-                    snapshot = bgmMixer.FindSnapshot("Default");
-                } else {
-                    snapshot = bgmMixer.FindSnapshot("Disabled");
-                }
-                snapshot.TransitionTo(0.01f);
+                snapshot = masterMixer.FindSnapshot("Default");
+            } else if (enable && !sfxOn){
+                snapshot = masterMixer.FindSnapshot("Disable SFX");
+            } else if (!enable && sfxOn){
+                snapshot = masterMixer.FindSnapshot("Disable BGM");
+            } else {
+                snapshot = masterMixer.FindSnapshot("Disable Audio");
             }
+            snapshot.TransitionTo(0);
+        }
+        public void HandleSFX(bool enable)
+        {
+            sfxOn = enable;
+            AudioMixerSnapshot snapshot;
+            if (enable && bgmOn)
+            {
+                snapshot = masterMixer.FindSnapshot("Default");
+            } else if (enable && !bgmOn){
+                snapshot = masterMixer.FindSnapshot("Disable BGM");
+            } else if (!enable && bgmOn){
+                snapshot = masterMixer.FindSnapshot("Disable SFX");
+            } else {
+                snapshot = masterMixer.FindSnapshot("Disable Audio");
+            }
+            snapshot.TransitionTo(0);
         }
 
         public void StopBGM()

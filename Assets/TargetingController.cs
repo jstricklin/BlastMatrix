@@ -64,7 +64,6 @@ namespace Project.Controllers {
 
         void InitializeBotTargeting()
         {
-            Debug.Log("initializing bot targeting");
             StartCoroutine(CheckTargetsInSight());
             StartCoroutine(CheckTrajectory());
         }

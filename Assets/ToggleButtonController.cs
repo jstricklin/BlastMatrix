@@ -10,11 +10,13 @@ namespace Project.Controllers {
         TextMeshProUGUI offText;
         
         Color onColor, offColor;
+        [SerializeField]
         bool isOn = true;
 
         // Start is called before the first frame update
         void Start()
         {
+            if (!isOn) ToggleText();
             onText = transform.Find("On Text").GetComponent<TextMeshProUGUI>();
             offText = transform.Find("Off Text").GetComponent<TextMeshProUGUI>();
             onColor = onText.color;

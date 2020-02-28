@@ -42,9 +42,14 @@ namespace Project.UI {
         public TextMeshProUGUI playerLabel;
         InputController inputController;
 
+        bool bgmOn = true, sfxOn = true, postFX = true;
+        [SerializeField]
+        ToggleButtonController bgmToggle, sfxToggle, postFxToggle;
+
         public override void OnEnable()
         {
             base.OnEnable();
+            CheckSettings();
             inputController = FindObjectOfType<InputController>();
             if (inputController != null)
             {
@@ -58,6 +63,26 @@ namespace Project.UI {
         void Start()
         {
             myAnim = GetComponent<Animator>();
+        }
+        void CheckSettings()
+        {
+            if (AudioController.Instance == null) return;
+            bgmOn = AudioController.Instance.bgmOn;
+            sfxOn = AudioController.Instance.sfxOn;
+            // FIXME FIX BELOW
+            // if (!bgmOn) 
+            // {
+            //     bgmToggle.ToggleText();
+            // }
+            // if (!sfxOn) 
+            // {
+            //     sfxToggle.ToggleText();
+
+            // }
+            // if (!postFX) 
+            // {
+            //     postFxToggle.ToggleText();
+            // }
         }
         public void SetHealth(float currentHealth) {
             Color newColor;
@@ -107,11 +132,13 @@ namespace Project.UI {
 
         public void ToggleBGM()
         {
-            Debug.Log("toggling BGM");
+            bgmOn = !bgmOn;
+            AudioController.Instance?.HandleBGM(bgmOn);
         }
         public void ToggleSFX()
         {
-            Debug.Log("toggling SFX");
+            sfxOn = !sfxOn;
+            AudioController.Instance?.HandleSFX(sfxOn);
         }
         public void TogglePostFX()
         {
