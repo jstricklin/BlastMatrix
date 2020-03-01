@@ -8,6 +8,7 @@ using TMPro;
 using System;
 using Project.Controllers;
 using UnityEngine.InputSystem;
+using Project.Managers;
 
 namespace Project.UI {
     public class UIManager : Singleton<UIManager>
@@ -49,7 +50,7 @@ namespace Project.UI {
         public override void OnEnable()
         {
             base.OnEnable();
-            CheckSettings();
+            // CheckSettings();
             inputController = FindObjectOfType<InputController>();
             if (inputController != null)
             {
@@ -69,20 +70,20 @@ namespace Project.UI {
             if (AudioController.Instance == null) return;
             bgmOn = AudioController.Instance.bgmOn;
             sfxOn = AudioController.Instance.sfxOn;
-            // FIXME FIX BELOW
-            // if (!bgmOn) 
-            // {
-            //     bgmToggle.ToggleText();
-            // }
-            // if (!sfxOn) 
-            // {
-            //     sfxToggle.ToggleText();
-
-            // }
-            // if (!postFX) 
-            // {
-            //     postFxToggle.ToggleText();
-            // }
+            sfxOn = AudioController.Instance.sfxOn;
+            postFX = PostProcessManager.Instance.postProcessEnabled;
+            if (!bgmOn) 
+            {
+                bgmToggle.ToggleText();
+            }
+            if (!sfxOn) 
+            {
+                sfxToggle.ToggleText();
+            }
+            if (!postFX) 
+            {
+                postFxToggle.ToggleText();
+            }
         }
         public void SetHealth(float currentHealth) {
             Color newColor;
@@ -128,6 +129,9 @@ namespace Project.UI {
         public void TogglePauseMenu()
         {
             pauseMenu?.SetActive(!pauseMenu.activeSelf);
+            if (pauseMenu.activeSelf) {
+                CheckSettings();
+            }
         }
 
         public void ToggleBGM()
@@ -142,7 +146,7 @@ namespace Project.UI {
         }
         public void TogglePostFX()
         {
-            Debug.Log("toggling post FX");
+            PostProcessManager.Instance?.TogglePostProcesses();
         }
         public void OnPlayerKilled(string attacker, string player, bool killer = false, bool killed = false)
         {

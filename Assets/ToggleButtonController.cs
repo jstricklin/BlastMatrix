@@ -14,7 +14,7 @@ namespace Project.Controllers {
         bool isOn = true;
 
         // Start is called before the first frame update
-        void Start()
+        void OnEnable()
         {
             if (!isOn) ToggleText();
             onText = transform.Find("On Text").GetComponent<TextMeshProUGUI>();

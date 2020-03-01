@@ -40,6 +40,8 @@ namespace Project.Managers
 
         [SerializeField]
         bool sfxOn = true, bgmOn = true, postOn = true;
+        [ SerializeField ]
+        ToggleButtonController sfxToggle, bgmToggle, postFxToggle;
 
         private BaseSocketIO socketReference;
         private BaseSocketIO SocketReference
@@ -53,6 +55,7 @@ namespace Project.Managers
         // Start is called before the first frame update
         void Start()
         {
+            CheckSettings();
             if (FindObjectOfType<NetworkClient>()) {
 
                 startMenu.SetActive(false);
@@ -66,7 +69,25 @@ namespace Project.Managers
             // lazy loading
             SocketReference.Emit("quickPlay");
         }
-
+        void CheckSettings()
+        {
+            if (AudioController.Instance == null) return;
+            bgmOn = AudioController.Instance.bgmOn;
+            sfxOn = AudioController.Instance.sfxOn;
+            postOn = PostProcessManager.Instance.postProcessEnabled;
+            if (!bgmOn) 
+            {
+                bgmToggle.ToggleText();
+            }
+            if (!sfxOn) 
+            {
+                sfxToggle.ToggleText();
+            }
+            if (!postOn) 
+            {
+                postFxToggle.ToggleText();
+            }
+        }
         public void DisplayLoginScreen()
         {
             startMenu.SetActive(false);
@@ -94,7 +115,7 @@ namespace Project.Managers
         }
         public void TogglePostFX()
         {
-            Debug.Log("toggling post FX");
+            PostProcessManager.Instance?.TogglePostProcesses();
         }
         public void EnterUsername()
         {

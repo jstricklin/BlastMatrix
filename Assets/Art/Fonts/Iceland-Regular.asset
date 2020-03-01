@@ -53,9 +53,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Iceland-Regular
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 1210017503
   material: {fileID: -3569617866676710389}
-  materialHashCode: 0
+  materialHashCode: 1656017652
   m_Version: 1.1.0
   m_SourceFontFileGUID: 90c4bca94964d4d1788bf7ca5bdf1d3a
   m_SourceFontFile_EditorRef: {fileID: 0}
