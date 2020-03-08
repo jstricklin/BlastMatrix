@@ -32,6 +32,8 @@ namespace Project.Managers
         [SerializeField]
         GameObject loginMenu;
         [SerializeField]
+        GameObject controlsScreen;
+        [SerializeField]
         TMP_InputField usernameField;
         [SerializeField]
         TMP_Text invalidUsername;
@@ -97,6 +99,11 @@ namespace Project.Managers
             });
             loginMenu.SetActive(true);
             usernameField.ActivateInputField();
+        }
+        public void ToggleControlsScreen() 
+        {
+            mainMenu.SetActive(!mainMenu.activeInHierarchy);
+            controlsScreen.SetActive(!controlsScreen.activeInHierarchy);
         }
         public void DisplayMainMenu()
         {
